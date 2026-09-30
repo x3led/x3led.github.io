@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x3led</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* ---------- ПЛАВАЮЩИЙ НИК НА ФОНЕ ---------- */
+  .bg-float {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .bg-float span {
+    position: absolute;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.018);
+    letter-spacing: -8px;
+    user-select: none;
+    animation: floatAround 40s linear infinite;
+    white-space: nowrap;
+  }
+
+  .bg-float span:nth-child(1) { top: 5%; left: 0; animation-duration: 45s; animation-delay: 0s; }
+  .bg-float span:nth-child(2) { top: 30%; left: -20%; animation-duration: 55s; animation-delay: -15s; }
+  .bg-float span:nth-child(3) { top: 60%; left: 10%; animation-duration: 60s; animation-delay: -30s; }
+  .bg-float span:nth-child(4) { top: 80%; left: -10%; animation-duration: 50s; animation-delay: -10s; }
+
+  @keyframes floatAround {
+    0%   { transform: translate(0, 0) rotate(-5deg); }
+    25%  { transform: translate(15vw, -5vh) rotate(2deg); }
+    50%  { transform: translate(30vw, 5vh) rotate(-3deg); }
+    75%  { transform: translate(10vw, 10vh) rotate(5deg); }
+    100% { transform: translate(0, 0) rotate(-5deg); }
+  }
+
+  /* ---------- ВЕРХНЯЯ ПАНЕЛЬ ---------- */
+  .topbar {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .bio-tag {
+    color: #555;
+    cursor: default;
+    transition: color 0.3s ease;
+  }
+  .bio-tag:hover { color: #888; }
+
+  .menu-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .menu-btn {
+    background: #161616;
+    border: 1px solid #222;
+    color: #ccc;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+  }
+  .menu-btn:hover {
+    background: #1e1e1e;
+    border-color: #333;
+    color: #fff;
+  }
+  .menu-btn.active {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  /* ---------- ЦЕНТР ---------- */
+  .main {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 60px;
+    text-align: center;
+  }
+
+  /* ---------- ЛОГОТИП С АНИМАЦИЕЙ ---------- */
+  .logo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 40px;
+    font-size: 180px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -10px;
+    color: #fff;
+    position: relative;
+    user-select: none;
+  }
+
+  /* Палочка "!" - выезжает снизу */
+  .bang {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(150px) scaleY(0);
+    transform-origin: bottom center;
+    animation: bangAppear 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  }
+
+  @keyframes bangAppear {
+    0% { opacity: 0; transform: translateY(150px) scaleY(0); }
+    100% { opacity: 1; transform: translateY(0) scaleY(1); }
+  }
+
+  /* Буквы ника - выезжают слева направо с задержкой */
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-60px);
+    animation: letterSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .letter:nth-child(2) { animation-delay: 0.75s; }
+  .letter:nth-child(3) { animation-delay: 0.90s; }
+  .letter:nth-child(4) { animation-delay: 1.05s; }
+  .letter:nth-child(5) { animation-delay: 1.20s; }
+
+  @keyframes letterSlide {
+    0% { opacity: 0; transform: translateX(-60px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ---------- ПОДПИСЬ ---------- */
+  .tagline {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    color: #666;
+    letter-spacing: 4px;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 1.6s forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ---------- ОПИСАНИЕ ---------- */
+  .description {
+    max-width: 520px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #a0a0a0;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 1.9s forwards;
+  }
+
+  /* ---------- ССЫЛКИ ---------- */
+  .links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 2.1s forwards;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 22px;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    border-radius: 999px;
+    color: #ccc;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .links a:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  .links a::after {
+    content: "↗";
+    opacity: 0.5;
+    font-size: 11px;
+  }
+
+  /* ---------- ЧАСЫ ВНИЗУ ---------- */
+  .clock {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 12px;
+    color: #444;
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+
+  /* ---------- КООРДИНАТЫ ВНИЗУ СПРАВА ---------- */
+  .coords {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 12px;
+    color: #333;
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+
+  /* ---------- МОДАЛЬНОЕ ОКНО ОБВИНЕНИЙ ---------- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 40px 20px;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: #0f0f0f;
+    border: 1px solid #1e1e1e;
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid #1e1e1e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .modal-close:hover { color: #fff; }
+
+  .modal-body {
+    padding: 20px 30px 30px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    color: #bbb;
+  }
+
+  .modal-body ol {
+    padding-left: 0;
+    list-style: none;
+    counter-reset: item;
+  }
+
+  .modal-body li {
+    counter-increment: item;
+    padding: 3px 0;
+    color: #999;
+    transition: color 0.15s;
+  }
+
+  .modal-body li::before {
+    content: counter(item) ".";
+    display: inline-block;
+    width: 45px;
+    color: #444;
+  }
+
+  .modal-body li:hover { color: #fff; }
+
+  /* скроллбар */
+  .modal-body::-webkit-scrollbar { width: 6px; }
+  .modal-body::-webkit-scrollbar-track { background: #0a0a0a; }
+  .modal-body::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+  .modal-body::-webkit-scrollbar-thumb:hover { background: #333; }
+
+  /* ---------- МОБИЛЬНЫЙ ---------- */
+  @media (max-width: 640px) {
+    .logo { font-size: 100px; letter-spacing: -5px; }
+    .bg-float span { font-size: 100px; }
+    .description { font-size: 14px; padding: 0 10px; }
+    .topbar { top: 16px; left: 16px; right: 16px; }
+    .clock, .coords { font-size: 11px; bottom: 16px; }
+    .modal-header { padding: 18px 20px; }
+    .modal-body { padding: 15px 20px 25px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Плавающий фон -->
+<div class="bg-float">
+  <span>x3led</span>
+  <span>x3led</span>
+  <span>x3led</span>
+  <span>x3led</span>
+</div>
+
+<!-- Верхняя панель -->
+<div class="topbar">
+  <div class="bio-tag">bio</div>
+  <div class="menu-buttons">
+    <button class="menu-btn active" onclick="closeModal()">главная</button>
+    <button class="menu-btn" onclick="openModal()">обвинения</button>
+  </div>
+</div>
+
+<!-- Основной контент -->
+<div class="main">
+  <div class="logo">
+    <span class="bang">!</span><span class="letter">x</span><span class="letter">3</span><span class="letter">l</span><span class="letter">e</span><span class="letter">d</span>
+  </div>
+
+  <div class="tagline">пишу код. играю в игры. не сплю по ночам.</div>
+
+  <div class="description">
+    Привет! Это моя первая страничка обо мне,<br>
+    в дальнейшем она будет обновляться.
+  </div>
+
+  <div class="links">
+    <a href="https://discord.com/users/928360132482572371" target="_blank">discord</a>
+    <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank">steam</a>
+    <a href="https://github.com/x3led" target="_blank">github</a>
+  </div>
+</div>
+
+<!-- Часы -->
+<div class="clock" id="clock">у меня сейчас --:--</div>
+
+<!-- Координаты -->
+<div class="coords">x 0972 · y 0427</div>
+
+<!-- Модальное окно обвинений -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>обвинения</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <ol id="chargesList"></ol>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============ ОБВИНЕНИЯ ============
+  const charges = [
+    "Геноцид",
+    "Преступления против человечности",
+    "Военные преступления",
+    "Преступление агрессии",
+    "Этнические чистки",
+    "Массовые убийства",
+    "Депортация населения",
+    "Насильственное перемещение населения",
+    "Преследование гражданского населения",
+    "Пытки",
+    "Рабство",
+    "Сексуальное насилие во время конфликта",
+    "Использование детей в вооружённом конфликте",
+    "Умышленное нападение на гражданское население",
+    "Умышленное нападение на гуманитарный персонал",
+    "Незаконное уничтожение гражданской инфраструктуры",
+    "Взятие заложников",
+    "Незаконное содержание военнопленных",
+    "Вербовка иностранных наёмников",
+    "Нарушение международных договоров",
+    "Незаконное применение запрещённых методов ведения войны",
+    "Незаконная блокада",
+    "Пиратство",
+    "Работорговля",
+    "Транснациональная организованная преступность",
+    "Торговля людьми",
+    "Незаконный оборот оружия",
+    "Незаконный оборот наркотиков",
+    "Отмывание денег",
+    "Уклонение от уплаты налогов",
+    "Мошенничество",
+    "Подделка документов",
+    "Лжесвидетельство",
+    "Неуважение к суду",
+    "Побег из-под стражи",
+    "Сопротивление при аресте",
+    "Оскорбление власти",
+    "Шпионаж",
+    "Диверсия",
+    "Терроризм",
+    "Киберпреступность",
+    "Нарушение прав интеллектуальной собственности",
+    "Контрабанда",
+    "Нелегальная миграция",
+    "Нарушение санкций",
+    "Финансирование терроризма",
+    "Подстрекательство к войне",
+    "Пропаганда ненависти",
+    "Нарушение прав человека",
+    "Эксплуатация детского труда",
+    "Применение химического оружия",
+    "Применение биологического оружия",
+    "Применение ядерного оружия",
+    "Использование противопехотных мин",
+    "Использование кассетных боеприпасов",
+    "Нападение на медицинские учреждения",
+    "Нападение на школы и образовательные учреждения",
+    "Нападение на объекты культурного наследия",
+    "Разрушение религиозных объектов",
+    "Незаконная аннексия территории",
+    "Нарушение территориальной целостности",
+    "Вмешательство во внутренние дела",
+    "Государственный переворот",
+    "Подрыв суверенитета",
+    "Организация массовых беспорядков",
+    "Разжигание межнациональной розни",
+    "Разжигание религиозной ненависти",
+    "Дискриминация по расовому признаку",
+    "Дискриминация по половому признаку",
+    "Нарушение прав меньшинств",
+    "Принудительная ассимиляция",
+    "Запрет на использование языка",
+    "Цензура",
+    "Преследование журналистов",
+    "Преследование политических оппонентов",
+    "Преследование правозащитников",
+    "Незаконные задержания",
+    "Незаконные обыски",
+    "Конфискация имущества",
+    "Национализация без компенсации",
+    "Экспроприация",
+    "Принудительный труд",
+    "Торговля детьми",
+    "Похищение людей",
+    "Исчезновение людей",
+    "Внесудебные казни",
+    "Массовые захоронения",
+    "Сокрытие преступлений",
+    "Уничтожение улик",
+    "Дача ложных показаний",
+    "Подкуп должностных лиц",
+    "Злоупотребление властью",
+    "Превышение полномочий",
+    "Халатность",
+    "Коррупция",
+    "Отмывание доходов",
+    "Незаконные финансовые операции",
+    "Офшорные схемы",
+    "Уклонение от санкций",
+    "Нарушение эмбарго",
+    "Незаконная торговля людьми",
+    "Принудительная стерилизация",
+    "Принудительная беременность",
+    "Насильственная пропажа людей",
+    "Организация эскадронов смерти",
+    "Создание тайных тюрем",
+    "Пытки в местах лишения свободы",
+    "Бесчеловечное обращение с заключёнными",
+    "Отказ в медицинской помощи",
+    "Отказ в гуманитарном доступе",
+    "Блокирование гуманитарных коридоров",
+    "Нападение на конвои с помощью",
+    "Разграбление гуманитарных грузов",
+    "Использование голода как метода войны",
+    "Уничтожение посевов и запасов продовольствия",
+    "Отравление источников воды",
+    "Разрушение систем водоснабжения",
+    "Разрушение энергетической инфраструктуры",
+    "Кибератаки на гражданские объекты",
+    "Кибератаки на медицинские учреждения",
+    "Дезинформация и пропаганда",
+    "Фальсификация выборов",
+    "Подкуп избирателей",
+    "Запугивание избирателей",
+    "Ограничение свободы собраний",
+    "Разгон мирных протестов",
+    "Применение силы против демонстрантов",
+    "Незаконное применение слезоточивого газа",
+    "Незаконное применение резиновых пуль",
+    "Применение огнестрельного оружия против безоружных",
+    "Похищение активистов",
+    "Слежка за гражданами",
+    "Незаконный сбор персональных данных",
+    "Нарушение права на приватность",
+    "Блокирование интернета",
+    "Отключение связи",
+    "Глушение сигналов",
+    "Ограничение свободы прессы",
+    "Закрытие независимых изданий",
+    "Арест журналистов",
+    "Убийство журналистов",
+    "Преследование блогеров",
+    "Блокировка социальных сетей",
+    "Манипуляция общественным мнением",
+    "Создание фейковых новостей",
+    "Кибершпионаж",
+    "Кража государственных секретов",
+    "Саботаж критической инфраструктуры",
+    "Диверсии на транспорте",
+    "Поджоги",
+    "Организация взрывов",
+    "Самоподрыв",
+    "Использование смертников",
+    "Похищение самолётов",
+    "Угон транспортных средств",
+    "Захват заложников на транспорте",
+    "Морское пиратство",
+    "Воздушное пиратство",
+    "Незаконный захват судов",
+    "Контрабанда оружия",
+    "Контрабанда наркотиков",
+    "Контрабанда людей",
+    "Контрабанда культурных ценностей",
+    "Незаконная добыча ресурсов",
+    "Незаконная вырубка лесов",
+    "Незаконный вылов рыбы",
+    "Браконьерство",
+    "Торговля редкими видами",
+    "Уничтожение экосистем",
+    "Загрязнение окружающей среды",
+    "Выброс токсичных отходов",
+    "Незаконное захоронение отходов",
+    "Разрушение озонового слоя",
+    "Изменение климата",
+    "Экологический терроризм",
+    "Экоцид",
+    "Биопиратство",
+    "Незаконные генетические эксперименты",
+    "Клонирование человека",
+    "Торговля органами",
+    "Незаконная трансплантация",
+    "Принудительное изъятие органов",
+    "Медицинские эксперименты над людьми",
+    "Испытания на заключённых",
+    "Испытания на детях",
+    "Испытания на беременных",
+    "Отказ в вакцинации",
+    "Распространение биологического оружия",
+    "Создание лабораторных утечек",
+    "Пандемия",
+    "Сокрытие вспышек заболеваний",
+    "Дезинформация о здоровье",
+    "Продажа фальсифицированных лекарств",
+    "Подделка вакцин",
+    "Незаконный оборот медицинских препаратов",
+    "Наркоторговля",
+    "Организация наркокартелей",
+    "Отмывание наркодоходов",
+    "Финансирование наркоторговли",
+    "Вовлечение несовершеннолетних в наркоторговлю"
+  ];
+
+  const list = document.getElementById("chargesList");
+  charges.forEach(c => {
+    const li = document.createElement("li");
+    li.textContent = c;
+    list.appendChild(li);
+  });
+
+  // ============ МОДАЛКА ============
+  function openModal() {
+    document.getElementById("modal").classList.add("show");
+    document.body.style.overflow = "hidden";
+    document.querySelectorAll(".menu-btn")[1].classList.add("active");
+    document.querySelectorAll(".menu-btn")[0].classList.remove("active");
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+    document.body.style.overflow = "";
+    document.querySelectorAll(".menu-btn")[0].classList.add("active");
+    document.querySelectorAll(".menu-btn")[1].classList.remove("active");
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ============ ЧАСЫ МСК ============
+  function updateClock() {
+    const now = new Date();
+    // МСК = UTC+3
+    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+    const hh = String(msk.getHours()).padStart(2, "0");
+    const mm = String(msk.getMinutes()).padStart(2, "0");
+    const ss = String(msk.getSeconds()).padStart(2, "0");
+    document.getElementById("clock").textContent = `у меня сейчас ${hh}:${mm}:${ss} мск`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>

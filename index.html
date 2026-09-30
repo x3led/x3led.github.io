@@ -66,7 +66,7 @@
 
   @media (hover: none) {
     html, body { cursor: auto; }
-    .cursor { display: none !important; }
+    .cursor, .cursor-dot { display: none !important; }
   }
 
   /* ---------- КУРСОР ---------- */
@@ -95,9 +95,7 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
-  [data-theme="light"] .cursor {
-    mix-blend-mode: normal;
-  }
+  [data-theme="light"] .cursor { mix-blend-mode: normal; }
 
   .cursor-dot {
     position: fixed;
@@ -347,7 +345,7 @@
     font-size: 11px;
   }
 
-  /* ---------- ЧАСЫ ---------- */
+  /* ---------- ЧАСЫ И КООРДИНАТЫ ---------- */
   .clock {
     position: fixed;
     bottom: 24px;
@@ -360,7 +358,6 @@
     z-index: 10;
   }
 
-  /* ---------- КООРДИНАТЫ ---------- */
   .coords {
     position: fixed;
     bottom: 24px;
@@ -370,9 +367,14 @@
     color: var(--text-faint);
     letter-spacing: 1px;
     z-index: 10;
+    transition: color 0.2s ease;
   }
 
-  /* ---------- МОДАЛЬНОЕ ОКНО ---------- */
+  .coords.active {
+    color: var(--text-dim);
+  }
+
+  /* ---------- МОДАЛКА ---------- */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -488,11 +490,9 @@
 </head>
 <body>
 
-<!-- Курсор -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
-<!-- Плавающий фон -->
 <div class="bg-float">
   <span>x3led</span>
   <span>x3led</span>
@@ -500,7 +500,6 @@
   <span>x3led</span>
 </div>
 
-<!-- Верхняя панель -->
 <div class="topbar">
   <div class="bio-tag">bio</div>
   <div class="menu-buttons">
@@ -510,13 +509,12 @@
   </div>
 </div>
 
-<!-- Контент -->
 <div class="main">
   <div class="logo">
     <span class="bang">!</span><span class="letter">x</span><span class="letter">3</span><span class="letter">l</span><span class="letter">e</span><span class="letter">d</span>
   </div>
 
-  <div class="tagline">пишу код. играю в игры. не сплю по ночам.</div>
+  <div class="tagline">играю в игры, не сплю ночью, гуляю.</div>
 
   <div class="description">
     Привет! Это моя первая страничка обо мне,<br>
@@ -531,9 +529,8 @@
 </div>
 
 <div class="clock" id="clock">у меня сейчас --:--:-- мск</div>
-<div class="coords">x 0972 · y 0427</div>
+<div class="coords" id="coords">x 0000 · y 0000</div>
 
-<!-- Модальное окно -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this) closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -618,7 +615,7 @@
     list.appendChild(li);
   });
 
-  // ============ ЗВУК КЛИКА (Web Audio) ============
+  // ============ ЗВУК КЛИКА ============
   let audioCtx = null;
   function playClick() {
     try {
@@ -633,32 +630,45 @@
       gain.connect(audioCtx.destination);
       osc.start(audioCtx.currentTime);
       osc.stop(audioCtx.currentTime + 0.08);
-    } catch (e) { /* тихо игнорируем */ }
+    } catch (e) {}
   }
 
-  // Вешаем звук на все кнопки и ссылки
   document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close").forEach(el => {
     el.addEventListener("click", playClick);
   });
 
-  // ============ КУРСОР ============
+  // ============ КУРСОР И ЖИВЫЕ КООРДИНАТЫ ============
   const cursor = document.getElementById("cursor");
   const dot = document.getElementById("cursorDot");
+  const coordsEl = document.getElementById("coords");
 
   let mouseX = 0, mouseY = 0;
   let curX = 0, curY = 0;
 
+  function pad4(n) {
+    return String(Math.max(0, Math.round(n))).padStart(4, "0");
+  }
+
   document.addEventListener("mousemove", e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+
     cursor.classList.add("visible");
     dot.classList.add("visible");
+    coordsEl.classList.add("active");
+
     dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+
+    // обновляем координаты в правом нижнем углу
+    const pageX = e.pageX;
+    const pageY = e.pageY;
+    coordsEl.textContent = `x ${pad4(pageX)} · y ${pad4(pageY)}`;
   });
 
   document.addEventListener("mouseleave", () => {
     cursor.classList.remove("visible");
     dot.classList.remove("visible");
+    coordsEl.classList.remove("active");
   });
 
   function animateCursor() {

@@ -197,6 +197,103 @@
   }
   .cursor-dot-c.visible { opacity: 1; }
 
+  /* ---------- ПРЕЛОАДЕР ---------- */
+  .preloader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-deep);
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
+                opacity 0.9s ease;
+    cursor: none;
+  }
+  .preloader.done {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .preloader-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(40px, 8vw, 100px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+  }
+  .preloader-logo .pchar {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: pcharIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .preloader-logo .pchar:nth-child(1) { animation-delay: 0.1s; }
+  .preloader-logo .pchar:nth-child(2) { animation-delay: 0.25s; }
+  .preloader-logo .pchar:nth-child(3) { animation-delay: 0.4s; }
+  .preloader-logo .pchar:nth-child(4) { animation-delay: 0.55s; }
+  .preloader-logo .pchar:nth-child(5) { animation-delay: 0.7s; }
+
+  @keyframes pcharIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .preloader-logo .pacc {
+    color: var(--accent1);
+    opacity: 0;
+    animation: pcharIn 0.4s ease 0.9s forwards;
+  }
+
+  .preloader-progress {
+    width: min(280px, 60vw);
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .preloader-progress-bar {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--accent1);
+    border-radius: 2px;
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .preloader-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    min-height: 16px;
+  }
+  .preloader-text::after {
+    content: "▌";
+    color: var(--accent1);
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- СКРОЛЛ-ИНДИКАТОР ---------- */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    z-index: 200;
+    box-shadow: 0 0 12px var(--glow);
+    border-radius: 0 2px 2px 0;
+  }
+
   .topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -218,9 +315,8 @@
     color: var(--text-dim);
     text-transform: uppercase;
     font-weight: 500;
-    transition: color 0.3s;
   }
-  .brand span { color: var(--accent1); transition: color 0.3s; }
+  .brand span { color: var(--accent1); }
 
   .nav {
     display: flex;
@@ -240,12 +336,7 @@
     cursor: none;
     transition: all 0.3s;
   }
-  .nav-btn:hover {
-    color: var(--text);
-    background: var(--surface);
-    border-color: var(--border);
-  }
-  .nav-btn.active {
+  .nav-btn:hover, .nav-btn.active {
     color: var(--text);
     background: var(--surface);
     border-color: var(--border);
@@ -300,14 +391,13 @@
     -webkit-text-fill-color: transparent;
     opacity: 0;
     transform: translateY(100%);
-    animation: charUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    transition: color 0.6s ease;
+    animation: charUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s forwards;
   }
-  .hero-title .char:nth-child(1) { animation-delay: 0.4s; }
-  .hero-title .char:nth-child(2) { animation-delay: 0.5s; }
-  .hero-title .char:nth-child(3) { animation-delay: 0.6s; }
-  .hero-title .char:nth-child(4) { animation-delay: 0.7s; }
-  .hero-title .char:nth-child(5) { animation-delay: 0.8s; }
+  .hero-title .char:nth-child(1) { animation-delay: 2.5s; }
+  .hero-title .char:nth-child(2) { animation-delay: 2.6s; }
+  .hero-title .char:nth-child(3) { animation-delay: 2.7s; }
+  .hero-title .char:nth-child(4) { animation-delay: 2.8s; }
+  .hero-title .char:nth-child(5) { animation-delay: 2.9s; }
 
   @keyframes charUp {
     to { opacity: 1; transform: translateY(0); }
@@ -317,7 +407,8 @@
     color: var(--accent1);
     -webkit-text-fill-color: var(--accent1);
     font-weight: 300;
-    transition: color 0.6s ease;
+    opacity: 0;
+    animation: charUp 0.6s ease 3s forwards;
   }
 
   .hero-sub {
@@ -328,7 +419,7 @@
     flex-wrap: wrap;
     margin-top: 20px;
     opacity: 0;
-    animation: slideUp 0.8s ease 1.1s forwards;
+    animation: slideUp 0.8s ease 3.2s forwards;
   }
 
   @keyframes slideUp {
@@ -342,9 +433,7 @@
     line-height: 1.65;
     color: var(--text-dim);
     font-weight: 300;
-    transition: color 0.6s ease;
   }
-
   .hero-desc strong {
     color: var(--text);
     font-weight: 500;
@@ -387,7 +476,6 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 20px;
-    transition: color 0.6s ease;
   }
 
   .section-title {
@@ -396,7 +484,6 @@
     letter-spacing: -0.03em;
     margin-bottom: 60px;
     line-height: 1.05;
-    transition: color 0.6s ease;
   }
 
   .links-grid {
@@ -421,18 +508,15 @@
     justify-content: space-between;
     min-height: 200px;
   }
-
   .link-card:hover {
     transform: translateY(-6px);
     border-color: var(--accent1);
     box-shadow: 0 20px 60px var(--glow);
   }
-
   .link-card:hover .link-arrow {
     transform: translate(6px, -6px);
     color: var(--accent1);
   }
-
   .link-card .card-icon {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -440,21 +524,18 @@
     letter-spacing: 2px;
     text-transform: uppercase;
   }
-
   .link-card .card-name {
     font-size: 28px;
     font-weight: 500;
     letter-spacing: -0.02em;
     margin-top: 60px;
   }
-
   .link-card .card-sub {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     color: var(--text-dim);
     margin-top: 8px;
   }
-
   .link-arrow {
     position: absolute;
     top: 32px; right: 32px;
@@ -475,24 +556,20 @@
     flex-wrap: wrap;
     transition: all 0.5s;
   }
-
   .charges-cta:hover {
     border-color: var(--accent2);
     box-shadow: 0 20px 60px var(--glow);
   }
-
   .charges-cta-text h3 {
     font-size: 32px;
     font-weight: 500;
     letter-spacing: -0.02em;
     margin-bottom: 10px;
   }
-
   .charges-cta-text p {
     color: var(--text-dim);
     font-size: 15px;
   }
-
   .charges-btn {
     background: var(--text);
     color: var(--bg-deep);
@@ -555,7 +632,6 @@
     justify-content: space-between;
     align-items: center;
   }
-
   .modal-header h2 {
     font-size: 24px;
     font-weight: 500;
@@ -596,7 +672,6 @@
     line-height: 2.1;
     color: var(--text-dim);
   }
-
   .modal-body ol {
     padding-left: 0;
     list-style: none;
@@ -605,11 +680,9 @@
     grid-template-columns: 1fr 1fr;
     gap: 0 40px;
   }
-
   @media (max-width: 700px) {
     .modal-body ol { grid-template-columns: 1fr; }
   }
-
   .modal-body li {
     counter-increment: item;
     padding: 6px 0;
@@ -627,7 +700,6 @@
     color: var(--text);
     padding-left: 8px;
   }
-
   .modal-body::-webkit-scrollbar { width: 6px; }
   .modal-body::-webkit-scrollbar-track { background: transparent; }
   .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -648,7 +720,6 @@
     color: var(--text-faint);
     letter-spacing: 1px;
   }
-
   .footer-left, .footer-right { display: flex; gap: 24px; align-items: center; }
 
   .status-dot {
@@ -659,7 +730,6 @@
     margin-right: 8px;
     box-shadow: 0 0 10px var(--dot-color);
     animation: pulse 2s ease-in-out infinite;
-    transition: background 0.6s ease, box-shadow 0.6s ease;
   }
   @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -713,6 +783,18 @@
 </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">
+    <span class="pchar">x</span><span class="pchar">3</span><span class="pchar">l</span><span class="pchar">e</span><span class="pchar">d</span><span class="pacc">.</span>
+  </div>
+  <div class="preloader-progress">
+    <div class="preloader-progress-bar" id="preloaderBar"></div>
+  </div>
+  <div class="preloader-text" id="preloaderText">initializing</div>
+</div>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -929,12 +1011,10 @@
   document.addEventListener("mousemove", e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-
     cursorRing.classList.add("visible");
     cursorDotC.classList.add("visible");
     cursorGlow.classList.add("visible");
     coordsMini.classList.add("active");
-
     cursorDotC.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
     coordsMini.textContent = `x ${pad4(e.pageX)} · y ${pad4(e.pageY)}`;
   });
@@ -951,7 +1031,6 @@
     curY += (mouseY - curY) * 0.2;
     glowX += (mouseX - glowX) * 0.08;
     glowY += (mouseY - glowY) * 0.08;
-
     cursorRing.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
     cursorGlow.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
     requestAnimationFrame(animateCursor);
@@ -960,7 +1039,6 @@
 
   // ============ ТЕМА — 4 варианта ============
   const themeBtn = document.getElementById("themeBtn");
-
   const THEMES = [
     { key: "dark",    icon: "◐" },
     { key: "emerald", icon: "◆" },
@@ -1025,6 +1103,44 @@
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  // ============ ПРЕЛОАДЕР ============
+  const preloader = document.getElementById("preloader");
+  const preloaderBar = document.getElementById("preloaderBar");
+  const preloaderText = document.getElementById("preloaderText");
+  const phrases = ["initializing", "loading assets", "preparing interface", "welcome"];
+  let progress = 0;
+  let phraseIdx = 0;
+
+  document.body.style.overflow = "hidden";
+
+  const preloaderInterval = setInterval(() => {
+    progress += Math.random() * 12 + 4;
+    if (progress > 100) progress = 100;
+    preloaderBar.style.width = progress + "%";
+    const phraseTarget = Math.floor(progress / 25);
+    if (phraseTarget !== phraseIdx && phraseTarget < phrases.length) {
+      phraseIdx = phraseTarget;
+      preloaderText.textContent = phrases[phraseIdx];
+    }
+    if (progress >= 100) {
+      clearInterval(preloaderInterval);
+      preloaderText.textContent = "welcome";
+      setTimeout(() => {
+        preloader.classList.add("done");
+        document.body.style.overflow = "";
+      }, 400);
+    }
+  }, 180);
+
+  // ============ СКРОЛЛ-ИНДИКАТОР ============
+  const scrollProgress = document.getElementById("scrollProgress");
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgress.style.width = scrolled + "%";
+  });
 
   // ============ HOVER КУРСОРА ============
   document.querySelectorAll("a, button, .nav-btn, .theme-btn, .link-card, .charges-btn, .modal-close").forEach(el => {

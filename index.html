@@ -82,155 +82,7 @@
     transition: background-color 0.5s ease, color 0.5s ease;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    body, a, button, input, .swatch, .card, .btn, .close, .love-btn { cursor: none; }
-  }
-
-  .cursor-ring {
-    position: fixed;
-    top: 0; left: 0;
-    width: 30px; height: 30px;
-    border: 1.5px solid var(--text);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s var(--ease), height 0.3s var(--ease),
-                border-color 0.3s, opacity 0.25s;
-    mix-blend-mode: difference;
-    opacity: 0;
-  }
-  .cursor-ring.visible { opacity: 1; }
-  .cursor-ring.hover {
-    width: 56px; height: 56px;
-    border-color: var(--accent);
-  }
-  [data-theme="light"] .cursor-ring { mix-blend-mode: normal; }
-
-  .cursor-dot {
-    position: fixed;
-    top: 0; left: 0;
-    width: 4px; height: 4px;
-    background: var(--text);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .cursor-dot.visible { opacity: 1; }
-
-  @media (hover: none), (pointer: coarse) {
-    .cursor-ring, .cursor-dot { display: none !important; }
-  }
-
-  .love-btn {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--accent);
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 40;
-    opacity: 0.45;
-    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
-                border-color 0.3s, box-shadow 0.3s;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .love-btn:hover {
-    opacity: 1;
-    transform: scale(1.1);
-    border-color: var(--accent);
-    box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-  .love-btn:active { transform: scale(0.95); }
-
-  .love-btn .heart {
-    display: inline-block;
-    animation: heartBeat 1.6s ease-in-out infinite;
-  }
-  @keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.15); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.1); }
-    60% { transform: scale(1); }
-  }
-
-  .love-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-  [data-theme="light"] .love-overlay { background: rgba(255, 255, 255, 0.65); }
-  .love-overlay.show { opacity: 1; pointer-events: auto; }
-
-  .love-card {
-    padding: 40px 56px;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    text-align: center;
-    transform: translateY(20px) scale(0.9);
-    transition: transform 0.5s var(--ease);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-  }
-  .love-overlay.show .love-card {
-    transform: translateY(0) scale(1);
-  }
-
-  .love-text {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(28px, 5vw, 48px);
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    line-height: 1.1;
-  }
-
-  .love-heart-big {
-    font-size: 40px;
-    margin-top: 12px;
-    color: var(--accent-2);
-    animation: heartBeat 1.2s ease-in-out infinite;
-  }
-
-  .float-heart {
-    position: fixed;
-    pointer-events: none;
-    font-size: 24px;
-    z-index: 9997;
-    animation: floatUp 2.5s ease-out forwards;
-    opacity: 0;
-  }
-  @keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0) scale(0.6) rotate(0deg); }
-    20% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-200px) scale(1.4) rotate(30deg); }
-  }
-    .aurora {
+  .aurora {
     position: fixed;
     inset: -30%;
     z-index: -1;
@@ -288,38 +140,37 @@
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
   .music-panel {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 5px 14px 5px 5px;
+    gap: 8px;
+    padding: 4px 12px 4px 4px;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--card);
-    transition: border-color 0.3s, background-color 0.3s;
+    transition: border-color 0.3s;
   }
   .music-panel:hover {
     border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   }
-
   .music-btn {
     flex: none;
-    width: 30px; height: 30px;
+    width: 28px; height: 28px;
     border-radius: 50%;
     border: none;
     background: var(--accent);
     color: var(--on-accent);
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.25s var(--ease), background-color 0.3s;
+    transition: transform 0.25s var(--ease);
     font-family: var(--mono);
   }
   .music-btn:hover { transform: scale(1.1); }
@@ -328,7 +179,7 @@
   .volume-slider {
     -webkit-appearance: none;
     appearance: none;
-    width: 80px;
+    width: 70px;
     height: 3px;
     background: var(--border);
     border-radius: 3px;
@@ -338,15 +189,13 @@
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 12px; height: 12px;
+    width: 11px; height: 11px;
     background: var(--text);
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.2s;
   }
-  .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .volume-slider::-moz-range-thumb {
-    width: 12px; height: 12px;
+    width: 11px; height: 11px;
     background: var(--text);
     border-radius: 50%;
     cursor: pointer;
@@ -696,14 +545,133 @@
   }
   .empty { padding: 40px 0; text-align: center; color: var(--text-faint); }
 
+  .love-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--accent-2);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    opacity: 0.55;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+                border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .love-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: var(--accent-2);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--accent-2) 40%, transparent);
+  }
+  .love-btn:active { transform: scale(0.95); }
+  .love-btn .heart {
+    display: inline-block;
+    animation: heartBeat 1.6s ease-in-out infinite;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+  }
+
+  .love-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  [data-theme="light"] .love-overlay { background: rgba(255, 255, 255, 0.7); }
+  .love-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .love-card {
+    padding: 50px 70px;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    text-align: center;
+    transform: translateY(30px) scale(0.85);
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+  .love-overlay.show .love-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .love-text {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(32px, 6vw, 64px);
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .love-heart-big {
+    font-size: 48px;
+    margin-top: 16px;
+    color: var(--accent-2);
+    animation: heartBeat 1.2s ease-in-out infinite;
+  }
+
+  .love-hint {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .float-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    z-index: 9997;
+    animation: floatUp 2.8s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.5) rotate(0deg); }
+    15% { opacity: 1; transform: translateY(-30px) scale(1) rotate(8deg); }
+    100% { opacity: 0; transform: translateY(-260px) scale(1.5) rotate(40deg); }
+  }
+
   @media (max-width: 640px) {
     .dlg-body ol { columns: 1; }
     .dlg-head { flex-wrap: wrap; }
     .search { order: 3; width: 100%; }
-    .volume-slider { width: 60px; }
+    .love-btn { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    .love-card { padding: 35px 30px; }
+    .love-heart-big { font-size: 36px; }
+    .volume-slider { width: 55px; }
     .topbar { padding: 12px 16px; }
     .topbar-right { gap: 10px; }
-    .love-btn { bottom: 16px; right: 16px; width: 40px; height: 40px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -714,9 +682,6 @@
 </style>
 </head>
 <body>
-
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
 <div class="aurora" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"></div>
@@ -805,7 +770,7 @@
 <footer>
   <div class="wrap">
     <span>x3led.github.io</span>
-    <span>заходили <b id="visits">...</b> раз &middot; у меня сейчас <span id="clock">--:--</span> мск</span>
+    <span>у меня сейчас <span id="clock">--:--</span> мск</span>
   </div>
 </footer>
 
@@ -817,8 +782,9 @@
 
 <div class="love-overlay" id="loveOverlay">
   <div class="love-card" id="loveCard">
-    <div class="love-text">люблю сонечку</div>
+    <div class="love-text">Я ЛЮБЛЮ<br>СОНЕЧКУ</div>
     <div class="love-heart-big">&#9829;</div>
+    <div class="love-hint">нажми чтобы закрыть</div>
   </div>
 </div>
 
@@ -988,30 +954,10 @@
   dialog.addEventListener("click", e => { if (e.target === dialog) dialog.close(); });
 
   const clock = document.getElementById("clock");
-  const fmt = new Intl.DateTimeFormat("ru-RU", {
-    timeZone: "Europe/Moscow",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+  const fmt = new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", hour: "2-digit", minute: "2-digit" });
   function updateClock() { clock.textContent = fmt.format(new Date()); }
   updateClock();
   setInterval(updateClock, 10000);
-
-  (async () => {
-    const el = document.getElementById("visits");
-    try {
-      const r = await fetch("https://api.countapi.xyz/hit/x3led-github-io/visits");
-      const data = await r.json();
-      if (data && typeof data.value === "number") {
-        el.textContent = data.value.toLocaleString("ru-RU").replace(/,/g, " ");
-      } else {
-        el.textContent = "—";
-      }
-    } catch (e) {
-      el.textContent = "—";
-    }
-  })();
-</script>
 
   const bgMusic = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
@@ -1062,80 +1008,26 @@
     document.addEventListener("keydown", tryAutoplay, { once: true });
   }
 
-  let audioCtx = null;
-  function getCtx() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    return audioCtx;
-  }
-  function playClick() {
-    try {
-      const ctx = getCtx();
-      if (ctx.state === "suspended") ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.value = 900;
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.08);
-    } catch (e) {}
-  }
-
-  const cursorRing = document.getElementById("cursorRing");
-  const cursorDot = document.getElementById("cursorDot");
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener("mousemove", e => {
-    mx = e.clientX;
-    my = e.clientY;
-    cursorRing.classList.add("visible");
-    cursorDot.classList.add("visible");
-    cursorDot.style.transform = "translate(" + mx + "px, " + my + "px) translate(-50%, -50%)";
-  });
-
-  document.addEventListener("mouseleave", () => {
-    cursorRing.classList.remove("visible");
-    cursorDot.classList.remove("visible");
-  });
-
-  function animateRing() {
-    rx += (mx - rx) * 0.2;
-    ry += (my - ry) * 0.2;
-    cursorRing.style.transform = "translate(" + rx + "px, " + ry + "px) translate(-50%, -50%)";
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll("a, button, input, .swatch, .card, .btn, .close, .love-btn, .music-btn, .volume-slider").forEach(el => {
-    el.addEventListener("mouseenter", () => cursorRing.classList.add("hover"));
-    el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
-  });
-
-  document.querySelectorAll("a, button, .swatch, .card, .btn, .close, .love-btn, .music-btn").forEach(el => {
-    el.addEventListener("click", playClick);
-  });
-
   const loveBtn = document.getElementById("loveBtn");
   const loveOverlay = document.getElementById("loveOverlay");
   const loveCard = document.getElementById("loveCard");
   let loveTimeout = null;
 
+  const heartSymbols = ["\u2665", "\u2764", "\uD83D\uDC95", "\uD83D\uDC97", "\uD83D\uDC96", "\uD83D\uDC9D", "\uD83D\uDC93"];
+
   function spawnHearts() {
-    const symbols = ["\u2665", "\u2764", "\uD83D\uDC95", "\uD83D\uDC97", "\uD83D\uDC96"];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 24; i++) {
       setTimeout(() => {
         const h = document.createElement("div");
         h.className = "float-heart";
-        h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        h.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
         h.style.left = (Math.random() * 100) + "vw";
-        h.style.top = (Math.random() * 40 + 40) + "vh";
-        h.style.color = i % 2 === 0 ? "var(--accent)" : "var(--accent-2)";
-        h.style.fontSize = (16 + Math.random() * 20) + "px";
+        h.style.top = (Math.random() * 30 + 55) + "vh";
+        h.style.color = i % 3 === 0 ? "var(--accent)" : (i % 3 === 1 ? "var(--accent-2)" : "#ff88aa");
+        h.style.fontSize = (14 + Math.random() * 26) + "px";
         document.body.appendChild(h);
-        setTimeout(() => h.remove(), 2500);
-      }, i * 80);
+        setTimeout(() => h.remove(), 2900);
+      }, i * 60);
     }
   }
 
@@ -1143,7 +1035,7 @@
     loveOverlay.classList.add("show");
     spawnHearts();
     clearTimeout(loveTimeout);
-    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 6000);
+    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 7000);
   }
 
   function closeLove() {
@@ -1155,10 +1047,10 @@
     openLove();
   });
 
-  loveOverlay.addEventListener("click", closeLove);
-  loveCard.addEventListener("click", e => {
-    e.stopPropagation();
-    closeLove();
+  loveOverlay.addEventListener("click", e => {
+    if (e.target === loveOverlay || e.target === loveCard || loveCard.contains(e.target)) {
+      closeLove();
+    }
   });
 
   document.addEventListener("keydown", e => {

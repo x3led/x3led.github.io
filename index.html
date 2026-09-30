@@ -80,7 +80,7 @@
     opacity: 0;
   }
   .cursor.visible { opacity: 1; }
-  .cursor.hover { width: 46px; height: 46px; background: rgba(255, 255, 255, 0.1); }
+  .cursor.hover { width: 46px; height: 46px; background: rgba(255,255,255,0.1); }
   [data-theme="light"] .cursor { mix-blend-mode: normal; }
 
   .cursor-dot {
@@ -102,30 +102,28 @@
     z-index: 0;
     overflow: hidden;
   }
-
   .bg-float span {
     position: absolute;
     font-size: 180px;
     font-weight: 900;
-    color: rgba(255, 255, 255, var(--float-opacity));
+    color: rgba(255,255,255,var(--float-opacity));
     letter-spacing: -8px;
     user-select: none;
     animation: floatAround 40s linear infinite;
     white-space: nowrap;
   }
-  [data-theme="light"] .bg-float span { color: rgba(0, 0, 0, var(--float-opacity)); }
-
+  [data-theme="light"] .bg-float span { color: rgba(0,0,0,var(--float-opacity)); }
   .bg-float span:nth-child(1) { top: 5%; left: 0; animation-duration: 45s; }
   .bg-float span:nth-child(2) { top: 30%; left: -20%; animation-duration: 55s; animation-delay: -15s; }
   .bg-float span:nth-child(3) { top: 60%; left: 10%; animation-duration: 60s; animation-delay: -30s; }
   .bg-float span:nth-child(4) { top: 80%; left: -10%; animation-duration: 50s; animation-delay: -10s; }
 
   @keyframes floatAround {
-    0%   { transform: translate(0, 0) rotate(-5deg); }
-    25%  { transform: translate(15vw, -5vh) rotate(2deg); }
-    50%  { transform: translate(30vw, 5vh) rotate(-3deg); }
-    75%  { transform: translate(10vw, 10vh) rotate(5deg); }
-    100% { transform: translate(0, 0) rotate(-5deg); }
+    0%   { transform: translate(0,0) rotate(-5deg); }
+    25%  { transform: translate(15vw,-5vh) rotate(2deg); }
+    50%  { transform: translate(30vw,5vh) rotate(-3deg); }
+    75%  { transform: translate(10vw,10vh) rotate(5deg); }
+    100% { transform: translate(0,0) rotate(-5deg); }
   }
 
   .topbar {
@@ -139,19 +137,10 @@
     font-family: 'JetBrains Mono', 'Consolas', monospace;
     letter-spacing: 0.5px;
   }
-
-  .bio-tag {
-    color: var(--text-faint);
-    cursor: none;
-    transition: color 0.3s ease;
-  }
+  .bio-tag { color: var(--text-faint); cursor: none; transition: color 0.3s; }
   .bio-tag:hover { color: var(--text-tagline); }
 
-  .menu-buttons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+  .menu-buttons { display: flex; gap: 8px; align-items: center; }
 
   .menu-btn {
     background: var(--btn-bg);
@@ -162,19 +151,11 @@
     font-size: 12px;
     font-family: inherit;
     cursor: none;
-    transition: all 0.25s ease;
+    transition: all 0.25s;
     letter-spacing: 0.5px;
   }
-  .menu-btn:hover {
-    background: var(--btn-hover-bg);
-    border-color: var(--btn-hover-border);
-    color: var(--text);
-  }
-  .menu-btn.active {
-    background: var(--btn-active-bg);
-    color: var(--btn-active-text);
-    border-color: var(--btn-active-bg);
-  }
+  .menu-btn:hover { background: var(--btn-hover-bg); border-color: var(--btn-hover-border); color: var(--text); }
+  .menu-btn.active { background: var(--btn-active-bg); color: var(--btn-active-text); border-color: var(--btn-active-bg); }
 
   .theme-toggle {
     background: var(--btn-bg);
@@ -187,14 +168,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.25s ease;
+    transition: all 0.25s;
     font-family: inherit;
   }
-  .theme-toggle:hover {
-    background: var(--btn-hover-bg);
-    border-color: var(--btn-hover-border);
-    transform: rotate(20deg);
-  }
+  .theme-toggle:hover { background: var(--btn-hover-bg); border-color: var(--btn-hover-border); transform: rotate(20deg); }
 
   .music-controls {
     display: flex;
@@ -205,7 +182,7 @@
     border-radius: 999px;
     padding: 4px 12px 4px 4px;
     height: 36px;
-    transition: all 0.25s ease;
+    transition: all 0.25s;
   }
   .music-controls:hover { border-color: var(--btn-hover-border); }
 
@@ -215,13 +192,12 @@
     color: var(--btn-text);
     font-size: 14px;
     cursor: none;
-    padding: 0;
     width: 28px; height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
     font-family: inherit;
   }
   .music-btn:hover { background: var(--btn-hover-bg); color: var(--text); }
@@ -276,7 +252,7 @@
     letter-spacing: -10px;
     color: var(--text);
     user-select: none;
-    transition: color 0.4s ease;
+    transition: color 0.4s;
   }
 
   .bang {
@@ -284,9 +260,8 @@
     opacity: 0;
     transform: translateY(150px) scaleY(0);
     transform-origin: bottom center;
-    animation: bangAppear 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+    animation: bangAppear 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;
   }
-
   @keyframes bangAppear {
     0% { opacity: 0; transform: translateY(150px) scaleY(0); }
     100% { opacity: 1; transform: translateY(0) scaleY(1); }
@@ -296,14 +271,13 @@
     display: inline-block;
     opacity: 0;
     transform: translateX(-60px);
-    animation: letterSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: letterSlide 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
   .letter:nth-child(2) { animation-delay: 0.75s; }
   .letter:nth-child(3) { animation-delay: 0.90s; }
   .letter:nth-child(4) { animation-delay: 1.05s; }
   .letter:nth-child(5) { animation-delay: 1.20s; }
   .letter:nth-child(6) { animation-delay: 1.35s; }
-
   @keyframes letterSlide {
     0% { opacity: 0; transform: translateX(-60px); }
     100% { opacity: 1; transform: translateX(0); }
@@ -318,11 +292,7 @@
     opacity: 0;
     animation: fadeIn 0.8s ease 1.6s forwards;
   }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   .description {
     max-width: 520px;
@@ -342,7 +312,6 @@
     opacity: 0;
     animation: fadeIn 0.8s ease 2.1s forwards;
   }
-
   .links a {
     display: inline-flex;
     align-items: center;
@@ -355,15 +324,11 @@
     text-decoration: none;
     font-family: 'JetBrains Mono', 'Consolas', monospace;
     font-size: 13px;
-    transition: all 0.25s ease;
+    transition: all 0.25s;
     letter-spacing: 0.3px;
     cursor: none;
   }
-  .links a:hover {
-    background: var(--btn-active-bg);
-    color: var(--btn-active-text);
-    border-color: var(--btn-active-bg);
-  }
+  .links a:hover { background: var(--btn-active-bg); color: var(--btn-active-text); border-color: var(--btn-active-bg); }
   .links a::after { content: "↗"; opacity: 0.5; font-size: 11px; }
 
   .clock {
@@ -381,7 +346,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0,0,0,0.85);
     backdrop-filter: blur(8px);
     display: none;
     align-items: center;
@@ -389,7 +354,7 @@
     z-index: 100;
     padding: 40px 20px;
   }
-  [data-theme="light"] .modal-overlay { background: rgba(255, 255, 255, 0.85); }
+  [data-theme="light"] .modal-overlay { background: rgba(255,255,255,0.85); }
   .modal-overlay.show { display: flex; }
 
   .modal {
@@ -404,7 +369,6 @@
     overflow: hidden;
     animation: modalIn 0.3s ease;
   }
-
   @keyframes modalIn {
     from { opacity: 0; transform: scale(0.96); }
     to { opacity: 1; transform: scale(1); }
@@ -417,13 +381,7 @@
     justify-content: space-between;
     align-items: center;
   }
-
-  .modal-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    color: var(--text);
-  }
+  .modal-header h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
 
   .modal-close {
     background: transparent;
@@ -443,23 +401,9 @@
     line-height: 1.9;
     color: var(--text-dim);
   }
-
-  .modal-body ol {
-    padding-left: 0;
-    list-style: none;
-    counter-reset: item;
-  }
-
-  .modal-body li {
-    counter-increment: item;
-    padding: 3px 0;
-  }
-  .modal-body li::before {
-    content: counter(item) ".";
-    display: inline-block;
-    width: 45px;
-    color: var(--text-faint);
-  }
+  .modal-body ol { padding-left: 0; list-style: none; counter-reset: item; }
+  .modal-body li { counter-increment: item; padding: 3px 0; }
+  .modal-body li::before { content: counter(item) "."; display: inline-block; width: 45px; color: var(--text-faint); }
   .modal-body li:hover { color: var(--text); }
 
   .modal-body::-webkit-scrollbar { width: 6px; }
@@ -530,9 +474,7 @@
     </div>
   </div>
 </div>
-
 <script>
-  // ============ СПИСОК ОБВИНЕНИЙ ============
   const charges = [
     "Геноцид","Преступления против человечности","Военные преступления","Преступление агрессии",
     "Этнические чистки","Массовые убийства","Депортация населения","Насильственное перемещение населения",
@@ -603,14 +545,12 @@
     list.appendChild(li);
   });
 
-  // ============ ЕДИНЫЙ AUDIO CONTEXT ============
   let audioCtx = null;
   function getCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
   }
 
-  // ============ ЗВУК КЛИКА ============
   function playClick() {
     try {
       const ctx = getCtx();
@@ -626,24 +566,90 @@
     } catch (e) {}
   }
 
-  document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close, .music-btn").forEach(el => {
-    el.addEventListener("click", playClick);
+  const cursor = document.getElementById("cursor");
+  const dot = document.getElementById("cursorDot");
+  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+  document.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.classList.add("visible");
+    dot.classList.add("visible");
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
   });
 
-  // ============ ТИХИЙ ШУМ ============
+  document.addEventListener("mouseleave", () => {
+    cursor.classList.remove("visible");
+    dot.classList.remove("visible");
+  });
+
+  function animateCursor() {
+    curX += (mouseX - curX) * 0.18;
+    curY += (mouseY - curY) * 0.18;
+    cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  const themeToggle = document.getElementById("themeToggle");
+
+  function applyTheme(t) {
+    if (t === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+      themeToggle.textContent = "☀";
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      themeToggle.textContent = "☾";
+    }
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "light" ? "dark" : "light";
+    localStorage.setItem("x3led-theme", next);
+    applyTheme(next);
+  }
+
+  applyTheme(localStorage.getItem("x3led-theme") || "dark");
+
+  function openModal() {
+    document.getElementById("modal").classList.add("show");
+    document.body.style.overflow = "hidden";
+    document.querySelectorAll(".menu-btn")[1].classList.add("active");
+    document.querySelectorAll(".menu-btn")[0].classList.remove("active");
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+    document.body.style.overflow = "";
+    document.querySelectorAll(".menu-btn")[0].classList.add("active");
+    document.querySelectorAll(".menu-btn")[1].classList.remove("active");
+  }
+
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+  function updateClock() {
+    const now = new Date();
+    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+    const hh = String(msk.getHours()).padStart(2, "0");
+    const mm = String(msk.getMinutes()).padStart(2, "0");
+    const ss = String(msk.getSeconds()).padStart(2, "0");
+    document.getElementById("clock").textContent = `у меня сейчас ${hh}:${mm}:${ss} мск`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
   let noiseSource = null;
   let noiseGain = null;
-  let noiseFilter = null;
   let musicPlaying = false;
 
   function buildNoiseBuffer(ctx) {
-    const bufferSize = 2 * ctx.sampleRate;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const size = 2 * ctx.sampleRate;
+    const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
     const data = buffer.getChannelData(0);
     let last = 0;
-    for (let i = 0; i < bufferSize; i++) {
+    for (let i = 0; i < size; i++) {
       const white = Math.random() * 2 - 1;
-      // pink-ish фильтр для мягкого звука
       data[i] = (last + 0.02 * white) / 1.02;
       last = data[i];
       data[i] *= 3.5;
@@ -654,21 +660,15 @@
   function startNoise() {
     const ctx = getCtx();
     if (ctx.state === "suspended") ctx.resume();
-
-    const buffer = buildNoiseBuffer(ctx);
     noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = buffer;
+    noiseSource.buffer = buildNoiseBuffer(ctx);
     noiseSource.loop = true;
-
-    noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = "lowpass";
-    noiseFilter.frequency.value = 600;
-    noiseFilter.Q.value = 0.7;
-
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 600;
     noiseGain = ctx.createGain();
     noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
-
-    noiseSource.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
+    noiseSource.connect(filter).connect(noiseGain).connect(ctx.destination);
     noiseSource.start();
     musicPlaying = true;
   }
@@ -697,74 +697,18 @@
 
   const volumeSlider = document.getElementById("volumeSlider");
   volumeSlider.addEventListener("input", () => {
-    if (noiseGain) {
-      noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
-    }
+    if (noiseGain) noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
   });
-
-  // ============ КУРСОР ============
-  const cursor = document.getElementById("cursor");
-  const dot = document.getElementById("cursorDot");
-  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
-
-  document.addEventListener("mousemove", e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursor.classList.add("visible");
-    dot.classList.add("visible");
-    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-  });
-
-  document.addEventListener("mouseleave", () => {
-    cursor.classList.remove("visible");
-    dot.classList.remove("visible");
-  });
-
-  function animateCursor() {
-    curX += (mouseX - curX) * 0.18;
-    curY += (mouseY - curY) * 0.18;
-    cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
 
   document.querySelectorAll("a, button, .menu-btn, .theme-toggle, .bio-tag, .music-btn, .volume-slider").forEach(el => {
     el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
     el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
   });
 
-  // ============ ТЕМА ============
-  const themeToggle = document.getElementById("themeToggle");
+  document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close, .music-btn").forEach(el => {
+    el.addEventListener("click", playClick);
+  });
+</script>
 
-  function applyTheme(theme) {
-    if (theme === "light") {
-      document.documentElement.setAttribute("data-theme", "light");
-      themeToggle.textContent = "☀";
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-      themeToggle.textContent = "☾";
-    }
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "light" ? "dark" : "light";
-    localStorage.setItem("x3led-theme", next);
-    applyTheme(next);
-  }
-
-  const savedTheme = localStorage.getItem("x3led-theme") || "dark";
-  applyTheme(savedTheme);
-
-  // ============ МОДАЛКА ============
-  function openModal() {
-    document.getElementById("modal").classList.add("show");
-    document.body.style.overflow = "hidden";
-    document.querySelectorAll(".menu-btn")[1].classList.add("active");
-    document.querySelectorAll(".menu-btn")[0].classList.remove("active");
-  }
-
-  function closeModal() {
-    document.getElementById("modal").classList.remove("show");
-    document.body.style.overflow = "";
-    document.querySelectorAll(".menu-btn")[0].classList.add("active");
+</body>
+</html>

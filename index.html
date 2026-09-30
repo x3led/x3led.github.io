@@ -69,7 +69,6 @@
     .cursor, .cursor-dot { display: none !important; }
   }
 
-  /* ---------- КУРСОР ---------- */
   .cursor {
     position: fixed;
     top: 0; left: 0;
@@ -79,22 +78,14 @@
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition:
-      width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      background 0.25s ease,
-      border-color 0.25s ease,
-      opacity 0.2s ease;
+    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.25s ease, border-color 0.25s ease, opacity 0.2s ease;
     mix-blend-mode: difference;
     opacity: 0;
   }
-
   .cursor.visible { opacity: 1; }
-  .cursor.hover {
-    width: 46px; height: 46px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
+  .cursor.hover { width: 46px; height: 46px; background: rgba(255, 255, 255, 0.1); }
   [data-theme="light"] .cursor { mix-blend-mode: normal; }
 
   .cursor-dot {
@@ -111,7 +102,6 @@
   }
   .cursor-dot.visible { opacity: 1; }
 
-  /* ---------- ПЛАВАЮЩИЙ ФОН ---------- */
   .bg-float {
     position: fixed;
     top: 0; left: 0;
@@ -131,10 +121,7 @@
     animation: floatAround 40s linear infinite;
     white-space: nowrap;
   }
-
-  [data-theme="light"] .bg-float span {
-    color: rgba(0, 0, 0, var(--float-opacity));
-  }
+  [data-theme="light"] .bg-float span { color: rgba(0, 0, 0, var(--float-opacity)); }
 
   .bg-float span:nth-child(1) { top: 5%; left: 0; animation-duration: 45s; animation-delay: 0s; }
   .bg-float span:nth-child(2) { top: 30%; left: -20%; animation-duration: 55s; animation-delay: -15s; }
@@ -149,7 +136,6 @@
     100% { transform: translate(0, 0) rotate(-5deg); }
   }
 
-  /* ---------- ВЕРХНЯЯ ПАНЕЛЬ ---------- */
   .topbar {
     position: fixed;
     top: 24px; left: 24px; right: 24px;
@@ -218,7 +204,6 @@
     transform: rotate(20deg);
   }
 
-  /* ---------- МУЗЫКА ---------- */
   .music-controls {
     display: flex;
     align-items: center;
@@ -226,14 +211,12 @@
     background: var(--btn-bg);
     border: 1px solid var(--btn-border);
     border-radius: 999px;
-    padding: 4px 4px 4px 12px;
+    padding: 4px 12px 4px 4px;
     height: 36px;
     transition: all 0.25s ease;
   }
 
-  .music-controls:hover {
-    border-color: var(--btn-hover-border);
-  }
+  .music-controls:hover { border-color: var(--btn-hover-border); }
 
   .music-btn {
     background: transparent;
@@ -250,17 +233,9 @@
     transition: all 0.2s ease;
     font-family: inherit;
   }
-  .music-btn:hover {
-    background: var(--btn-hover-bg);
-    color: var(--text);
-  }
-  .music-btn.playing {
-    color: #fff;
-    background: var(--btn-active-bg);
-  }
-  [data-theme="light"] .music-btn.playing {
-    color: #000;
-  }
+  .music-btn:hover { background: var(--btn-hover-bg); color: var(--text); }
+  .music-btn.playing { color: #fff; background: var(--btn-active-bg); }
+  [data-theme="light"] .music-btn.playing { color: #000; }
 
   .volume-slider {
     -webkit-appearance: none;
@@ -271,9 +246,7 @@
     border-radius: 3px;
     outline: none;
     cursor: none;
-    transition: background 0.2s ease;
   }
-
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -295,7 +268,6 @@
     border: none;
   }
 
-  /* ---------- ЦЕНТР ---------- */
   .main {
     position: relative;
     z-index: 1;
@@ -308,7 +280,6 @@
     text-align: center;
   }
 
-  /* ---------- ЛОГОТИП ---------- */
   .logo {
     display: flex;
     align-items: flex-end;
@@ -344,7 +315,6 @@
     transform: translateX(-60px);
     animation: letterSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-
   .letter:nth-child(2) { animation-delay: 0.75s; }
   .letter:nth-child(3) { animation-delay: 0.90s; }
   .letter:nth-child(4) { animation-delay: 1.05s; }
@@ -356,7 +326,6 @@
     100% { opacity: 1; transform: translateX(0); }
   }
 
-  /* ---------- ПОДПИСЬ ---------- */
   .tagline {
     font-family: 'JetBrains Mono', 'Consolas', monospace;
     font-size: 13px;
@@ -372,7 +341,6 @@
     to { opacity: 1; }
   }
 
-  /* ---------- ОПИСАНИЕ ---------- */
   .description {
     max-width: 520px;
     font-size: 15px;
@@ -383,7 +351,6 @@
     animation: fadeIn 0.8s ease 1.9s forwards;
   }
 
-  /* ---------- ССЫЛКИ ---------- */
   .links {
     display: flex;
     gap: 10px;
@@ -416,13 +383,8 @@
     border-color: var(--btn-active-bg);
   }
 
-  .links a::after {
-    content: "↗";
-    opacity: 0.5;
-    font-size: 11px;
-  }
+  .links a::after { content: "↗"; opacity: 0.5; font-size: 11px; }
 
-  /* ---------- ЧАСЫ ---------- */
   .clock {
     position: fixed;
     bottom: 24px;
@@ -435,7 +397,6 @@
     z-index: 10;
   }
 
-  /* ---------- МОДАЛКА ---------- */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -447,11 +408,7 @@
     z-index: 100;
     padding: 40px 20px;
   }
-
-  [data-theme="light"] .modal-overlay {
-    background: rgba(255, 255, 255, 0.85);
-  }
-
+  [data-theme="light"] .modal-overlay { background: rgba(255, 255, 255, 0.85); }
   .modal-overlay.show { display: flex; }
 
   .modal {
@@ -535,7 +492,6 @@
   .modal-body::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 3px; }
   .modal-body::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hover); }
 
-  /* ---------- МОБИЛЬНЫЙ ---------- */
   @media (max-width: 640px) {
     .logo { font-size: 100px; letter-spacing: -5px; }
     .bg-float span { font-size: 100px; }
@@ -546,7 +502,7 @@
     .modal-body { padding: 15px 20px 25px; }
     .menu-btn { padding: 6px 12px; font-size: 11px; }
     .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
-    .music-controls { height: 32px; padding: 4px 4px 4px 10px; }
+    .music-controls { height: 32px; padding: 4px 8px 4px 4px; }
     .volume-slider { width: 50px; }
   }
 </style>
@@ -682,20 +638,20 @@
   });
 
   // ============ ЗВУК КЛИКА ============
-  let audioCtx = null;
+  let clickCtx = null;
   function playClick() {
     try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
+      if (!clickCtx) clickCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = clickCtx.createOscillator();
+      const gain = clickCtx.createGain();
       osc.type = "sine";
       osc.frequency.value = 900;
-      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.06, clickCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, clickCtx.currentTime + 0.08);
       osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 0.08);
+      gain.connect(clickCtx.destination);
+      osc.start(clickCtx.currentTime);
+      osc.stop(clickCtx.currentTime + 0.08);
     } catch (e) {}
   }
 
@@ -760,4 +716,43 @@
   applyTheme(savedTheme);
 
   // ============ МОДАЛКА ============
-  function openModal()
+  function openModal() {
+    document.getElementById("modal").classList.add("show");
+    document.body.style.overflow = "hidden";
+    document.querySelectorAll(".menu-btn")[1].classList.add("active");
+    document.querySelectorAll(".menu-btn")[0].classList.remove("active");
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+    document.body.style.overflow = "";
+    document.querySelectorAll(".menu-btn")[0].classList.add("active");
+    document.querySelectorAll(".menu-btn")[1].classList.remove("active");
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ============ ЧАСЫ МСК ============
+  function updateClock() {
+    const now = new Date();
+    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+    const hh = String(msk.getHours()).padStart(2, "0");
+    const mm = String(msk.getMinutes()).padStart(2, "0");
+    const ss = String(msk.getSeconds()).padStart(2, "0");
+    document.getElementById("clock").textContent = `у меня сейчас ${hh}:${mm}:${ss} мск`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ============ МУЗЫКА (ambient генератор) ============
+  let musicCtx = null;
+  let musicNodes = [];
+  let musicPlaying = false;
+
+  function startMusic() {
+    if (!musicCtx) {
+      musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (musicCtx.state

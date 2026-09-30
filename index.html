@@ -192,6 +192,7 @@
     transform: translateY(20px) scale(0.9);
     transition: transform 0.5s var(--ease);
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
   }
   .love-overlay.show .love-card {
     transform: translateY(0) scale(1);
@@ -724,7 +725,7 @@
   <a class="brand" href="#top">x3led<span>.</span></a>
   <div class="topbar-right">
     <div class="music-panel">
-      <button class="music-btn" id="musicBtn" aria-label="Музыка">▶</button>
+      <button class="music-btn" id="musicBtn" aria-label="Музыка">&#9654;</button>
       <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" aria-label="Громкость">
     </div>
     <div class="themes" role="group" aria-label="Цветовая тема">
@@ -746,7 +747,7 @@
       В дальнейшем она будет обновляться — новые проекты,
       новые ссылки, что-то интересное.
     </p>
-    <a class="hero-more" href="#links">где меня найти <i>↓</i></a>
+    <a class="hero-more" href="#links">где меня найти <i>&#8595;</i></a>
   </div>
 
   <section id="links">
@@ -756,21 +757,21 @@
 
       <div class="links">
         <a class="card reveal" style="--d:0" href="https://discord.com/users/928360132482572371" target="_blank" rel="noopener">
-          <div class="card-top"><span>01</span><span class="arrow">↗</span></div>
+          <div class="card-top"><span>01</span><span class="arrow">&#8599;</span></div>
           <div>
             <div class="card-name">Discord</div>
             <div class="card-sub">x3led</div>
           </div>
         </a>
         <a class="card reveal" style="--d:1" href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener">
-          <div class="card-top"><span>02</span><span class="arrow">↗</span></div>
+          <div class="card-top"><span>02</span><span class="arrow">&#8599;</span></div>
           <div>
             <div class="card-name">Steam</div>
             <div class="card-sub">профиль</div>
           </div>
         </a>
         <a class="card reveal" style="--d:2" href="https://github.com/x3led" target="_blank" rel="noopener">
-          <div class="card-top"><span>03</span><span class="arrow">↗</span></div>
+          <div class="card-top"><span>03</span><span class="arrow">&#8599;</span></div>
           <div>
             <div class="card-name">GitHub</div>
             <div class="card-sub">x3led</div>
@@ -789,7 +790,7 @@
         <div class="count" id="count">0</div>
         <div class="charges-side">
           <p>Полный список того, в чём меня можно обвинить. С поиском — вдруг ищешь что-то конкретное.</p>
-          <button class="btn" id="openCharges">Открыть список <i>→</i></button>
+          <button class="btn" id="openCharges">Открыть список <i>&#8594;</i></button>
         </div>
       </div>
     </div>
@@ -804,20 +805,20 @@
 <footer>
   <div class="wrap">
     <span>x3led.github.io</span>
-    <span>заходили <b id="visits">...</b> раз · у меня сейчас <span id="clock">--:--</span> мск</span>
+    <span>заходили <b id="visits">...</b> раз &middot; у меня сейчас <span id="clock">--:--</span> мск</span>
   </div>
 </footer>
 
 <audio id="bgMusic" loop preload="auto" src="velariomusic-background-ambient-585950.mp3"></audio>
 
 <button class="love-btn" id="loveBtn" aria-label="Секрет">
-  <span class="heart">♥</span>
+  <span class="heart">&#9829;</span>
 </button>
 
 <div class="love-overlay" id="loveOverlay">
-  <div class="love-card">
+  <div class="love-card" id="loveCard">
     <div class="love-text">люблю сонечку</div>
-    <div class="love-heart-big">♥</div>
+    <div class="love-heart-big">&#9829;</div>
   </div>
 </div>
 
@@ -825,7 +826,7 @@
   <div class="dlg-head">
     <h3 id="dlgTitle">Обвинения <small id="dlgCount"></small></h3>
     <input class="search" id="search" type="search" placeholder="Поиск" aria-label="Поиск по списку" autocomplete="off">
-    <button class="close" id="closeCharges" aria-label="Закрыть">×</button>
+    <button class="close" id="closeCharges" aria-label="Закрыть">&times;</button>
   </div>
   <div class="dlg-body">
     <ol id="chargesList"></ol>
@@ -898,7 +899,6 @@
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---------- ТЕМА ----------
   const swatches = document.querySelectorAll(".swatch");
   function setTheme(key) {
     if (key === "dark") delete document.documentElement.dataset.theme;
@@ -909,7 +909,6 @@
   swatches.forEach(s => s.addEventListener("click", () => setTheme(s.dataset.themeKey)));
   setTheme(document.documentElement.dataset.theme || "dark");
 
-  // ---------- СЧЁТЧИК ОБВИНЕНИЙ ----------
   const countEl = document.getElementById("count");
   function runCount() {
     const total = charges.length;
@@ -932,7 +931,6 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-  // ---------- ПОДСВЕТКА КАРТОЧЕК ----------
   document.querySelectorAll(".card").forEach(card => {
     card.addEventListener("pointermove", e => {
       const r = card.getBoundingClientRect();
@@ -941,7 +939,6 @@
     });
   });
 
-  // ---------- БЕГУЩИЕ СТРОКИ ----------
   function fillTrack(id, items) {
     const track = document.getElementById(id);
     items.concat(items).forEach(text => {
@@ -953,7 +950,6 @@
   fillTrack("trackA", charges.slice(0, 18));
   fillTrack("trackB", charges.slice(18, 36));
 
-  // ---------- СПИСОК И ПОИСК ----------
   const dialog = document.getElementById("dialog");
   const list = document.getElementById("chargesList");
   const search = document.getElementById("search");
@@ -978,7 +974,7 @@
       if (ok) shown++;
     });
     empty.hidden = shown > 0;
-    dlgCount.textContent = q ? `${shown} из ${rows.length}` : rows.length;
+    dlgCount.textContent = q ? (shown + " из " + rows.length) : rows.length;
   }
   search.addEventListener("input", filter);
   filter();
@@ -991,7 +987,6 @@
   document.getElementById("closeCharges").addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", e => { if (e.target === dialog) dialog.close(); });
 
-  // ---------- ЧАСЫ МСК ----------
   const clock = document.getElementById("clock");
   const fmt = new Intl.DateTimeFormat("ru-RU", {
     timeZone: "Europe/Moscow",
@@ -1002,7 +997,6 @@
   updateClock();
   setInterval(updateClock, 10000);
 
-  // ---------- СЧЁТЧИК ПОСЕЩЕНИЙ ----------
   (async () => {
     const el = document.getElementById("visits");
     try {
@@ -1019,7 +1013,6 @@
   })();
 </script>
 
-  // ---------- МУЗЫКА ----------
   const bgMusic = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
   const volumeSlider = document.getElementById("volumeSlider");
@@ -1033,20 +1026,17 @@
   let wasPlaying = false;
   try { wasPlaying = localStorage.getItem("x3led-music") === "1"; } catch (e) {}
 
-  musicBtn.textContent = "▶";
-  musicBtn.setAttribute("aria-label", "Включить музыку");
+  musicBtn.textContent = "\u25B6";
 
   musicBtn.addEventListener("click", async () => {
     try {
       if (bgMusic.paused) {
         await bgMusic.play();
-        musicBtn.textContent = "❚❚";
-        musicBtn.setAttribute("aria-label", "Пауза");
+        musicBtn.textContent = "\u275A\u275A";
         try { localStorage.setItem("x3led-music", "1"); } catch (e) {}
       } else {
         bgMusic.pause();
-        musicBtn.textContent = "▶";
-        musicBtn.setAttribute("aria-label", "Включить музыку");
+        musicBtn.textContent = "\u25B6";
         try { localStorage.setItem("x3led-music", "0"); } catch (e) {}
       }
     } catch (err) {}
@@ -1061,8 +1051,7 @@
     const tryAutoplay = async () => {
       try {
         await bgMusic.play();
-        musicBtn.textContent = "❚❚";
-        musicBtn.setAttribute("aria-label", "Пауза");
+        musicBtn.textContent = "\u275A\u275A";
       } catch (e) {}
       document.removeEventListener("click", tryAutoplay);
       document.removeEventListener("touchstart", tryAutoplay);
@@ -1073,7 +1062,6 @@
     document.addEventListener("keydown", tryAutoplay, { once: true });
   }
 
-  // ---------- ЗВУК КЛИКА ----------
   let audioCtx = null;
   function getCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1095,7 +1083,6 @@
     } catch (e) {}
   }
 
-  // ---------- КУРСОР ----------
   const cursorRing = document.getElementById("cursorRing");
   const cursorDot = document.getElementById("cursorDot");
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -1105,7 +1092,7 @@
     my = e.clientY;
     cursorRing.classList.add("visible");
     cursorDot.classList.add("visible");
-    cursorDot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    cursorDot.style.transform = "translate(" + mx + "px, " + my + "px) translate(-50%, -50%)";
   });
 
   document.addEventListener("mouseleave", () => {
@@ -1116,7 +1103,7 @@
   function animateRing() {
     rx += (mx - rx) * 0.2;
     ry += (my - ry) * 0.2;
-    cursorRing.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    cursorRing.style.transform = "translate(" + rx + "px, " + ry + "px) translate(-50%, -50%)";
     requestAnimationFrame(animateRing);
   }
   animateRing();
@@ -1126,23 +1113,22 @@
     el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
   });
 
-  // ---------- ЗВУК КЛИКА НА ЭЛЕМЕНТАХ ----------
   document.querySelectorAll("a, button, .swatch, .card, .btn, .close, .love-btn, .music-btn").forEach(el => {
     el.addEventListener("click", playClick);
   });
 
-  // ---------- СЕРДЕЧКО / СОНЕЧКА ----------
   const loveBtn = document.getElementById("loveBtn");
   const loveOverlay = document.getElementById("loveOverlay");
+  const loveCard = document.getElementById("loveCard");
   let loveTimeout = null;
 
   function spawnHearts() {
-    const emojis = ["♥", "❤", "💕", "💗", "💖"];
+    const symbols = ["\u2665", "\u2764", "\uD83D\uDC95", "\uD83D\uDC97", "\uD83D\uDC96"];
     for (let i = 0; i < 14; i++) {
       setTimeout(() => {
         const h = document.createElement("div");
         h.className = "float-heart";
-        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
         h.style.left = (Math.random() * 100) + "vw";
         h.style.top = (Math.random() * 40 + 40) + "vh";
         h.style.color = i % 2 === 0 ? "var(--accent)" : "var(--accent-2)";
@@ -1157,7 +1143,7 @@
     loveOverlay.classList.add("show");
     spawnHearts();
     clearTimeout(loveTimeout);
-    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 5000);
+    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 6000);
   }
 
   function closeLove() {
@@ -1170,6 +1156,14 @@
   });
 
   loveOverlay.addEventListener("click", closeLove);
+  loveCard.addEventListener("click", e => {
+    e.stopPropagation();
+    closeLove();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeLove();
+  });
 </script>
 
 </body>

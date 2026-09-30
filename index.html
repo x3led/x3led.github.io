@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>x3led</title>
 <meta name="description" content="Личная страничка x3led — ссылки и список обвинений.">
+<link rel="icon" type="image/png" href="favicon.png">
 <script>
   document.documentElement.classList.add("js");
   try {
@@ -170,6 +171,8 @@
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     transition: background-color 0.5s ease;
+    gap: 16px;
+    flex-wrap: wrap;
   }
   .brand {
     font-family: var(--display);
@@ -180,6 +183,75 @@
     letter-spacing: -0.02em;
   }
   .brand span, .dot { color: var(--accent); }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- МУЗЫКА ---------- */
+  .music-panel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 14px 5px 5px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+  .music-panel:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .music-btn {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 11px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s var(--ease), background-color 0.3s;
+    font-family: var(--mono);
+  }
+  .music-btn:hover { transform: scale(1.1); }
+  .music-btn:active { transform: scale(0.95); }
+
+  .volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 80px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px; height: 12px;
+    background: var(--text);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .volume-slider::-moz-range-thumb {
+    width: 12px; height: 12px;
+    background: var(--text);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
 
   .themes { display: flex; gap: 10px; }
   .swatch {
@@ -196,14 +268,12 @@
 
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  /* ---------- общий каркас ---------- */
   .wrap {
     max-width: 1200px;
     margin: 0 auto;
     padding-inline: clamp(20px, 6vw, 80px);
   }
 
-  /* ---------- hero ---------- */
   .hero {
     min-height: calc(100svh - 60px);
     display: flex;
@@ -256,7 +326,6 @@
     from { opacity: 0; transform: translateY(24px); }
   }
 
-  /* ---------- секции ---------- */
   section { padding-block: clamp(60px, 9vw, 120px); scroll-margin-top: 60px; }
   .label {
     font-family: var(--mono);
@@ -282,7 +351,6 @@
   }
   .js .reveal.in { opacity: 1; transform: none; }
 
-  /* ---------- карточки ---------- */
   .links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -335,7 +403,6 @@
   }
   .card-sub { font-family: var(--mono); font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 
-  /* ---------- обвинения ---------- */
   .charges-head {
     display: flex;
     flex-wrap: wrap;
@@ -407,7 +474,6 @@
   }
   @keyframes slide { to { transform: translateX(-50%); } }
 
-  /* ---------- подвал ---------- */
   footer {
     border-top: 1px solid var(--border);
     padding-block: 32px;
@@ -416,8 +482,8 @@
     color: var(--text-faint);
   }
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  footer b { color: var(--text-dim); font-weight: 500; }
 
-  /* ---------- модалка ---------- */
   dialog {
     margin: auto;
     width: min(860px, calc(100vw - 24px));
@@ -534,6 +600,9 @@
     .dlg-body ol { columns: 1; }
     .dlg-head { flex-wrap: wrap; }
     .search { order: 3; width: 100%; }
+    .volume-slider { width: 60px; }
+    .topbar { padding: 12px 16px; }
+    .topbar-right { gap: 10px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -553,11 +622,17 @@
 
 <header class="topbar">
   <a class="brand" href="#top">x3led<span>.</span></a>
-  <div class="themes" role="group" aria-label="Цветовая тема">
-    <button class="swatch" data-theme-key="dark" style="--sw:#8b6cff" aria-label="Тёмная"></button>
-    <button class="swatch" data-theme-key="emerald" style="--sw:#22ddaa" aria-label="Изумрудная"></button>
-    <button class="swatch" data-theme-key="fire" style="--sw:#ff6a33" aria-label="Огненная"></button>
-    <button class="swatch" data-theme-key="light" style="--sw:#f6f5fb" aria-label="Светлая"></button>
+  <div class="topbar-right">
+    <div class="music-panel">
+      <button class="music-btn" id="musicBtn" aria-label="Музыка">▶</button>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" aria-label="Громкость">
+    </div>
+    <div class="themes" role="group" aria-label="Цветовая тема">
+      <button class="swatch" data-theme-key="dark" style="--sw:#8b6cff" aria-label="Тёмная"></button>
+      <button class="swatch" data-theme-key="emerald" style="--sw:#22ddaa" aria-label="Изумрудная"></button>
+      <button class="swatch" data-theme-key="fire" style="--sw:#ff6a33" aria-label="Огненная"></button>
+      <button class="swatch" data-theme-key="light" style="--sw:#f6f5fb" aria-label="Светлая"></button>
+    </div>
   </div>
 </header>
 
@@ -629,9 +704,11 @@
 <footer>
   <div class="wrap">
     <span>x3led.github.io</span>
-    <span>у меня сейчас <span id="clock">--:--</span> мск</span>
+    <span>заходили <b id="visits">...</b> раз · у меня сейчас <span id="clock">--:--</span> мск</span>
   </div>
 </footer>
+
+<audio id="bgMusic" loop preload="auto" src="velariomusic-background-ambient-585950.mp3"></audio>
 
 <dialog id="dialog" aria-labelledby="dlgTitle">
   <div class="dlg-head">
@@ -721,7 +798,7 @@
   swatches.forEach(s => s.addEventListener("click", () => setTheme(s.dataset.themeKey)));
   setTheme(document.documentElement.dataset.theme || "dark");
 
-  // ---------- СЧЁТЧИК ----------
+  // ---------- СЧЁТЧИК ОБВИНЕНИЙ ----------
   const countEl = document.getElementById("count");
   function runCount() {
     const total = charges.length;
@@ -744,7 +821,7 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-  // ---------- ПОДСВЕТКА КАРТОЧЕК ЗА КУРСОРОМ ----------
+  // ---------- ПОДСВЕТКА КАРТОЧЕК ----------
   document.querySelectorAll(".card").forEach(card => {
     card.addEventListener("pointermove", e => {
       const r = card.getBoundingClientRect();
@@ -810,11 +887,84 @@
     hour: "2-digit",
     minute: "2-digit"
   });
-  function tick() { clock.textContent = fmt.format(new Date()); }
-  tick();
-  setInterval(tick, 10000);
+  function updateClock() { clock.textContent = fmt.format(new Date()); }
+  updateClock();
+  setInterval(updateClock, 10000);
 
-  // ============ ЗВУК КЛИКА ============
+  // ---------- СЧЁТЧИК ПОСЕЩЕНИЙ ----------
+  (async () => {
+    const el = document.getElementById("visits");
+    try {
+      const r = await fetch("https://api.countapi.xyz/hit/x3led-github-io/visits");
+      const data = await r.json();
+      if (data && typeof data.value === "number") {
+        el.textContent = data.value.toLocaleString("ru-RU").replace(/,/g, " ");
+      } else {
+        el.textContent = "—";
+      }
+    } catch (e) {
+      el.textContent = "—";
+    }
+  })();
+
+  // ---------- МУЗЫКА ----------
+  const bgMusic = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicBtn");
+  const volumeSlider = document.getElementById("volumeSlider");
+
+  // восстановление громкости
+  try {
+    const savedVol = localStorage.getItem("x3led-vol");
+    if (savedVol !== null) volumeSlider.value = savedVol;
+  } catch (e) {}
+  bgMusic.volume = (volumeSlider.value / 100) * 0.6;
+
+  // восстановление "играло/на паузе"
+  let wasPlaying = false;
+  try { wasPlaying = localStorage.getItem("x3led-music") === "1"; } catch (e) {}
+
+  musicBtn.textContent = "▶";
+  musicBtn.setAttribute("aria-label", "Включить музыку");
+
+  musicBtn.addEventListener("click", async () => {
+    try {
+      if (bgMusic.paused) {
+        await bgMusic.play();
+        musicBtn.textContent = "❚❚";
+        musicBtn.setAttribute("aria-label", "Пауза");
+        try { localStorage.setItem("x3led-music", "1"); } catch (e) {}
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "▶";
+        musicBtn.setAttribute("aria-label", "Включить музыку");
+        try { localStorage.setItem("x3led-music", "0"); } catch (e) {}
+      }
+    } catch (err) {}
+  });
+
+  volumeSlider.addEventListener("input", () => {
+    bgMusic.volume = (volumeSlider.value / 100) * 0.6;
+    try { localStorage.setItem("x3led-vol", volumeSlider.value); } catch (e) {}
+  });
+
+  // автовоспроизведение если было включено (сработает после первого клика)
+  if (wasPlaying) {
+    const tryAutoplay = async () => {
+      try {
+        await bgMusic.play();
+        musicBtn.textContent = "❚❚";
+        musicBtn.setAttribute("aria-label", "Пауза");
+      } catch (e) {}
+      document.removeEventListener("click", tryAutoplay);
+      document.removeEventListener("touchstart", tryAutoplay);
+      document.removeEventListener("keydown", tryAutoplay);
+    };
+    document.addEventListener("click", tryAutoplay, { once: true });
+    document.addEventListener("touchstart", tryAutoplay, { once: true });
+    document.addEventListener("keydown", tryAutoplay, { once: true });
+  }
+
+  // ---------- ЗВУК КЛИКА ----------
   let audioCtx = null;
   function getCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -836,7 +986,7 @@
     } catch (e) {}
   }
 
-  // ============ КУРСОР ============
+  // ---------- КУРСОР ----------
   const cursorRing = document.getElementById("cursorRing");
   const cursorDot = document.getElementById("cursorDot");
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -862,14 +1012,13 @@
   }
   animateRing();
 
-  // HOVER на интерактивных элементах
-  document.querySelectorAll("a, button, input, .swatch, .card, .btn, .close").forEach(el => {
+  document.querySelectorAll("a, button, input, .swatch, .card, .btn, .close, .music-btn, .volume-slider").forEach(el => {
     el.addEventListener("mouseenter", () => cursorRing.classList.add("hover"));
     el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
   });
 
   // ЗВУК КЛИКА
-  document.querySelectorAll("a, button, .swatch, .card, .btn, .close").forEach(el => {
+  document.querySelectorAll("a, button, .swatch, .card, .btn, .close, .music-btn").forEach(el => {
     el.addEventListener("click", playClick);
   });
 </script>

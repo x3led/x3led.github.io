@@ -218,6 +218,83 @@
     transform: rotate(20deg);
   }
 
+  /* ---------- МУЗЫКА ---------- */
+  .music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    border-radius: 999px;
+    padding: 4px 4px 4px 12px;
+    height: 36px;
+    transition: all 0.25s ease;
+  }
+
+  .music-controls:hover {
+    border-color: var(--btn-hover-border);
+  }
+
+  .music-btn {
+    background: transparent;
+    border: none;
+    color: var(--btn-text);
+    font-size: 14px;
+    cursor: none;
+    padding: 0;
+    width: 28px; height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .music-btn:hover {
+    background: var(--btn-hover-bg);
+    color: var(--text);
+  }
+  .music-btn.playing {
+    color: #fff;
+    background: var(--btn-active-bg);
+  }
+  [data-theme="light"] .music-btn.playing {
+    color: #000;
+  }
+
+  .volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 70px;
+    height: 3px;
+    background: var(--btn-border);
+    border-radius: 3px;
+    outline: none;
+    cursor: none;
+    transition: background 0.2s ease;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px; height: 12px;
+    background: var(--btn-text);
+    border-radius: 50%;
+    cursor: none;
+    transition: all 0.2s ease;
+  }
+  .volume-slider::-webkit-slider-thumb:hover {
+    background: var(--text);
+    transform: scale(1.2);
+  }
+  .volume-slider::-moz-range-thumb {
+    width: 12px; height: 12px;
+    background: var(--btn-text);
+    border-radius: 50%;
+    cursor: none;
+    border: none;
+  }
+
   /* ---------- ЦЕНТР ---------- */
   .main {
     position: relative;
@@ -345,7 +422,7 @@
     font-size: 11px;
   }
 
-  /* ---------- ЧАСЫ И КООРДИНАТЫ ---------- */
+  /* ---------- ЧАСЫ ---------- */
   .clock {
     position: fixed;
     bottom: 24px;
@@ -356,22 +433,6 @@
     color: var(--text-faint);
     letter-spacing: 1px;
     z-index: 10;
-  }
-
-  .coords {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 1px;
-    z-index: 10;
-    transition: color 0.2s ease;
-  }
-
-  .coords.active {
-    color: var(--text-dim);
   }
 
   /* ---------- МОДАЛКА ---------- */
@@ -479,12 +540,14 @@
     .logo { font-size: 100px; letter-spacing: -5px; }
     .bg-float span { font-size: 100px; }
     .description { font-size: 14px; padding: 0 10px; }
-    .topbar { top: 16px; left: 16px; right: 16px; gap: 8px; }
-    .clock, .coords { font-size: 11px; bottom: 16px; }
+    .topbar { top: 16px; left: 16px; right: 16px; gap: 8px; flex-wrap: wrap; }
+    .clock { font-size: 11px; bottom: 16px; }
     .modal-header { padding: 18px 20px; }
     .modal-body { padding: 15px 20px 25px; }
     .menu-btn { padding: 6px 12px; font-size: 11px; }
     .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
+    .music-controls { height: 32px; padding: 4px 4px 4px 10px; }
+    .volume-slider { width: 50px; }
   }
 </style>
 </head>
@@ -505,6 +568,10 @@
   <div class="menu-buttons">
     <button class="menu-btn active" onclick="closeModal()">главная</button>
     <button class="menu-btn" onclick="openModal()">обвинения</button>
+    <div class="music-controls">
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Музыка">♫</button>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" title="Громкость">
+    </div>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Сменить тему">☾</button>
   </div>
 </div>
@@ -529,7 +596,6 @@
 </div>
 
 <div class="clock" id="clock">у меня сейчас --:--:-- мск</div>
-<div class="coords" id="coords">x 0000 · y 0000</div>
 
 <div class="modal-overlay" id="modal" onclick="if(event.target===this) closeModal()">
   <div class="modal">
@@ -633,42 +699,28 @@
     } catch (e) {}
   }
 
-  document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close").forEach(el => {
+  document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close, .music-btn").forEach(el => {
     el.addEventListener("click", playClick);
   });
 
-  // ============ КУРСОР И ЖИВЫЕ КООРДИНАТЫ ============
+  // ============ КУРСОР ============
   const cursor = document.getElementById("cursor");
   const dot = document.getElementById("cursorDot");
-  const coordsEl = document.getElementById("coords");
 
   let mouseX = 0, mouseY = 0;
   let curX = 0, curY = 0;
 
-  function pad4(n) {
-    return String(Math.max(0, Math.round(n))).padStart(4, "0");
-  }
-
   document.addEventListener("mousemove", e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-
     cursor.classList.add("visible");
     dot.classList.add("visible");
-    coordsEl.classList.add("active");
-
     dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-
-    // обновляем координаты в правом нижнем углу
-    const pageX = e.pageX;
-    const pageY = e.pageY;
-    coordsEl.textContent = `x ${pad4(pageX)} · y ${pad4(pageY)}`;
   });
 
   document.addEventListener("mouseleave", () => {
     cursor.classList.remove("visible");
     dot.classList.remove("visible");
-    coordsEl.classList.remove("active");
   });
 
   function animateCursor() {
@@ -679,7 +731,7 @@
   }
   animateCursor();
 
-  document.querySelectorAll("a, button, .menu-btn, .theme-toggle, .bio-tag").forEach(el => {
+  document.querySelectorAll("a, button, .menu-btn, .theme-toggle, .bio-tag, .music-btn, .volume-slider").forEach(el => {
     el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
     el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
   });
@@ -708,36 +760,4 @@
   applyTheme(savedTheme);
 
   // ============ МОДАЛКА ============
-  function openModal() {
-    document.getElementById("modal").classList.add("show");
-    document.body.style.overflow = "hidden";
-    document.querySelectorAll(".menu-btn")[1].classList.add("active");
-    document.querySelectorAll(".menu-btn")[0].classList.remove("active");
-  }
-
-  function closeModal() {
-    document.getElementById("modal").classList.remove("show");
-    document.body.style.overflow = "";
-    document.querySelectorAll(".menu-btn")[0].classList.add("active");
-    document.querySelectorAll(".menu-btn")[1].classList.remove("active");
-  }
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeModal();
-  });
-
-  // ============ ЧАСЫ МСК ============
-  function updateClock() {
-    const now = new Date();
-    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
-    const hh = String(msk.getHours()).padStart(2, "0");
-    const mm = String(msk.getMinutes()).padStart(2, "0");
-    const ss = String(msk.getSeconds()).padStart(2, "0");
-    document.getElementById("clock").textContent = `у меня сейчас ${hh}:${mm}:${ss} мск`;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-</script>
-
-</body>
-</html>
+  function openModal()

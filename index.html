@@ -475,6 +475,7 @@
   </div>
 </div>
 <script>
+  // ============ СПИСОК ОБВИНЕНИЙ ============
   const charges = [
     "Геноцид","Преступления против человечности","Военные преступления","Преступление агрессии",
     "Этнические чистки","Массовые убийства","Депортация населения","Насильственное перемещение населения",
@@ -545,12 +546,16 @@
     list.appendChild(li);
   });
 
+  // ============ AUDIO CONTEXT (единый для всех звуков) ============
   let audioCtx = null;
   function getCtx() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
     return audioCtx;
   }
 
+  // ============ ЗВУК КЛИКА ============
   function playClick() {
     try {
       const ctx = getCtx();
@@ -566,6 +571,7 @@
     } catch (e) {}
   }
 
+  // ============ КУРСОР ============
   const cursor = document.getElementById("cursor");
   const dot = document.getElementById("cursorDot");
   let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
@@ -591,6 +597,7 @@
   }
   animateCursor();
 
+  // ============ ТЕМА ============
   const themeToggle = document.getElementById("themeToggle");
 
   function applyTheme(t) {
@@ -612,6 +619,7 @@
 
   applyTheme(localStorage.getItem("x3led-theme") || "dark");
 
+  // ============ МОДАЛКА ============
   function openModal() {
     document.getElementById("modal").classList.add("show");
     document.body.style.overflow = "hidden";
@@ -626,8 +634,11 @@
     document.querySelectorAll(".menu-btn")[1].classList.remove("active");
   }
 
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
 
+  // ============ ЧАСЫ МСК ============
   function updateClock() {
     const now = new Date();
     const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
@@ -639,6 +650,7 @@
   updateClock();
   setInterval(updateClock, 1000);
 
+  // ============ ТИХИЙ ШУМ (музыка) ============
   let noiseSource = null;
   let noiseGain = null;
   let musicPlaying = false;
@@ -660,14 +672,18 @@
   function startNoise() {
     const ctx = getCtx();
     if (ctx.state === "suspended") ctx.resume();
+
     noiseSource = ctx.createBufferSource();
     noiseSource.buffer = buildNoiseBuffer(ctx);
     noiseSource.loop = true;
+
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
     filter.frequency.value = 600;
+
     noiseGain = ctx.createGain();
     noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
+
     noiseSource.connect(filter).connect(noiseGain).connect(ctx.destination);
     noiseSource.start();
     musicPlaying = true;
@@ -697,14 +713,18 @@
 
   const volumeSlider = document.getElementById("volumeSlider");
   volumeSlider.addEventListener("input", () => {
-    if (noiseGain) noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
+    if (noiseGain) {
+      noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
+    }
   });
 
+  // ============ HOVER ДЛЯ КУРСОРА ============
   document.querySelectorAll("a, button, .menu-btn, .theme-toggle, .bio-tag, .music-btn, .volume-slider").forEach(el => {
     el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
     el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
   });
 
+  // ============ ЗВУК КЛИКА НА КНОПКАХ ============
   document.querySelectorAll(".menu-btn, .theme-toggle, .links a, .modal-close, .music-btn").forEach(el => {
     el.addEventListener("click", playClick);
   });

@@ -4,1154 +4,909 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>x3led</title>
+<meta name="description" content="Личная страничка x3led — ссылки и список обвинений.">
+<script>
+  // Тема ставится до отрисовки, чтобы не было вспышки
+  document.documentElement.classList.add("js");
+  try {
+    var t = localStorage.getItem("x3led-theme");
+    if (t && t !== "dark") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg-deep: #06060a;
-    --bg: #0a0a12;
-    --surface: rgba(255,255,255,0.02);
-    --border: rgba(255,255,255,0.06);
-    --text: #eaeaf0;
-    --text-dim: #8a8a9a;
-    --text-faint: #4a4a5a;
-    --accent1: #7b5cff;
-    --accent2: #ff5c9e;
-    --accent3: #5cffd4;
-    --glow: rgba(123,92,255,0.35);
-    --dot-color: #22cc88;
+    --bg: #08080d;
+    --card: rgba(255,255,255,0.035);
+    --border: rgba(255,255,255,0.09);
+    --text: #f0f0f5;
+    --text-dim: #a3a3b5;
+    --text-faint: #72728a;
+    --accent: #8b6cff;
+    --accent-2: #ff5c9e;
+    --on-accent: #ffffff;
+    --display: "Unbounded", system-ui, sans-serif;
+    --body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    color-scheme: dark;
   }
-
   [data-theme="emerald"] {
-    --bg-deep: #051210;
-    --bg: #081a17;
-    --surface: rgba(255,255,255,0.02);
-    --border: rgba(120,255,200,0.06);
-    --text: #e0f0ec;
-    --text-dim: #7a9a94;
-    --text-faint: #405a55;
-    --accent1: #22ddaa;
-    --accent2: #44ffcc;
-    --accent3: #7bffe0;
-    --glow: rgba(34,221,170,0.35);
-    --dot-color: #22ddaa;
+    --bg: #05110f;
+    --border: rgba(140,255,210,0.11);
+    --text: #e6f5f0;
+    --text-dim: #93b5ac;
+    --text-faint: #638a80;
+    --accent: #22ddaa;
+    --accent-2: #a6ff5c;
+    --on-accent: #03130f;
   }
-
   [data-theme="fire"] {
-    --bg-deep: #0f0604;
-    --bg: #1a0a06;
-    --surface: rgba(255,255,255,0.02);
-    --border: rgba(255,150,80,0.08);
-    --text: #f5e8e0;
-    --text-dim: #a08070;
-    --text-faint: #5a3a2a;
-    --accent1: #ff6633;
-    --accent2: #ffaa22;
-    --accent3: #ff4422;
-    --glow: rgba(255,102,51,0.35);
-    --dot-color: #ff6633;
+    --bg: #100705;
+    --border: rgba(255,160,100,0.12);
+    --text: #f8ece5;
+    --text-dim: #bd9c8c;
+    --text-faint: #8d6a5a;
+    --accent: #ff6a33;
+    --accent-2: #ffb322;
+    --on-accent: #160802;
   }
-
   [data-theme="light"] {
-    --bg-deep: #f0f0f5;
-    --bg: #fafaff;
-    --surface: rgba(0,0,0,0.02);
-    --border: rgba(0,0,0,0.08);
-    --text: #0a0a12;
-    --text-dim: #5a5a6a;
-    --text-faint: #aaaabb;
-    --accent1: #5533dd;
-    --accent2: #dd3377;
-    --accent3: #22aa88;
-    --glow: rgba(85,51,221,0.2);
-    --dot-color: #22aa88;
+    --bg: #f6f5fb;
+    --card: rgba(255,255,255,0.7);
+    --border: rgba(20,20,50,0.12);
+    --text: #12121c;
+    --text-dim: #55556a;
+    --text-faint: #77778c;
+    --accent: #5a3df0;
+    --accent-2: #e0357c;
+    --on-accent: #ffffff;
+    color-scheme: light;
   }
 
   html { scroll-behavior: smooth; }
+  html:has(dialog[open]) { overflow: hidden; }
 
   body {
-    background: var(--bg-deep);
+    background: var(--bg);
     color: var(--text);
-    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    cursor: none;
-    transition: background 0.6s ease, color 0.6s ease;
-    position: relative;
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
 
-  @media (hover: none) {
-    body, button, a { cursor: auto !important; }
-    .cursor-glow, .cursor-ring, .cursor-dot-c { display: none !important; }
-  }
-
-  .blob {
+  /* ---------- фон ---------- */
+  .aurora {
     position: fixed;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.5;
+    inset: -30%;
+    z-index: -1;
     pointer-events: none;
-    z-index: 0;
-    transition: background 1s ease, opacity 0.6s ease;
+    background:
+      radial-gradient(38% 38% at 28% 30%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%),
+      radial-gradient(34% 34% at 74% 68%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 70%);
+    animation: drift 40s ease-in-out infinite alternate;
   }
-  [data-theme="light"] .blob { opacity: 0.25; }
-
-  .blob-1 {
-    width: 500px; height: 500px;
-    background: var(--accent1);
-    top: -150px; left: -150px;
-    animation: blob1 25s ease-in-out infinite;
-  }
-  .blob-2 {
-    width: 400px; height: 400px;
-    background: var(--accent2);
-    bottom: -100px; right: -100px;
-    animation: blob2 30s ease-in-out infinite;
-  }
-  .blob-3 {
-    width: 350px; height: 350px;
-    background: var(--accent3);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: blob3 35s ease-in-out infinite;
-    opacity: 0.25;
-  }
-  [data-theme="light"] .blob-3 { opacity: 0.15; }
-
-  @keyframes blob1 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(80px, 60px) scale(1.1); }
-    66% { transform: translate(40px, 120px) scale(0.9); }
-  }
-  @keyframes blob2 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(-100px, -80px) scale(1.15); }
-  }
-  @keyframes blob3 {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    33% { transform: translate(-40%, -60%) scale(1.2); }
-    66% { transform: translate(-60%, -40%) scale(0.85); }
+  [data-theme="light"] .aurora { opacity: 0.6; }
+  @keyframes drift {
+    to { transform: translate3d(6%, -5%, 0) rotate(14deg) scale(1.1); }
   }
 
-  .grid-bg {
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 1;
-    mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
-  }
-  [data-theme="light"] .grid-bg {
-    background-image:
-      linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-  }
-
-  .cursor-glow {
-    position: fixed;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .cursor-glow.visible { opacity: 1; }
-
-  .cursor-ring {
-    position: fixed;
-    width: 32px; height: 32px;
-    border: 1.5px solid var(--text);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, border-color 0.3s, opacity 0.2s;
-    mix-blend-mode: difference;
-    opacity: 0;
-  }
-  .cursor-ring.visible { opacity: 1; }
-  .cursor-ring.hover {
-    width: 60px; height: 60px;
-    border-color: var(--accent1);
-  }
-  [data-theme="light"] .cursor-ring { mix-blend-mode: normal; }
-
-  .cursor-dot-c {
-    position: fixed;
-    width: 4px; height: 4px;
-    background: var(--text);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-  }
-  .cursor-dot-c.visible { opacity: 1; }
-
-  /* ---------- ПРЕЛОАДЕР ---------- */
-  .preloader {
-    position: fixed;
-    inset: 0;
-    background: var(--bg-deep);
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
-                opacity 0.9s ease;
-    cursor: none;
-  }
-  .preloader.done {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .preloader-logo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(40px, 8vw, 100px);
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-  }
-  .preloader-logo .pchar {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: pcharIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-  .preloader-logo .pchar:nth-child(1) { animation-delay: 0.1s; }
-  .preloader-logo .pchar:nth-child(2) { animation-delay: 0.25s; }
-  .preloader-logo .pchar:nth-child(3) { animation-delay: 0.4s; }
-  .preloader-logo .pchar:nth-child(4) { animation-delay: 0.55s; }
-  .preloader-logo .pchar:nth-child(5) { animation-delay: 0.7s; }
-
-  @keyframes pcharIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .preloader-logo .pacc {
-    color: var(--accent1);
-    opacity: 0;
-    animation: pcharIn 0.4s ease 0.9s forwards;
-  }
-
-  .preloader-progress {
-    width: min(280px, 60vw);
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .preloader-progress-bar {
-    position: absolute;
-    top: 0; left: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--accent1);
-    border-radius: 2px;
-    box-shadow: 0 0 20px var(--glow);
-  }
-
-  .preloader-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    min-height: 16px;
-  }
-  .preloader-text::after {
-    content: "▌";
-    color: var(--accent1);
-    animation: blink 1s step-end infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  /* ---------- СКРОЛЛ-ИНДИКАТОР ---------- */
-  .scroll-progress {
+  /* ---------- полоска прокрутки ---------- */
+  .progress {
     position: fixed;
     top: 0; left: 0;
-    height: 2px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
-    z-index: 200;
-    box-shadow: 0 0 12px var(--glow);
-    border-radius: 0 2px 2px 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 30;
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress { animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { to { transform: scaleX(1); } }
   }
 
+  /* ---------- шапка ---------- */
   .topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 20px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;
-    background: linear-gradient(to bottom, var(--bg-deep) 0%, transparent 100%);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: background 0.6s ease;
+    padding: 16px clamp(20px, 6vw, 80px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.5s ease;
   }
-
   .brand {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .brand span { color: var(--accent1); }
-
-  .nav {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .nav-btn {
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-dim);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    cursor: none;
-    transition: all 0.3s;
-  }
-  .nav-btn:hover, .nav-btn.active {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
     color: var(--text);
-    background: var(--surface);
-    border-color: var(--border);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .brand span, .dot { color: var(--accent); }
+
+  .themes { display: flex; gap: 10px; }
+  .swatch {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    outline: 1px solid var(--border);
+    background: var(--sw);
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), outline-color 0.3s;
+  }
+  .swatch:hover { transform: scale(1.2); }
+  .swatch[aria-pressed="true"] { outline: 2px solid var(--text); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- общий каркас ---------- */
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: clamp(20px, 6vw, 80px);
   }
 
-  .theme-btn {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 16px;
-    cursor: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.4s;
-    margin-left: 8px;
-  }
-  .theme-btn:hover {
-    border-color: var(--accent1);
-    transform: rotate(180deg);
-  }
-
+  /* ---------- hero ---------- */
   .hero {
-    position: relative;
-    z-index: 5;
-    min-height: 100vh;
+    min-height: calc(100svh - 60px);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 120px 8vw 80px;
-    max-width: 1400px;
-    margin: 0 auto;
+    padding-block: 60px 80px;
   }
-
   .hero-title {
-    font-size: clamp(80px, 14vw, 220px);
-    font-weight: 700;
-    line-height: 0.9;
-    letter-spacing: -0.06em;
-    margin-bottom: 40px;
-    display: flex;
-    flex-wrap: wrap;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(54px, 15vw, 200px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: clamp(24px, 4vw, 48px);
   }
-
-  .hero-title .char {
+  .hero-title .ch {
     display: inline-block;
-    background: linear-gradient(135deg, var(--text) 0%, var(--text) 50%, var(--accent1) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 0;
-    transform: translateY(100%);
-    animation: charUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s forwards;
+    animation: rise 0.9s var(--ease) backwards;
+    animation-delay: calc(var(--i) * 70ms + 100ms);
+    transition: transform 0.35s var(--ease), color 0.35s;
   }
-  .hero-title .char:nth-child(1) { animation-delay: 2.5s; }
-  .hero-title .char:nth-child(2) { animation-delay: 2.6s; }
-  .hero-title .char:nth-child(3) { animation-delay: 2.7s; }
-  .hero-title .char:nth-child(4) { animation-delay: 2.8s; }
-  .hero-title .char:nth-child(5) { animation-delay: 2.9s; }
-
-  @keyframes charUp {
-    to { opacity: 1; transform: translateY(0); }
+  .hero-title .ch:hover { transform: translateY(-7%) rotate(-3deg); color: var(--accent); }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(55%) rotate(7deg); filter: blur(10px); }
   }
-
-  .hero-title .accent {
-    color: var(--accent1);
-    -webkit-text-fill-color: var(--accent1);
-    font-weight: 300;
-    opacity: 0;
-    animation: charUp 0.6s ease 3s forwards;
-  }
-
-  .hero-sub {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 60px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    opacity: 0;
-    animation: slideUp 0.8s ease 3.2s forwards;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   .hero-desc {
-    max-width: 460px;
-    font-size: 17px;
-    line-height: 1.65;
+    max-width: 30em;
     color: var(--text-dim);
-    font-weight: 300;
+    font-size: clamp(17px, 1.6vw, 20px);
+    animation: fade-up 0.9s var(--ease) 0.65s backwards;
   }
-  .hero-desc strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .scroll-hint {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    display: flex;
+  .hero-desc strong { color: var(--text); font-weight: 600; }
+  .hero-more {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 40px;
+    width: fit-content;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
+    text-decoration: none;
+    animation: fade-up 0.9s var(--ease) 0.85s backwards;
+    transition: color 0.3s;
   }
-  .scroll-hint::after {
-    content: "";
-    width: 40px;
-    height: 1px;
-    background: var(--text-faint);
-    animation: scrollLine 2s ease-in-out infinite;
-  }
-  @keyframes scrollLine {
-    0%, 100% { width: 20px; opacity: 0.3; }
-    50% { width: 60px; opacity: 1; }
-  }
-
-  .section {
-    position: relative;
-    z-index: 5;
-    padding: 100px 8vw;
-    max-width: 1400px;
-    margin: 0 auto;
+  .hero-more:hover { color: var(--accent); }
+  .hero-more i { font-style: normal; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(5px); } }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
   }
 
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent1);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+  /* ---------- секции ---------- */
+  section { padding-block: clamp(60px, 9vw, 120px); scroll-margin-top: 60px; }
+  .label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 14px;
   }
-
-  .section-title {
-    font-size: clamp(32px, 4vw, 56px);
-    font-weight: 500;
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 56px);
+    line-height: 1.1;
     letter-spacing: -0.03em;
-    margin-bottom: 60px;
-    line-height: 1.05;
+    margin-bottom: clamp(32px, 5vw, 56px);
+    text-wrap: balance;
   }
 
-  .links-grid {
+  /* появление при прокрутке */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    transition-delay: calc(var(--d, 0) * 90ms);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- карточки ссылок ---------- */
+  .links {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
   }
-
-  .link-card {
-    background: var(--surface);
+  .card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 190px;
+    padding: 26px;
+    background: var(--card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 32px;
-    text-decoration: none;
     color: var(--text);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-    cursor: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 200px;
+    text-decoration: none;
   }
-  .link-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent1);
-    box-shadow: 0 20px 60px var(--glow);
+  .js .card.reveal {
+    transition: opacity 0.8s var(--ease), transform 0.5s var(--ease), border-color 0.3s;
   }
-  .link-card:hover .link-arrow {
-    transform: translate(6px, -6px);
-    color: var(--accent1);
-  }
-  .link-card .card-icon {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .link-card .card-name {
-    font-size: 28px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin-top: 60px;
-  }
-  .link-card .card-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 8px;
-  }
-  .link-arrow {
+  .card::before {
+    content: "";
     position: absolute;
-    top: 32px; right: 32px;
-    font-size: 24px;
-    color: var(--text-faint);
-    transition: all 0.5s;
-  }
-
-  .charges-cta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 60px;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    background: var(--surface);
-    flex-wrap: wrap;
-    transition: all 0.5s;
-  }
-  .charges-cta:hover {
-    border-color: var(--accent2);
-    box-shadow: 0 20px 60px var(--glow);
-  }
-  .charges-cta-text h3 {
-    font-size: 32px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin-bottom: 10px;
-  }
-  .charges-cta-text p {
-    color: var(--text-dim);
-    font-size: 15px;
-  }
-  .charges-btn {
-    background: var(--text);
-    color: var(--bg-deep);
-    border: none;
-    padding: 18px 40px;
-    border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: none;
-    transition: all 0.4s;
-    font-weight: 500;
-  }
-  .charges-btn:hover {
-    background: var(--accent1);
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 0 40px var(--glow);
-  }
-
-  .modal-overlay {
-    position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.92);
-    backdrop-filter: blur(12px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 40px 20px;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--accent) 24%, transparent), transparent 70%);
     opacity: 0;
     transition: opacity 0.4s;
+    pointer-events: none;
   }
-  [data-theme="light"] .modal-overlay { background: rgba(240,240,250,0.95); }
-  .modal-overlay.show { display: flex; opacity: 1; }
-
-  .modal {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    max-width: 900px;
-    width: 100%;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    animation: modalIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.94) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-
-  .modal-header {
-    padding: 32px 40px;
-    border-bottom: 1px solid var(--border);
+  .card:hover { border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+  .js .card.reveal.in:hover, .card:hover { transform: translateY(-5px); }
+  .card:hover::before { opacity: 1; }
+  .card-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
   }
-  .modal-header h2 {
+  .arrow { font-size: 20px; line-height: 1; transition: transform 0.4s var(--ease), color 0.3s; }
+  .card:hover .arrow { transform: translate(4px, -4px); color: var(--accent); }
+  .card-name {
+    font-family: var(--display);
+    font-weight: 600;
     font-size: 24px;
-    font-weight: 500;
     letter-spacing: -0.02em;
   }
-  .modal-header h2 span {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent1);
-    margin-left: 12px;
-    letter-spacing: 2px;
-  }
+  .card-sub { font-family: var(--mono); font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 
-  .modal-close {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    width: 40px; height: 40px;
-    border-radius: 12px;
-    font-size: 20px;
-    cursor: none;
-    transition: all 0.3s;
+  /* ---------- обвинения ---------- */
+  .charges-head {
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-close:hover {
-    color: var(--text);
-    border-color: var(--accent2);
-    transform: rotate(90deg);
-  }
-
-  .modal-body {
-    padding: 32px 40px 40px;
-    overflow-y: auto;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    line-height: 2.1;
-    color: var(--text-dim);
-  }
-  .modal-body ol {
-    padding-left: 0;
-    list-style: none;
-    counter-reset: item;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 40px;
-  }
-  @media (max-width: 700px) {
-    .modal-body ol { grid-template-columns: 1fr; }
-  }
-  .modal-body li {
-    counter-increment: item;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    transition: all 0.2s;
-  }
-  .modal-body li::before {
-    content: counter(item, decimal-leading-zero);
-    display: inline-block;
-    width: 40px;
-    color: var(--accent1);
-    font-size: 11px;
-  }
-  .modal-body li:hover {
-    color: var(--text);
-    padding-left: 8px;
-  }
-  .modal-body::-webkit-scrollbar { width: 6px; }
-  .modal-body::-webkit-scrollbar-track { background: transparent; }
-  .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  .modal-body::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
-
-  .footer {
-    position: relative;
-    z-index: 5;
-    padding: 60px 8vw;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
     flex-wrap: wrap;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 1px;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px 48px;
   }
-  .footer-left, .footer-right { display: flex; gap: 24px; align-items: center; }
+  .count {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(88px, 19vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .charges-side { max-width: 26em; }
+  .charges-side p { color: var(--text-dim); margin-bottom: 24px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn i { font-style: normal; transition: transform 0.3s var(--ease); }
+  .btn:hover i { transform: translateX(4px); }
 
-  .status-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: var(--dot-color);
+  /* бегущие строки */
+  .marquee {
+    margin-top: clamp(40px, 6vw, 72px);
+    display: grid;
+    gap: 12px;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .track {
+    display: flex;
+    width: max-content;
+    animation: slide 70s linear infinite;
+  }
+  .track.rev { animation-direction: reverse; animation-duration: 85s; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track span {
+    margin-right: 12px;
+    padding: 9px 18px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 15px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* ---------- подвал ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding-block: 32px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+  /* ---------- окно со списком ---------- */
+  dialog {
+    margin: auto;
+    width: min(860px, calc(100vw - 24px));
+    height: min(760px, calc(100dvh - 24px));
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    transition: opacity 0.3s ease, transform 0.35s var(--ease),
+                overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+  }
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    dialog[open] { opacity: 0; transform: translateY(24px) scale(0.97); }
+  }
+  dialog::backdrop {
+    background: rgba(0,0,0,0);
+    backdrop-filter: blur(0);
+    transition: background-color 0.35s, backdrop-filter 0.35s,
+                overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+  }
+  dialog[open]::backdrop { background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); }
+  @starting-style {
+    dialog[open]::backdrop { background: rgba(0,0,0,0); backdrop-filter: blur(0); }
+  }
+
+  .dlg-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dlg-head h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    margin-right: auto;
+  }
+  .dlg-head h3 small {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--text-faint);
+    margin-left: 8px;
+    letter-spacing: 0;
+  }
+  .search {
+    width: min(220px, 40vw);
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+  }
+  .search::placeholder { color: var(--text-faint); }
+  .close {
+    flex: none;
+    width: 38px; height: 38px;
+    border: 1px solid var(--border);
     border-radius: 50%;
-    margin-right: 8px;
-    box-shadow: 0 0 10px var(--dot-color);
-    animation: pulse 2s ease-in-out infinite;
+    background: var(--card);
+    color: var(--text-dim);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), color 0.3s, border-color 0.3s;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  .close:hover { transform: rotate(90deg); color: var(--text); border-color: var(--accent); }
 
-  .clock-mini {
-    position: fixed;
-    bottom: 24px;
-    left: 32px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 1.5px;
-    z-index: 50;
-    transition: color 0.3s;
+  .dlg-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 22px 22px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
-  .clock-mini:hover { color: var(--text-dim); }
-
-  .coords-mini {
-    position: fixed;
-    bottom: 24px;
-    right: 32px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 1.5px;
-    z-index: 50;
-    transition: color 0.3s;
+  .dlg-body ol { list-style: none; columns: 2; column-gap: 36px; }
+  .dlg-body li {
+    display: flex;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    break-inside: avoid;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--text-dim);
+    transition: color 0.2s, padding-left 0.25s var(--ease);
   }
-  .coords-mini.active { color: var(--accent1); }
+  .dlg-body li:hover { color: var(--text); padding-left: 6px; }
+  .dlg-body li b {
+    flex: none;
+    width: 2.2em;
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 21px;
+    color: var(--accent);
+  }
+  .empty { padding: 40px 0; text-align: center; color: var(--text-faint); }
 
   @media (max-width: 640px) {
-    .topbar { padding: 16px 20px; }
-    .brand { font-size: 11px; }
-    .nav-btn { padding: 6px 10px; font-size: 11px; }
-    .theme-btn { width: 32px; height: 32px; }
-    .hero { padding: 100px 24px 60px; }
-    .hero-sub { flex-direction: column; align-items: flex-start; }
-    .section { padding: 60px 24px; }
-    .charges-cta { padding: 32px 24px; }
-    .charges-cta-text h3 { font-size: 22px; }
-    .charges-btn { padding: 14px 28px; font-size: 11px; }
-    .modal-header { padding: 20px 24px; }
-    .modal-body { padding: 20px 24px 28px; }
-    .clock-mini, .coords-mini { font-size: 10px; bottom: 16px; }
-    .clock-mini { left: 20px; }
-    .coords-mini { right: 20px; }
-    .footer { padding: 40px 24px; flex-direction: column; text-align: center; }
+    .dlg-body ol { columns: 1; }
+    .dlg-head { flex-wrap: wrap; }
+    .search { order: 3; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="scroll-progress" id="scrollProgress"></div>
+<div class="aurora" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
 
-<div class="preloader" id="preloader">
-  <div class="preloader-logo">
-    <span class="pchar">x</span><span class="pchar">3</span><span class="pchar">l</span><span class="pchar">e</span><span class="pchar">d</span><span class="pacc">.</span>
+<header class="topbar">
+  <a class="brand" href="#top">x3led<span>.</span></a>
+  <div class="themes" role="group" aria-label="Цветовая тема">
+    <button class="swatch" data-theme-key="dark" style="--sw:#8b6cff" aria-label="Тёмная"></button>
+    <button class="swatch" data-theme-key="emerald" style="--sw:#22ddaa" aria-label="Изумрудная"></button>
+    <button class="swatch" data-theme-key="fire" style="--sw:#ff6a33" aria-label="Огненная"></button>
+    <button class="swatch" data-theme-key="light" style="--sw:#f6f5fb" aria-label="Светлая"></button>
   </div>
-  <div class="preloader-progress">
-    <div class="preloader-progress-bar" id="preloaderBar"></div>
-  </div>
-  <div class="preloader-text" id="preloaderText">initializing</div>
-</div>
+</header>
 
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-<div class="blob blob-3"></div>
-<div class="grid-bg"></div>
-
-<div class="cursor-glow" id="cursorGlow"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="cursor-dot-c" id="cursorDotC"></div>
-
-<div class="topbar">
-  <div class="brand">x3led<span>.</span></div>
-  <div class="nav">
-    <button class="nav-btn active" onclick="scrollToTop()">главная</button>
-    <button class="nav-btn" onclick="openModal()">обвинения</button>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">◐</button>
-  </div>
-</div>
-
-<section class="hero">
-  <h1 class="hero-title">
-    <span class="char">x</span><span class="char">3</span><span class="char">l</span><span class="char">e</span><span class="char">d</span><span class="accent">.</span>
-  </h1>
-
-  <div class="hero-sub">
+<main id="top">
+  <div class="wrap hero">
+    <h1 class="hero-title" aria-label="x3led.">
+      <span class="ch" style="--i:0" aria-hidden="true">x</span><span class="ch" style="--i:1" aria-hidden="true">3</span><span class="ch" style="--i:2" aria-hidden="true">l</span><span class="ch" style="--i:3" aria-hidden="true">e</span><span class="ch" style="--i:4" aria-hidden="true">d</span><span class="ch dot" style="--i:5" aria-hidden="true">.</span>
+    </h1>
     <p class="hero-desc">
       Привет. Это <strong>моя первая страничка</strong> обо мне.
       В дальнейшем она будет обновляться — новые проекты,
       новые ссылки, что-то интересное.
     </p>
-    <div class="scroll-hint">листай вниз</div>
+    <a class="hero-more" href="#links">где меня найти <i>↓</i></a>
   </div>
-</section>
 
-<section class="section">
-  <div class="section-label">// связи</div>
-  <h2 class="section-title">Где меня<br>можно найти</h2>
+  <section id="links">
+    <div class="wrap">
+      <p class="label reveal">связь</p>
+      <h2 class="reveal">Где меня можно найти</h2>
 
-  <div class="links-grid">
-    <a href="https://discord.com/users/928360132482572371" target="_blank" class="link-card">
-      <div class="card-icon">001 / messenger</div>
-      <div class="link-arrow">↗</div>
-      <div>
-        <div class="card-name">Discord</div>
-        <div class="card-sub">x3led</div>
+      <div class="links">
+        <a class="card reveal" style="--d:0" href="https://discord.com/users/928360132482572371" target="_blank" rel="noopener">
+          <div class="card-top"><span>01</span><span class="arrow">↗</span></div>
+          <div>
+            <div class="card-name">Discord</div>
+            <div class="card-sub">x3led</div>
+          </div>
+        </a>
+        <a class="card reveal" style="--d:1" href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener">
+          <div class="card-top"><span>02</span><span class="arrow">↗</span></div>
+          <div>
+            <div class="card-name">Steam</div>
+            <div class="card-sub">профиль</div>
+          </div>
+        </a>
+        <a class="card reveal" style="--d:2" href="https://github.com/x3led" target="_blank" rel="noopener">
+          <div class="card-top"><span>03</span><span class="arrow">↗</span></div>
+          <div>
+            <div class="card-name">GitHub</div>
+            <div class="card-sub">x3led</div>
+          </div>
+        </a>
       </div>
-    </a>
-
-    <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" class="link-card">
-      <div class="card-icon">002 / games</div>
-      <div class="link-arrow">↗</div>
-      <div>
-        <div class="card-name">Steam</div>
-        <div class="card-sub">profile</div>
-      </div>
-    </a>
-
-    <a href="https://github.com/x3led" target="_blank" class="link-card">
-      <div class="card-icon">003 / code</div>
-      <div class="link-arrow">↗</div>
-      <div>
-        <div class="card-name">GitHub</div>
-        <div class="card-sub">x3led</div>
-      </div>
-    </a>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-label">// манифест</div>
-  <h2 class="section-title">Список<br>обвинений</h2>
-
-  <div class="charges-cta">
-    <div class="charges-cta-text">
-      <h3>200 пунктов</h3>
-      <p>Полный список того, в чём меня можно обвинить.<br>Открывается в модальном окне.</p>
     </div>
-    <button class="charges-btn" onclick="openModal()">Открыть список</button>
-  </div>
-</section>
+  </section>
 
-<footer class="footer">
-  <div class="footer-left">
-    <span><span class="status-dot"></span>в сети</span>
+  <section id="charges">
+    <div class="wrap">
+      <p class="label reveal">манифест</p>
+      <h2 class="reveal">Список обвинений</h2>
+
+      <div class="charges-head reveal">
+        <div class="count" id="count">0</div>
+        <div class="charges-side">
+          <p>Полный список того, в чём меня можно обвинить. С поиском — вдруг ищешь что-то конкретное.</p>
+          <button class="btn" id="openCharges">Открыть список <i>→</i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee reveal" aria-hidden="true">
+      <div class="track" id="trackA"></div>
+      <div class="track rev" id="trackB"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
     <span>x3led.github.io</span>
-  </div>
-  <div class="footer-right">
-    <span id="clockMini">--:--:--</span>
-    <span>moscow time</span>
+    <span>у меня сейчас <span id="clock">--:--</span> мск</span>
   </div>
 </footer>
 
-<div class="clock-mini" id="clockMiniFixed">мск · --:--:--</div>
-<div class="coords-mini" id="coordsMini">x 0000 · y 0000</div>
-
-<div class="modal-overlay" id="modal" onclick="if(event.target===this) closeModal()">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>обвинения <span>200 items</span></h2>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <ol id="chargesList"></ol>
-    </div>
+<dialog id="dialog" aria-labelledby="dlgTitle">
+  <div class="dlg-head">
+    <h3 id="dlgTitle">Обвинения <small id="dlgCount"></small></h3>
+    <input class="search" id="search" type="search" placeholder="Поиск" aria-label="Поиск по списку" autocomplete="off">
+    <button class="close" id="closeCharges" aria-label="Закрыть">×</button>
   </div>
-</div>
+  <div class="dlg-body">
+    <ol id="chargesList"></ol>
+    <p class="empty" id="empty" hidden>Ничего не найдено</p>
+  </div>
+</dialog>
+
 <script>
-  // ============ СПИСОК ОБВИНЕНИЙ ============
   const charges = [
-    "Геноцид","Преступления против человечности","Военные преступления","Преступление агрессии",
-    "Этнические чистки","Массовые убийства","Депортация населения","Насильственное перемещение населения",
-    "Преследование гражданского населения","Пытки","Рабство","Сексуальное насилие во время конфликта",
-    "Использование детей в вооружённом конфликте","Умышленное нападение на гражданское население",
-    "Умышленное нападение на гуманитарный персонал","Незаконное уничтожение гражданской инфраструктуры",
-    "Взятие заложников","Незаконное содержание военнопленных","Вербовка иностранных наёмников",
-    "Нарушение международных договоров","Незаконное применение запрещённых методов ведения войны",
-    "Незаконная блокада","Пиратство","Работорговля","Транснациональная организованная преступность",
-    "Торговля людьми","Незаконный оборот оружия","Незаконный оборот наркотиков","Отмывание денег",
-    "Уклонение от уплаты налогов","Мошенничество","Подделка документов","Лжесвидетельство",
-    "Неуважение к суду","Побег из-под стражи","Сопротивление при аресте","Оскорбление власти",
-    "Шпионаж","Диверсия","Терроризм","Киберпреступность","Нарушение прав интеллектуальной собственности",
-    "Контрабанда","Нелегальная миграция","Нарушение санкций","Финансирование терроризма",
-    "Подстрекательство к войне","Пропаганда ненависти","Нарушение прав человека","Эксплуатация детского труда",
-    "Применение химического оружия","Применение биологического оружия","Применение ядерного оружия",
-    "Использование противопехотных мин","Использование кассетных боеприпасов",
-    "Нападение на медицинские учреждения","Нападение на школы и образовательные учреждения",
-    "Нападение на объекты культурного наследия","Разрушение религиозных объектов",
-    "Незаконная аннексия территории","Нарушение территориальной целостности",
-    "Вмешательство во внутренние дела","Государственный переворот","Подрыв суверенитета",
-    "Организация массовых беспорядков","Разжигание межнациональной розни","Разжигание религиозной ненависти",
-    "Дискриминация по расовому признаку","Дискриминация по половому признаку","Нарушение прав меньшинств",
-    "Принудительная ассимиляция","Запрет на использование языка","Цензура","Преследование журналистов",
-    "Преследование политических оппонентов","Преследование правозащитников","Незаконные задержания",
-    "Незаконные обыски","Конфискация имущества","Национализация без компенсации","Экспроприация",
-    "Принудительный труд","Торговля детьми","Похищение людей","Исчезновение людей","Внесудебные казни",
-    "Массовые захоронения","Сокрытие преступлений","Уничтожение улик","Дача ложных показаний",
-    "Подкуп должностных лиц","Злоупотребление властью","Превышение полномочий","Халатность","Коррупция",
-    "Отмывание доходов","Незаконные финансовые операции","Офшорные схемы","Уклонение от санкций",
-    "Нарушение эмбарго","Незаконная торговля людьми","Принудительная стерилизация","Принудительная беременность",
-    "Насильственная пропажа людей","Организация эскадронов смерти","Создание тайных тюрем",
-    "Пытки в местах лишения свободы","Бесчеловечное обращение с заключёнными","Отказ в медицинской помощи",
-    "Отказ в гуманитарном доступе","Блокирование гуманитарных коридоров","Нападение на конвои с помощью",
-    "Разграбление гуманитарных грузов","Использование голода как метода войны",
-    "Уничтожение посевов и запасов продовольствия","Отравление источников воды",
-    "Разрушение систем водоснабжения","Разрушение энергетической инфраструктуры",
-    "Кибератаки на гражданские объекты","Кибератаки на медицинские учреждения",
-    "Дезинформация и пропаганда","Фальсификация выборов","Подкуп избирателей","Запугивание избирателей",
-    "Ограничение свободы собраний","Разгон мирных протестов","Применение силы против демонстрантов",
-    "Незаконное применение слезоточивого газа","Незаконное применение резиновых пуль",
-    "Применение огнестрельного оружия против безоружных","Похищение активистов","Слежка за гражданами",
-    "Незаконный сбор персональных данных","Нарушение права на приватность","Блокирование интернета",
-    "Отключение связи","Глушение сигналов","Ограничение свободы прессы","Закрытие независимых изданий",
-    "Арест журналистов","Убийство журналистов","Преследование блогеров","Блокировка социальных сетей",
-    "Манипуляция общественным мнением","Создание фейковых новостей","Кибершпионаж",
-    "Кража государственных секретов","Саботаж критической инфраструктуры","Диверсии на транспорте",
-    "Поджоги","Организация взрывов","Самоподрыв","Использование смертников","Похищение самолётов",
-    "Угон транспортных средств","Захват заложников на транспорте","Морское пиратство","Воздушное пиратство",
-    "Незаконный захват судов","Контрабанда оружия","Контрабанда наркотиков","Контрабанда людей",
-    "Контрабанда культурных ценностей","Незаконная добыча ресурсов","Незаконная вырубка лесов",
-    "Незаконный вылов рыбы","Браконьерство","Торговля редкими видами","Уничтожение экосистем",
-    "Загрязнение окружающей среды","Выброс токсичных отходов","Незаконное захоронение отходов",
-    "Разрушение озонового слоя","Изменение климата","Экологический терроризм","Экоцид","Биопиратство",
-    "Незаконные генетические эксперименты","Клонирование человека","Торговля органами",
-    "Незаконная трансплантация","Принудительное изъятие органов","Медицинские эксперименты над людьми",
-    "Испытания на заключённых","Испытания на детях","Испытания на беременных","Отказ в вакцинации",
-    "Распространение биологического оружия","Создание лабораторных утечек","Пандемия",
-    "Сокрытие вспышек заболеваний","Дезинформация о здоровье","Продажа фальсифицированных лекарств",
-    "Подделка вакцин","Незаконный оборот медицинских препаратов","Наркоторговля","Организация наркокартелей",
-    "Отмывание наркодоходов","Финансирование наркоторговли","Вовлечение несовершеннолетних в наркоторговлю"
+    "Геноцид",
+    "Преступления против человечности",
+    "Военные преступления",
+    "Преступление агрессии",
+    "Этнические чистки",
+    "Массовые убийства",
+    "Депортация населения",
+    "Насильственное перемещение населения",
+    "Преследование гражданского населения",
+    "Пытки",
+    "Рабство",
+    "Сексуальное насилие во время конфликта",
+    "Использование детей в вооружённом конфликте",
+    "Умышленное нападение на гражданское население",
+    "Умышленное нападение на гуманитарный персонал",
+    "Незаконное уничтожение гражданской инфраструктуры",
+    "Взятие заложников",
+    "Незаконное содержание военнопленных",
+    "Вербовка иностранных наёмников",
+    "Нарушение международных договоров",
+    "Незаконное применение запрещённых методов ведения войны",
+    "Незаконная блокада",
+    "Пиратство",
+    "Работорговля",
+    "Транснациональная организованная преступность",
+    "Торговля людьми",
+    "Незаконный оборот оружия",
+    "Незаконный оборот наркотиков",
+    "Отмывание денег",
+    "Уклонение от уплаты налогов",
+    "Мошенничество",
+    "Подделка документов",
+    "Лжесвидетельство",
+    "Неуважение к суду",
+    "Побег из-под стражи",
+    "Сопротивление при аресте",
+    "Оскорбление власти",
+    "Шпионаж",
+    "Диверсия",
+    "Терроризм",
+    "Киберпреступность",
+    "Нарушение прав интеллектуальной собственности",
+    "Контрабанда",
+    "Нелегальная миграция",
+    "Нарушение санкций",
+    "Финансирование терроризма",
+    "Подстрекательство к войне",
+    "Пропаганда ненависти",
+    "Нарушение прав человека",
+    "Эксплуатация детского труда",
+    "Применение химического оружия",
+    "Применение биологического оружия",
+    "Применение ядерного оружия",
+    "Использование противопехотных мин",
+    "Использование кассетных боеприпасов",
+    "Нападение на медицинские учреждения",
+    "Нападение на школы и образовательные учреждения",
+    "Нападение на объекты культурного наследия",
+    "Разрушение религиозных объектов",
+    "Незаконная аннексия территории",
+    "Нарушение территориальной целостности",
+    "Вмешательство во внутренние дела",
+    "Государственный переворот",
+    "Подрыв суверенитета",
+    "Организация массовых беспорядков",
+    "Разжигание межнациональной розни",
+    "Разжигание религиозной ненависти",
+    "Дискриминация по расовому признаку",
+    "Дискриминация по половому признаку",
+    "Нарушение прав меньшинств",
+    "Принудительная ассимиляция",
+    "Запрет на использование языка",
+    "Цензура",
+    "Преследование журналистов",
+    "Преследование политических оппонентов",
+    "Преследование правозащитников",
+    "Незаконные задержания",
+    "Незаконные обыски",
+    "Конфискация имущества",
+    "Национализация без компенсации",
+    "Экспроприация",
+    "Принудительный труд",
+    "Торговля детьми",
+    "Похищение людей",
+    "Исчезновение людей",
+    "Внесудебные казни",
+    "Массовые захоронения",
+    "Сокрытие преступлений",
+    "Уничтожение улик",
+    "Дача ложных показаний",
+    "Подкуп должностных лиц",
+    "Злоупотребление властью",
+    "Превышение полномочий",
+    "Халатность",
+    "Коррупция",
+    "Отмывание доходов",
+    "Незаконные финансовые операции",
+    "Офшорные схемы",
+    "Уклонение от санкций",
+    "Нарушение эмбарго",
+    "Незаконная торговля людьми",
+    "Принудительная стерилизация",
+    "Принудительная беременность",
+    "Насильственная пропажа людей",
+    "Организация эскадронов смерти",
+    "Создание тайных тюрем",
+    "Пытки в местах лишения свободы",
+    "Бесчеловечное обращение с заключёнными",
+    "Отказ в медицинской помощи",
+    "Отказ в гуманитарном доступе",
+    "Блокирование гуманитарных коридоров",
+    "Нападение на конвои с помощью",
+    "Разграбление гуманитарных грузов",
+    "Использование голода как метода войны",
+    "Уничтожение посевов и запасов продовольствия",
+    "Отравление источников воды",
+    "Разрушение систем водоснабжения",
+    "Разрушение энергетической инфраструктуры",
+    "Кибератаки на гражданские объекты",
+    "Кибератаки на медицинские учреждения",
+    "Дезинформация и пропаганда",
+    "Фальсификация выборов",
+    "Подкуп избирателей",
+    "Запугивание избирателей",
+    "Ограничение свободы собраний",
+    "Разгон мирных протестов",
+    "Применение силы против демонстрантов",
+    "Незаконное применение слезоточивого газа",
+    "Незаконное применение резиновых пуль",
+    "Применение огнестрельного оружия против безоружных",
+    "Похищение активистов",
+    "Слежка за гражданами",
+    "Незаконный сбор персональных данных",
+    "Нарушение права на приватность",
+    "Блокирование интернета",
+    "Отключение связи",
+    "Глушение сигналов",
+    "Ограничение свободы прессы",
+    "Закрытие независимых изданий",
+    "Арест журналистов",
+    "Убийство журналистов",
+    "Преследование блогеров",
+    "Блокировка социальных сетей",
+    "Манипуляция общественным мнением",
+    "Создание фейковых новостей",
+    "Кибершпионаж",
+    "Кража государственных секретов",
+    "Саботаж критической инфраструктуры",
+    "Диверсии на транспорте",
+    "Поджоги",
+    "Организация взрывов",
+    "Самоподрыв",
+    "Использование смертников",
+    "Похищение самолётов",
+    "Угон транспортных средств",
+    "Захват заложников на транспорте",
+    "Морское пиратство",
+    "Воздушное пиратство",
+    "Незаконный захват судов",
+    "Контрабанда оружия",
+    "Контрабанда наркотиков",
+    "Контрабанда людей",
+    "Контрабанда культурных ценностей",
+    "Незаконная добыча ресурсов",
+    "Незаконная вырубка лесов",
+    "Незаконный вылов рыбы",
+    "Браконьерство",
+    "Торговля редкими видами",
+    "Уничтожение экосистем",
+    "Загрязнение окружающей среды",
+    "Выброс токсичных отходов",
+    "Незаконное захоронение отходов",
+    "Разрушение озонового слоя",
+    "Изменение климата",
+    "Экологический терроризм",
+    "Экоцид",
+    "Биопиратство",
+    "Незаконные генетические эксперименты",
+    "Клонирование человека",
+    "Торговля органами",
+    "Незаконная трансплантация",
+    "Принудительное изъятие органов",
+    "Медицинские эксперименты над людьми",
+    "Испытания на заключённых",
+    "Испытания на детях",
+    "Испытания на беременных",
+    "Отказ в вакцинации",
+    "Распространение биологического оружия",
+    "Создание лабораторных утечек",
+    "Пандемия",
+    "Сокрытие вспышек заболеваний",
+    "Дезинформация о здоровье",
+    "Продажа фальсифицированных лекарств",
+    "Подделка вакцин",
+    "Незаконный оборот медицинских препаратов",
+    "Наркоторговля",
+    "Организация наркокартелей",
+    "Отмывание наркодоходов",
+    "Финансирование наркоторговли",
+    "Вовлечение несовершеннолетних в наркоторговлю"
   ];
 
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- тема ----------
+  const swatches = document.querySelectorAll(".swatch");
+  function setTheme(key) {
+    if (key === "dark") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = key;
+    swatches.forEach(s => s.setAttribute("aria-pressed", s.dataset.themeKey === key));
+    try { localStorage.setItem("x3led-theme", key); } catch (e) {}
+  }
+  swatches.forEach(s => s.addEventListener("click", () => setTheme(s.dataset.themeKey)));
+  setTheme(document.documentElement.dataset.theme || "dark");
+
+  // ---------- появление при прокрутке + счётчик ----------
+  const countEl = document.getElementById("count");
+  function runCount() {
+    const total = charges.length;
+    if (reduceMotion) { countEl.textContent = total; return; }
+    const start = performance.now(), dur = 1400;
+    (function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      countEl.textContent = Math.round(total * (1 - Math.pow(1 - p, 4)));
+      if (p < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      if (en.target.contains(countEl)) runCount();
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  // ---------- подсветка карточек за курсором ----------
+  document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+
+  // ---------- бегущие строки ----------
+  function fillTrack(id, items) {
+    const track = document.getElementById(id);
+    // два одинаковых набора подряд — для бесшовной прокрутки на -50%
+    items.concat(items).forEach(text => {
+      const s = document.createElement("span");
+      s.textContent = text;
+      track.appendChild(s);
+    });
+  }
+  fillTrack("trackA", charges.slice(0, 18));
+  fillTrack("trackB", charges.slice(18, 36));
+
+  // ---------- список и поиск ----------
+  const dialog = document.getElementById("dialog");
   const list = document.getElementById("chargesList");
-  charges.forEach(c => {
+  const search = document.getElementById("search");
+  const empty = document.getElementById("empty");
+  const dlgCount = document.getElementById("dlgCount");
+
+  const rows = charges.map((text, i) => {
     const li = document.createElement("li");
-    li.textContent = c;
+    const n = document.createElement("b");
+    n.textContent = String(i + 1).padStart(3, "0");
+    li.append(n, text);
     list.appendChild(li);
+    return { li, key: text.toLowerCase() };
   });
 
-  // ============ AUDIO ============
-  let audioCtx = null;
-  function getCtx() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    return audioCtx;
+  function filter() {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(r => {
+      const ok = r.key.includes(q);
+      r.li.hidden = !ok;
+      if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+    dlgCount.textContent = q ? `${shown} из ${rows.length}` : rows.length;
   }
+  search.addEventListener("input", filter);
+  filter();
 
-  function playClick() {
-    try {
-      const ctx = getCtx();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.value = 900;
-      gain.gain.setValueAtTime(0.06, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.08);
-    } catch (e) {}
-  }
-
-  // ============ КУРСОР ============
-  const cursorGlow = document.getElementById("cursorGlow");
-  const cursorRing = document.getElementById("cursorRing");
-  const cursorDotC = document.getElementById("cursorDotC");
-  const coordsMini = document.getElementById("coordsMini");
-
-  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
-  let glowX = 0, glowY = 0;
-
-  function pad4(n) {
-    return String(Math.max(0, Math.round(n))).padStart(4, "0");
-  }
-
-  document.addEventListener("mousemove", e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorRing.classList.add("visible");
-    cursorDotC.classList.add("visible");
-    cursorGlow.classList.add("visible");
-    coordsMini.classList.add("active");
-    cursorDotC.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-    coordsMini.textContent = `x ${pad4(e.pageX)} · y ${pad4(e.pageY)}`;
+  document.getElementById("openCharges").addEventListener("click", () => {
+    search.value = "";
+    filter();
+    dialog.showModal();
   });
+  document.getElementById("closeCharges").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", e => { if (e.target === dialog) dialog.close(); });
 
-  document.addEventListener("mouseleave", () => {
-    cursorRing.classList.remove("visible");
-    cursorDotC.classList.remove("visible");
-    cursorGlow.classList.remove("visible");
-    coordsMini.classList.remove("active");
-  });
-
-  function animateCursor() {
-    curX += (mouseX - curX) * 0.2;
-    curY += (mouseY - curY) * 0.2;
-    glowX += (mouseX - glowX) * 0.08;
-    glowY += (mouseY - glowY) * 0.08;
-    cursorRing.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    cursorGlow.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  // ============ ТЕМА — 4 варианта ============
-  const themeBtn = document.getElementById("themeBtn");
-  const THEMES = [
-    { key: "dark",    icon: "◐" },
-    { key: "emerald", icon: "◆" },
-    { key: "fire",    icon: "▲" },
-    { key: "light",   icon: "◑" }
-  ];
-
-  function applyTheme(key) {
-    if (key === "dark") {
-      document.documentElement.removeAttribute("data-theme");
-    } else {
-      document.documentElement.setAttribute("data-theme", key);
-    }
-    const theme = THEMES.find(t => t.key === key) || THEMES[0];
-    themeBtn.textContent = theme.icon;
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme") || "dark";
-    const idx = THEMES.findIndex(t => t.key === current);
-    const next = THEMES[(idx + 1) % THEMES.length].key;
-    localStorage.setItem("x3led-theme-v3", next);
-    applyTheme(next);
-  }
-
-  applyTheme(localStorage.getItem("x3led-theme-v3") || "dark");
-
-  // ============ МОДАЛКА ============
-  function openModal() {
-    document.getElementById("modal").classList.add("show");
-    document.body.style.overflow = "hidden";
-    document.querySelectorAll(".nav-btn")[1].classList.add("active");
-    document.querySelectorAll(".nav-btn")[0].classList.remove("active");
-  }
-
-  function closeModal() {
-    document.getElementById("modal").classList.remove("show");
-    document.body.style.overflow = "";
-    document.querySelectorAll(".nav-btn")[0].classList.add("active");
-    document.querySelectorAll(".nav-btn")[1].classList.remove("active");
-  }
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeModal();
-  });
-
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    closeModal();
-  }
-
-  // ============ ЧАСЫ МСК ============
-  function updateClock() {
-    const now = new Date();
-    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
-    const hh = String(msk.getHours()).padStart(2, "0");
-    const mm = String(msk.getMinutes()).padStart(2, "0");
-    const ss = String(msk.getSeconds()).padStart(2, "0");
-    const time = `${hh}:${mm}:${ss}`;
-    document.getElementById("clockMini").textContent = time;
-    document.getElementById("clockMiniFixed").textContent = `мск · ${time}`;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  // ============ ПРЕЛОАДЕР ============
-  const preloader = document.getElementById("preloader");
-  const preloaderBar = document.getElementById("preloaderBar");
-  const preloaderText = document.getElementById("preloaderText");
-  const phrases = ["initializing", "loading assets", "preparing interface", "welcome"];
-  let progress = 0;
-  let phraseIdx = 0;
-
-  document.body.style.overflow = "hidden";
-
-  const preloaderInterval = setInterval(() => {
-    progress += Math.random() * 12 + 4;
-    if (progress > 100) progress = 100;
-    preloaderBar.style.width = progress + "%";
-    const phraseTarget = Math.floor(progress / 25);
-    if (phraseTarget !== phraseIdx && phraseTarget < phrases.length) {
-      phraseIdx = phraseTarget;
-      preloaderText.textContent = phrases[phraseIdx];
-    }
-    if (progress >= 100) {
-      clearInterval(preloaderInterval);
-      preloaderText.textContent = "welcome";
-      setTimeout(() => {
-        preloader.classList.add("done");
-        document.body.style.overflow = "";
-      }, 400);
-    }
-  }, 180);
-
-  // ============ СКРОЛЛ-ИНДИКАТОР ============
-  const scrollProgress = document.getElementById("scrollProgress");
-  window.addEventListener("scroll", () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    scrollProgress.style.width = scrolled + "%";
-  });
-
-  // ============ HOVER КУРСОРА ============
-  document.querySelectorAll("a, button, .nav-btn, .theme-btn, .link-card, .charges-btn, .modal-close").forEach(el => {
-    el.addEventListener("mouseenter", () => cursorRing.classList.add("hover"));
-    el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
-  });
-
-  // ============ ЗВУК КЛИКА ============
-  document.querySelectorAll(".nav-btn, .theme-btn, .link-card, .charges-btn, .modal-close").forEach(el => {
-    el.addEventListener("click", playClick);
-  });
+  // ---------- время по Москве ----------
+  const clock = document.getElementById("clock");
+  const fmt = new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", hour: "2-digit", minute: "2-digit" });
+  function tick() { clock.textContent = fmt.format(new Date()); }
+  tick();
+  setInterval(tick, 10000);
 </script>
 
 </body>

@@ -83,10 +83,9 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    body, a, button, input, .swatch, .card, .btn, .close { cursor: none; }
+    body, a, button, input, .swatch, .card, .btn, .close, .love-btn { cursor: none; }
   }
 
-  /* ---------- КУРСОР ---------- */
   .cursor-ring {
     position: fixed;
     top: 0; left: 0;
@@ -126,8 +125,111 @@
     .cursor-ring, .cursor-dot { display: none !important; }
   }
 
-  /* ---------- фон ---------- */
-  .aurora {
+  .love-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--accent);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    opacity: 0.45;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+                border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .love-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .love-btn:active { transform: scale(0.95); }
+
+  .love-btn .heart {
+    display: inline-block;
+    animation: heartBeat 1.6s ease-in-out infinite;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+  }
+
+  .love-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  [data-theme="light"] .love-overlay { background: rgba(255, 255, 255, 0.65); }
+  .love-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .love-card {
+    padding: 40px 56px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    text-align: center;
+    transform: translateY(20px) scale(0.9);
+    transition: transform 0.5s var(--ease);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+  .love-overlay.show .love-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .love-text {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(28px, 5vw, 48px);
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.1;
+  }
+
+  .love-heart-big {
+    font-size: 40px;
+    margin-top: 12px;
+    color: var(--accent-2);
+    animation: heartBeat 1.2s ease-in-out infinite;
+  }
+
+  .float-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    z-index: 9997;
+    animation: floatUp 2.5s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.6) rotate(0deg); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-200px) scale(1.4) rotate(30deg); }
+  }
+    .aurora {
     position: fixed;
     inset: -30%;
     z-index: -1;
@@ -142,7 +244,6 @@
     to { transform: translate3d(6%, -5%, 0) rotate(14deg) scale(1.1); }
   }
 
-  /* ---------- полоска прокрутки ---------- */
   .progress {
     position: fixed;
     top: 0; left: 0;
@@ -157,7 +258,6 @@
     @keyframes grow { to { transform: scaleX(1); } }
   }
 
-  /* ---------- шапка ---------- */
   .topbar {
     position: sticky;
     top: 0;
@@ -191,7 +291,6 @@
     flex-wrap: wrap;
   }
 
-  /* ---------- МУЗЫКА ---------- */
   .music-panel {
     display: flex;
     align-items: center;
@@ -603,6 +702,7 @@
     .volume-slider { width: 60px; }
     .topbar { padding: 12px 16px; }
     .topbar-right { gap: 10px; }
+    .love-btn { bottom: 16px; right: 16px; width: 40px; height: 40px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -709,6 +809,17 @@
 </footer>
 
 <audio id="bgMusic" loop preload="auto" src="velariomusic-background-ambient-585950.mp3"></audio>
+
+<button class="love-btn" id="loveBtn" aria-label="Секрет">
+  <span class="heart">♥</span>
+</button>
+
+<div class="love-overlay" id="loveOverlay">
+  <div class="love-card">
+    <div class="love-text">люблю сонечку</div>
+    <div class="love-heart-big">♥</div>
+  </div>
+</div>
 
 <dialog id="dialog" aria-labelledby="dlgTitle">
   <div class="dlg-head">
@@ -906,20 +1017,19 @@
       el.textContent = "—";
     }
   })();
+</script>
 
   // ---------- МУЗЫКА ----------
   const bgMusic = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
   const volumeSlider = document.getElementById("volumeSlider");
 
-  // восстановление громкости
   try {
     const savedVol = localStorage.getItem("x3led-vol");
     if (savedVol !== null) volumeSlider.value = savedVol;
   } catch (e) {}
   bgMusic.volume = (volumeSlider.value / 100) * 0.6;
 
-  // восстановление "играло/на паузе"
   let wasPlaying = false;
   try { wasPlaying = localStorage.getItem("x3led-music") === "1"; } catch (e) {}
 
@@ -947,7 +1057,6 @@
     try { localStorage.setItem("x3led-vol", volumeSlider.value); } catch (e) {}
   });
 
-  // автовоспроизведение если было включено (сработает после первого клика)
   if (wasPlaying) {
     const tryAutoplay = async () => {
       try {
@@ -1012,15 +1121,55 @@
   }
   animateRing();
 
-  document.querySelectorAll("a, button, input, .swatch, .card, .btn, .close, .music-btn, .volume-slider").forEach(el => {
+  document.querySelectorAll("a, button, input, .swatch, .card, .btn, .close, .love-btn, .music-btn, .volume-slider").forEach(el => {
     el.addEventListener("mouseenter", () => cursorRing.classList.add("hover"));
     el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
   });
 
-  // ЗВУК КЛИКА
-  document.querySelectorAll("a, button, .swatch, .card, .btn, .close, .music-btn").forEach(el => {
+  // ---------- ЗВУК КЛИКА НА ЭЛЕМЕНТАХ ----------
+  document.querySelectorAll("a, button, .swatch, .card, .btn, .close, .love-btn, .music-btn").forEach(el => {
     el.addEventListener("click", playClick);
   });
+
+  // ---------- СЕРДЕЧКО / СОНЕЧКА ----------
+  const loveBtn = document.getElementById("loveBtn");
+  const loveOverlay = document.getElementById("loveOverlay");
+  let loveTimeout = null;
+
+  function spawnHearts() {
+    const emojis = ["♥", "❤", "💕", "💗", "💖"];
+    for (let i = 0; i < 14; i++) {
+      setTimeout(() => {
+        const h = document.createElement("div");
+        h.className = "float-heart";
+        h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        h.style.left = (Math.random() * 100) + "vw";
+        h.style.top = (Math.random() * 40 + 40) + "vh";
+        h.style.color = i % 2 === 0 ? "var(--accent)" : "var(--accent-2)";
+        h.style.fontSize = (16 + Math.random() * 20) + "px";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2500);
+      }, i * 80);
+    }
+  }
+
+  function openLove() {
+    loveOverlay.classList.add("show");
+    spawnHearts();
+    clearTimeout(loveTimeout);
+    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 5000);
+  }
+
+  function closeLove() {
+    loveOverlay.classList.remove("show");
+  }
+
+  loveBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    openLove();
+  });
+
+  loveOverlay.addEventListener("click", closeLove);
 </script>
 
 </body>

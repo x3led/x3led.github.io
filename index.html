@@ -25,7 +25,6 @@
     --modal-border: #1e1e1e;
     --scroll-track: #0a0a0a;
     --scroll-thumb: #222;
-    --scroll-thumb-hover: #333;
     --float-opacity: 0.018;
     --cursor-color: #fff;
   }
@@ -48,7 +47,6 @@
     --modal-border: #e0e0e0;
     --scroll-track: #f5f5f5;
     --scroll-thumb: #ccc;
-    --scroll-thumb-hover: #aaa;
     --float-opacity: 0.04;
     --cursor-color: #000;
   }
@@ -70,17 +68,14 @@
   }
 
   .cursor {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 20px; height: 20px;
     border: 1.5px solid var(--cursor-color);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                background 0.25s ease, border-color 0.25s ease, opacity 0.2s ease;
+    transition: width 0.25s, height 0.25s, background 0.25s, opacity 0.2s;
     mix-blend-mode: difference;
     opacity: 0;
   }
@@ -89,22 +84,19 @@
   [data-theme="light"] .cursor { mix-blend-mode: normal; }
 
   .cursor-dot {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 5px; height: 5px;
     background: var(--cursor-color);
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
     transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease;
     opacity: 0;
   }
   .cursor-dot.visible { opacity: 1; }
 
   .bg-float {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
     pointer-events: none;
     z-index: 0;
@@ -123,7 +115,7 @@
   }
   [data-theme="light"] .bg-float span { color: rgba(0, 0, 0, var(--float-opacity)); }
 
-  .bg-float span:nth-child(1) { top: 5%; left: 0; animation-duration: 45s; animation-delay: 0s; }
+  .bg-float span:nth-child(1) { top: 5%; left: 0; animation-duration: 45s; }
   .bg-float span:nth-child(2) { top: 30%; left: -20%; animation-duration: 55s; animation-delay: -15s; }
   .bg-float span:nth-child(3) { top: 60%; left: 10%; animation-duration: 60s; animation-delay: -30s; }
   .bg-float span:nth-child(4) { top: 80%; left: -10%; animation-duration: 50s; animation-delay: -10s; }
@@ -215,7 +207,6 @@
     height: 36px;
     transition: all 0.25s ease;
   }
-
   .music-controls:hover { border-color: var(--btn-hover-border); }
 
   .music-btn {
@@ -249,16 +240,10 @@
   }
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
     width: 12px; height: 12px;
     background: var(--btn-text);
     border-radius: 50%;
     cursor: none;
-    transition: all 0.2s ease;
-  }
-  .volume-slider::-webkit-slider-thumb:hover {
-    background: var(--text);
-    transform: scale(1.2);
   }
   .volume-slider::-moz-range-thumb {
     width: 12px; height: 12px;
@@ -284,14 +269,12 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 0;
     margin-bottom: 40px;
     font-size: 180px;
     font-weight: 900;
     line-height: 0.85;
     letter-spacing: -10px;
     color: var(--text);
-    position: relative;
     user-select: none;
     transition: color 0.4s ease;
   }
@@ -376,13 +359,11 @@
     letter-spacing: 0.3px;
     cursor: none;
   }
-
   .links a:hover {
     background: var(--btn-active-bg);
     color: var(--btn-active-text);
     border-color: var(--btn-active-bg);
   }
-
   .links a::after { content: "↗"; opacity: 0.5; font-size: 11px; }
 
   .clock {
@@ -422,7 +403,6 @@
     flex-direction: column;
     overflow: hidden;
     animation: modalIn 0.3s ease;
-    transition: background 0.4s ease;
   }
 
   @keyframes modalIn {
@@ -451,7 +431,6 @@
     color: var(--text-tagline);
     font-size: 24px;
     cursor: none;
-    transition: color 0.2s;
     line-height: 1;
   }
   .modal-close:hover { color: var(--text); }
@@ -474,23 +453,18 @@
   .modal-body li {
     counter-increment: item;
     padding: 3px 0;
-    color: var(--text-dim);
-    transition: color 0.15s;
   }
-
   .modal-body li::before {
     content: counter(item) ".";
     display: inline-block;
     width: 45px;
     color: var(--text-faint);
   }
-
   .modal-body li:hover { color: var(--text); }
 
   .modal-body::-webkit-scrollbar { width: 6px; }
   .modal-body::-webkit-scrollbar-track { background: var(--scroll-track); }
   .modal-body::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 3px; }
-  .modal-body::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hover); }
 
   @media (max-width: 640px) {
     .logo { font-size: 100px; letter-spacing: -5px; }
@@ -498,8 +472,6 @@
     .description { font-size: 14px; padding: 0 10px; }
     .topbar { top: 16px; left: 16px; right: 16px; gap: 8px; flex-wrap: wrap; }
     .clock { font-size: 11px; bottom: 16px; }
-    .modal-header { padding: 18px 20px; }
-    .modal-body { padding: 15px 20px 25px; }
     .menu-btn { padding: 6px 12px; font-size: 11px; }
     .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
     .music-controls { height: 32px; padding: 4px 8px 4px 4px; }
@@ -513,10 +485,7 @@
 <div class="cursor-dot" id="cursorDot"></div>
 
 <div class="bg-float">
-  <span>x3led</span>
-  <span>x3led</span>
-  <span>x3led</span>
-  <span>x3led</span>
+  <span>x3led</span><span>x3led</span><span>x3led</span><span>x3led</span>
 </div>
 
 <div class="topbar">
@@ -525,10 +494,10 @@
     <button class="menu-btn active" onclick="closeModal()">главная</button>
     <button class="menu-btn" onclick="openModal()">обвинения</button>
     <div class="music-controls">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Музыка">♫</button>
-      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" title="Громкость">
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Шум">♫</button>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30">
     </div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Сменить тему">☾</button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Тема">☾</button>
   </div>
 </div>
 
@@ -536,14 +505,11 @@
   <div class="logo">
     <span class="bang">!</span><span class="letter">x</span><span class="letter">3</span><span class="letter">l</span><span class="letter">e</span><span class="letter">d</span>
   </div>
-
   <div class="tagline">играю в игры, не сплю ночью, гуляю.</div>
-
   <div class="description">
     Привет! Это моя первая страничка обо мне,<br>
     в дальнейшем она будет обновляться.
   </div>
-
   <div class="links">
     <a href="https://discord.com/users/928360132482572371" target="_blank">discord</a>
     <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank">steam</a>
@@ -637,21 +603,26 @@
     list.appendChild(li);
   });
 
+  // ============ ЕДИНЫЙ AUDIO CONTEXT ============
+  let audioCtx = null;
+  function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
   // ============ ЗВУК КЛИКА ============
-  let clickCtx = null;
   function playClick() {
     try {
-      if (!clickCtx) clickCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = clickCtx.createOscillator();
-      const gain = clickCtx.createGain();
+      const ctx = getCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
       osc.type = "sine";
       osc.frequency.value = 900;
-      gain.gain.setValueAtTime(0.06, clickCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, clickCtx.currentTime + 0.08);
-      osc.connect(gain);
-      gain.connect(clickCtx.destination);
-      osc.start(clickCtx.currentTime);
-      osc.stop(clickCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.08);
     } catch (e) {}
   }
 
@@ -659,12 +630,82 @@
     el.addEventListener("click", playClick);
   });
 
+  // ============ ТИХИЙ ШУМ ============
+  let noiseSource = null;
+  let noiseGain = null;
+  let noiseFilter = null;
+  let musicPlaying = false;
+
+  function buildNoiseBuffer(ctx) {
+    const bufferSize = 2 * ctx.sampleRate;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      // pink-ish фильтр для мягкого звука
+      data[i] = (last + 0.02 * white) / 1.02;
+      last = data[i];
+      data[i] *= 3.5;
+    }
+    return buffer;
+  }
+
+  function startNoise() {
+    const ctx = getCtx();
+    if (ctx.state === "suspended") ctx.resume();
+
+    const buffer = buildNoiseBuffer(ctx);
+    noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = buffer;
+    noiseSource.loop = true;
+
+    noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "lowpass";
+    noiseFilter.frequency.value = 600;
+    noiseFilter.Q.value = 0.7;
+
+    noiseGain = ctx.createGain();
+    noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
+
+    noiseSource.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
+    noiseSource.start();
+    musicPlaying = true;
+  }
+
+  function stopNoise() {
+    if (noiseSource) {
+      try { noiseSource.stop(); } catch (e) {}
+      noiseSource.disconnect();
+      noiseSource = null;
+    }
+    musicPlaying = false;
+  }
+
+  function toggleMusic() {
+    const btn = document.getElementById("musicBtn");
+    if (musicPlaying) {
+      stopNoise();
+      btn.classList.remove("playing");
+      btn.textContent = "♫";
+    } else {
+      startNoise();
+      btn.classList.add("playing");
+      btn.textContent = "❚❚";
+    }
+  }
+
+  const volumeSlider = document.getElementById("volumeSlider");
+  volumeSlider.addEventListener("input", () => {
+    if (noiseGain) {
+      noiseGain.gain.value = parseFloat(volumeSlider.value) / 100 * 0.35;
+    }
+  });
+
   // ============ КУРСОР ============
   const cursor = document.getElementById("cursor");
   const dot = document.getElementById("cursorDot");
-
-  let mouseX = 0, mouseY = 0;
-  let curX = 0, curY = 0;
+  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
 
   document.addEventListener("mousemove", e => {
     mouseX = e.clientX;
@@ -727,32 +768,3 @@
     document.getElementById("modal").classList.remove("show");
     document.body.style.overflow = "";
     document.querySelectorAll(".menu-btn")[0].classList.add("active");
-    document.querySelectorAll(".menu-btn")[1].classList.remove("active");
-  }
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeModal();
-  });
-
-  // ============ ЧАСЫ МСК ============
-  function updateClock() {
-    const now = new Date();
-    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
-    const hh = String(msk.getHours()).padStart(2, "0");
-    const mm = String(msk.getMinutes()).padStart(2, "0");
-    const ss = String(msk.getSeconds()).padStart(2, "0");
-    document.getElementById("clock").textContent = `у меня сейчас ${hh}:${mm}:${ss} мск`;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  // ============ МУЗЫКА (ambient генератор) ============
-  let musicCtx = null;
-  let musicNodes = [];
-  let musicPlaying = false;
-
-  function startMusic() {
-    if (!musicCtx) {
-      musicCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (musicCtx.state

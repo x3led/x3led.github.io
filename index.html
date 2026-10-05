@@ -703,7 +703,6 @@
     100% { opacity: 0; transform: translateY(-260px) scale(1.5) rotate(40deg); }
   }
 
-  /* УВЕДОМЛЕНИЕ 23:00 */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -751,7 +750,6 @@
   }
   .toast-close:hover { color: var(--text); }
 
-  /* СКРИМЕР */
   .jumpscare {
     position: fixed;
     inset: 0;
@@ -779,41 +777,12 @@
   .jumpscare-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    filter: contrast(1.5) saturate(2) brightness(0.8);
+    object-fit: contain;
     animation: jumpscareZoom 0.4s ease-out;
   }
   @keyframes jumpscareZoom {
     from { transform: scale(0.3); }
-    to { transform: scale(1.1); }
-  }
-
-  .jumpscare-flash {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, #ff0000 0%, #660000 50%, #000 100%);
-    opacity: 0;
-    animation: flashRed 0.15s ease-out 0.1s 2 alternate;
-  }
-  @keyframes flashRed {
-    to { opacity: 0.9; }
-  }
-
-  .jumpscare-text {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ff2222;
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: 32px;
-    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
-    letter-spacing: 0.1em;
-    animation: pulseText 0.5s ease-in-out infinite alternate;
-  }
-  @keyframes pulseText {
-    to { opacity: 0.5; }
+    to { transform: scale(1.05); }
   }
 
   @media (max-width: 640px) {
@@ -959,9 +928,7 @@
 </div>
 
 <div class="jumpscare" id="jumpscare">
-  <img class="jumpscare-img" id="jumpscareImg" src="" alt="">
-  <div class="jumpscare-flash"></div>
-  <div class="jumpscare-text">БУ!</div>
+  <img class="jumpscare-img" id="jumpscareImg" src="favicon.png" alt="">
 </div>
 
 <dialog id="dialog" aria-labelledby="dlgTitle">
@@ -1233,52 +1200,50 @@
     if (e.key === "Escape") closeLove();
   });
 
-  // ---------- ПАСХАЛКА 1: кувырок цифры 200 при клике ----------
+  // ---------- ПАСХАЛКА: кувырок цифры 200 при клике ----------
   countEl.addEventListener("click", () => {
     countEl.classList.add("flip");
     setTimeout(() => countEl.classList.remove("flip"), 800);
   });
 
-  // ---------- ПАСХАЛКА 2: "любопытный" после 3 прокруток до конца ----------
+  // ---------- ПАСХАЛКА: "любопытный" после 3 прокруток до конца ----------
   let scrollToBottomCount = 0;
   let lastScrollTop = 0;
 
   window.addEventListener("scroll", () => {
     const st = window.scrollY;
     const docH = document.documentElement.scrollHeight - window.innerHeight;
-    // достигли конца и до этого скроллили вниз
     if (st >= docH - 10 && lastScrollTop < st) {
       scrollToBottomCount++;
       if (scrollToBottomCount === 3) {
-        showToast("Любопытный 🔍", "Ты докрутил до конца уже 3 раза. Что-то ищешь?");
+        showToast("Любопытный", "Ты докрутил до конца уже 3 раза. Что-то ищешь?", "\uD83D\uDD0D");
         scrollToBottomCount = 0;
       }
     }
     lastScrollTop = st;
   });
 
-  // ---------- ПАСХАЛКА 3: 23:00 — пора спать ----------
+  // ---------- ПАСХАЛКА: 23:00 — пора спать ----------
   function checkBedtime() {
     const now = new Date();
     const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
     const h = msk.getHours();
     const m = msk.getMinutes();
 
-    // Показываем ровно в 23:00 (в течение первой минуты часа)
     if (h === 23 && m === 0) {
       const key = "x3led-bedtime-" + msk.toISOString().slice(0, 10);
       try {
-        if (localStorage.getItem(key)) return; // уже показывали сегодня
+        if (localStorage.getItem(key)) return;
         localStorage.setItem(key, "1");
       } catch (e) {}
 
-      showToast("\uD83C\uDF19 Пора спать", "x3led, уже 23:00. Ложись спать.");
+      showToast("Пора спать", "x3led, уже 23:00. Ложись спать.", "\uD83C\uDF19");
     }
   }
   checkBedtime();
   setInterval(checkBedtime, 30000);
 
-  // ---------- TOAST (уведомление) ----------
+  // ---------- TOAST ----------
   const toast = document.getElementById("toast");
   const toastIcon = document.getElementById("toastIcon");
   const toastTitle = document.getElementById("toastTitle");
@@ -1300,17 +1265,12 @@
     clearTimeout(toastTimeout);
   });
 
-  // ---------- ПАСХАЛКА 4: 5 кликов по аватарке → скример ----------
+  // ---------- ПАСХАЛКА: 5 кликов по аватарке → скример ----------
   const brandAvatar = document.getElementById("brandAvatar");
   const jumpscare = document.getElementById("jumpscare");
-  const jumpscareImg = document.getElementById("jumpscareImg");
 
   let avatarClicks = 0;
   let avatarClickTimer = null;
-
-  // Картинка для скримера — можешь заменить на свою страшную
-  // По умолчанию — та же аватарка, но с эффектами
-  jumpscareImg.src = "favicon.png";
 
   function generateScarySound() {
     try {
@@ -1319,10 +1279,8 @@
       const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
       const data = buffer.getChannelData(0);
 
-      // Резкий шум с искажением
       for (let i = 0; i < data.length; i++) {
         const t = i / ctx.sampleRate;
-        // Смесь белого шума и высокого тона
         data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 2) * 0.5 +
                   Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 3) * 0.3;
       }
@@ -1356,7 +1314,6 @@
 
   brandAvatar.addEventListener("click", () => {
     avatarClicks++;
-
     clearTimeout(avatarClickTimer);
     avatarClickTimer = setTimeout(() => { avatarClicks = 0; }, 2000);
 
@@ -1366,7 +1323,7 @@
     }
   });
 
-  // ---------- ПАСХАЛКА 5: Konami Code (бонус) ----------
+  // ---------- БОНУС: Konami Code ----------
   const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
   let konamiIndex = 0;
 
@@ -1406,11 +1363,10 @@
         setTimeout(() => c.remove(), 3200);
       }, i * 20);
     }
-    showToast("\uD83C\uDF89 Konami Code", "Ты знаешь классику. Уважение.", "\uD83C\uDF89");
+    showToast("Konami Code", "Ты знаешь классику. Уважение.", "\uD83C\uDF89");
   }
 
-  // ---------- Секретный console.log ----------
-  console.log("%c\uD83D\uDC4B Привет, разработчик!", "color:#8b6cff;font-size:16px;font-weight:bold;");
+  console.log("%cПривет, разработчик!", "color:#8b6cff;font-size:16px;font-weight:bold;");
   console.log("%cТы нашёл консоль. Попробуй ↑↑↓↓←→←→BA", "color:#a3a3b5;font-size:12px;");
 </script>
 

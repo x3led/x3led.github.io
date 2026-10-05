@@ -127,15 +127,44 @@
     gap: 16px;
     flex-wrap: wrap;
   }
+
   .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .brand-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    transition: transform 0.2s var(--ease), box-shadow 0.3s;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .brand-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .brand-avatar:active { transform: scale(0.95); }
+  .brand-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .brand-text {
     font-family: var(--display);
     font-weight: 600;
     font-size: 15px;
-    color: var(--text);
-    text-decoration: none;
     letter-spacing: -0.02em;
   }
-  .brand span, .dot { color: var(--accent); }
+  .brand-text span { color: var(--accent); }
 
   .topbar-right {
     display: flex;
@@ -370,7 +399,19 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease);
+    user-select: none;
   }
+  .count.flip {
+    animation: flipNumber 0.8s var(--ease);
+  }
+  @keyframes flipNumber {
+    0% { transform: rotateX(0deg) scale(1); }
+    50% { transform: rotateX(180deg) scale(1.15); }
+    100% { transform: rotateX(360deg) scale(1); }
+  }
+
   .charges-side { max-width: 26em; }
   .charges-side p { color: var(--text-dim); margin-bottom: 24px; }
   .btn {
@@ -662,6 +703,119 @@
     100% { opacity: 0; transform: translateY(-260px) scale(1.5) rotate(40deg); }
   }
 
+  /* УВЕДОМЛЕНИЕ 23:00 */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    max-width: 340px;
+    padding: 18px 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    z-index: 100;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transform: translateY(150%);
+    transition: transform 0.6s var(--ease);
+    font-size: 14px;
+  }
+  .toast.show { transform: translateY(0); }
+  .toast-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .toast-content { flex: 1; }
+  .toast-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .toast-text {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .toast-close {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .toast-close:hover { color: var(--text); }
+
+  /* СКРИМЕР */
+  .jumpscare {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .jumpscare.show {
+    opacity: 1;
+    pointer-events: auto;
+    animation: shakeScreen 0.3s ease-in-out;
+  }
+  @keyframes shakeScreen {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-10px, 5px); }
+    40% { transform: translate(10px, -5px); }
+    60% { transform: translate(-8px, -8px); }
+    80% { transform: translate(8px, 8px); }
+  }
+
+  .jumpscare-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.5) saturate(2) brightness(0.8);
+    animation: jumpscareZoom 0.4s ease-out;
+  }
+  @keyframes jumpscareZoom {
+    from { transform: scale(0.3); }
+    to { transform: scale(1.1); }
+  }
+
+  .jumpscare-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, #ff0000 0%, #660000 50%, #000 100%);
+    opacity: 0;
+    animation: flashRed 0.15s ease-out 0.1s 2 alternate;
+  }
+  @keyframes flashRed {
+    to { opacity: 0.9; }
+  }
+
+  .jumpscare-text {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff2222;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 32px;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    letter-spacing: 0.1em;
+    animation: pulseText 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes pulseText {
+    to { opacity: 0.5; }
+  }
+
   @media (max-width: 640px) {
     .dlg-body ol { columns: 1; }
     .dlg-head { flex-wrap: wrap; }
@@ -672,6 +826,8 @@
     .volume-slider { width: 55px; }
     .topbar { padding: 12px 16px; }
     .topbar-right { gap: 10px; }
+    .brand-avatar { width: 32px; height: 32px; }
+    .toast { bottom: 16px; left: 16px; right: 16px; max-width: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -687,7 +843,12 @@
 <div class="progress" aria-hidden="true"></div>
 
 <header class="topbar">
-  <a class="brand" href="#top">x3led<span>.</span></a>
+  <a class="brand" href="#top">
+    <div class="brand-avatar" id="brandAvatar">
+      <img src="favicon.png" alt="x3led">
+    </div>
+    <div class="brand-text">x3led<span>.</span></div>
+  </a>
   <div class="topbar-right">
     <div class="music-panel">
       <button class="music-btn" id="musicBtn" aria-label="Музыка">&#9654;</button>
@@ -786,6 +947,21 @@
     <div class="love-heart-big">&#9829;</div>
     <div class="love-hint">нажми чтобы закрыть</div>
   </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">&#127769;</div>
+  <div class="toast-content">
+    <div class="toast-title" id="toastTitle">Пора спать</div>
+    <div class="toast-text" id="toastText">x3led, уже 23:00. Ложись спать.</div>
+  </div>
+  <button class="toast-close" id="toastClose">&times;</button>
+</div>
+
+<div class="jumpscare" id="jumpscare">
+  <img class="jumpscare-img" id="jumpscareImg" src="" alt="">
+  <div class="jumpscare-flash"></div>
+  <div class="jumpscare-text">БУ!</div>
 </div>
 
 <dialog id="dialog" aria-labelledby="dlgTitle">
@@ -1056,6 +1232,186 @@
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeLove();
   });
+
+  // ---------- ПАСХАЛКА 1: кувырок цифры 200 при клике ----------
+  countEl.addEventListener("click", () => {
+    countEl.classList.add("flip");
+    setTimeout(() => countEl.classList.remove("flip"), 800);
+  });
+
+  // ---------- ПАСХАЛКА 2: "любопытный" после 3 прокруток до конца ----------
+  let scrollToBottomCount = 0;
+  let lastScrollTop = 0;
+
+  window.addEventListener("scroll", () => {
+    const st = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    // достигли конца и до этого скроллили вниз
+    if (st >= docH - 10 && lastScrollTop < st) {
+      scrollToBottomCount++;
+      if (scrollToBottomCount === 3) {
+        showToast("Любопытный 🔍", "Ты докрутил до конца уже 3 раза. Что-то ищешь?");
+        scrollToBottomCount = 0;
+      }
+    }
+    lastScrollTop = st;
+  });
+
+  // ---------- ПАСХАЛКА 3: 23:00 — пора спать ----------
+  function checkBedtime() {
+    const now = new Date();
+    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+    const h = msk.getHours();
+    const m = msk.getMinutes();
+
+    // Показываем ровно в 23:00 (в течение первой минуты часа)
+    if (h === 23 && m === 0) {
+      const key = "x3led-bedtime-" + msk.toISOString().slice(0, 10);
+      try {
+        if (localStorage.getItem(key)) return; // уже показывали сегодня
+        localStorage.setItem(key, "1");
+      } catch (e) {}
+
+      showToast("\uD83C\uDF19 Пора спать", "x3led, уже 23:00. Ложись спать.");
+    }
+  }
+  checkBedtime();
+  setInterval(checkBedtime, 30000);
+
+  // ---------- TOAST (уведомление) ----------
+  const toast = document.getElementById("toast");
+  const toastIcon = document.getElementById("toastIcon");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
+  const toastClose = document.getElementById("toastClose");
+  let toastTimeout = null;
+
+  function showToast(title, text, icon) {
+    if (icon) toastIcon.textContent = icon;
+    toastTitle.textContent = title;
+    toastText.textContent = text;
+    toast.classList.add("show");
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove("show"), 10000);
+  }
+
+  toastClose.addEventListener("click", () => {
+    toast.classList.remove("show");
+    clearTimeout(toastTimeout);
+  });
+
+  // ---------- ПАСХАЛКА 4: 5 кликов по аватарке → скример ----------
+  const brandAvatar = document.getElementById("brandAvatar");
+  const jumpscare = document.getElementById("jumpscare");
+  const jumpscareImg = document.getElementById("jumpscareImg");
+
+  let avatarClicks = 0;
+  let avatarClickTimer = null;
+
+  // Картинка для скримера — можешь заменить на свою страшную
+  // По умолчанию — та же аватарка, но с эффектами
+  jumpscareImg.src = "favicon.png";
+
+  function generateScarySound() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const duration = 1.2;
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Резкий шум с искажением
+      for (let i = 0; i < data.length; i++) {
+        const t = i / ctx.sampleRate;
+        // Смесь белого шума и высокого тона
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 2) * 0.5 +
+                  Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 3) * 0.3;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+
+      const gain = ctx.createGain();
+      gain.gain.value = 0.4;
+
+      const distortion = ctx.createWaveShaper();
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i * 2) / 256 - 1;
+        curve[i] = Math.tanh(x * 5);
+      }
+      distortion.curve = curve;
+
+      source.connect(distortion).connect(gain).connect(ctx.destination);
+      source.start();
+    } catch (e) {}
+  }
+
+  function triggerJumpscare() {
+    generateScarySound();
+    jumpscare.classList.add("show");
+    setTimeout(() => {
+      jumpscare.classList.remove("show");
+    }, 1500);
+  }
+
+  brandAvatar.addEventListener("click", () => {
+    avatarClicks++;
+
+    clearTimeout(avatarClickTimer);
+    avatarClickTimer = setTimeout(() => { avatarClicks = 0; }, 2000);
+
+    if (avatarClicks >= 5) {
+      avatarClicks = 0;
+      triggerJumpscare();
+    }
+  });
+
+  // ---------- ПАСХАЛКА 5: Konami Code (бонус) ----------
+  const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let konamiIndex = 0;
+
+  document.addEventListener("keydown", e => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        konamiIndex = 0;
+        spawnConfetti();
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function spawnConfetti() {
+    const colors = ["#8b6cff", "#ff5c9e", "#22ddaa", "#ffaa33", "#ff4444"];
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => {
+        const c = document.createElement("div");
+        c.style.position = "fixed";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.top = "-20px";
+        c.style.width = "10px";
+        c.style.height = "10px";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        c.style.zIndex = "99998";
+        c.style.pointerEvents = "none";
+        c.style.transition = "transform 3s linear, opacity 3s linear";
+        document.body.appendChild(c);
+        setTimeout(() => {
+          c.style.transform = "translateY(" + (window.innerHeight + 40) + "px) rotate(" + (Math.random() * 720) + "deg)";
+          c.style.opacity = "0";
+        }, 30);
+        setTimeout(() => c.remove(), 3200);
+      }, i * 20);
+    }
+    showToast("\uD83C\uDF89 Konami Code", "Ты знаешь классику. Уважение.", "\uD83C\uDF89");
+  }
+
+  // ---------- Секретный console.log ----------
+  console.log("%c\uD83D\uDC4B Привет, разработчик!", "color:#8b6cff;font-size:16px;font-weight:bold;");
+  console.log("%cТы нашёл консоль. Попробуй ↑↑↓↓←→←→BA", "color:#a3a3b5;font-size:12px;");
 </script>
 
 </body>

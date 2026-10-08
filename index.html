@@ -169,11 +169,22 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .text-gradient {
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-color) 70%, var(--accent-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: background 0.5s ease;
+        /* Interactive Hoverable Letters for Header */
+        .hover-letter {
+            display: inline-block;
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.25s ease;
+            cursor: default;
+        }
+
+        .hover-letter:hover {
+            transform: translateY(-6px) scale(1.15);
+            text-shadow: 0 0 16px var(--accent-color);
+        }
+
+        /* Bright Solid Color for "x3" without dark gradients */
+        .text-accent-bright {
+            color: var(--accent-color);
+            transition: color 0.5s ease;
         }
 
         .accent-bg {
@@ -326,7 +337,15 @@
 
                 <div class="space-y-2">
                     <div class="flex items-center justify-center sm:justify-start space-x-2">
-                        <h1 class="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-gradient">x3led</h1>
+                        <!-- ANIMATED & INSTANTLY VISIBLE HEADER -->
+                        <h1 class="text-3xl sm:text-4xl font-extrabold font-display tracking-tight flex items-center select-none">
+                            <span class="text-accent-bright">
+                                <span class="hover-letter">x</span><span class="hover-letter">3</span>
+                            </span>
+                            <span class="text-white">
+                                <span class="hover-letter">l</span><span class="hover-letter">e</span><span class="hover-letter">d</span>
+                            </span>
+                        </h1>
                         <span class="glass-pill px-2.5 py-0.5 rounded-md text-[10px] font-mono text-gray-300 border border-white/10">dev / gamer</span>
                     </div>
                     

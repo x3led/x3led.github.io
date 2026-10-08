@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>x3led | Personal Space</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for sleek icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        accent: 'var(--accent-color)',
+                        'accent-secondary': 'var(--accent-secondary)',
+                        'accent-glow': 'var(--accent-glow)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root[data-theme="purple"] {
+            --accent-color: #a855f7;
+            --accent-secondary: #ec4899;
+            --accent-glow: rgba(168, 85, 247, 0.4);
+            --bg-gradient: radial-gradient(circle at 50% 10%, #1e1035 0%, #090514 100%);
+            --card-border: rgba(168, 85, 247, 0.25);
+            --particle-1: 168, 85, 247;
+            --particle-2: 236, 72, 153;
+        }
+
+        :root[data-theme="emerald"] {
+            --accent-color: #10b981;
+            --accent-secondary: #06b6d4;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --bg-gradient: radial-gradient(circle at 50% 10%, #062e24 0%, #02120e 100%);
+            --card-border: rgba(16, 185, 129, 0.25);
+            --particle-1: 16, 185, 129;
+            --particle-2: 6, 182, 212;
+        }
+
+        :root[data-theme="crimson"] {
+            --accent-color: #ef4444;
+            --accent-secondary: #f97316;
+            --accent-glow: rgba(239, 68, 68, 0.4);
+            --bg-gradient: radial-gradient(circle at 50% 10%, #3b0c0c 0%, #120303 100%);
+            --card-border: rgba(239, 68, 68, 0.25);
+            --particle-1: 239, 68, 68;
+            --particle-2: 249, 115, 22;
+        }
+
+        :root[data-theme="cyan"] {
+            --accent-color: #06b6d4;
+            --accent-secondary: #3b82f6;
+            --accent-glow: rgba(6, 182, 212, 0.4);
+            --bg-gradient: radial-gradient(circle at 50% 10%, #0a2540 0%, #030a14 100%);
+            --card-border: rgba(6, 182, 212, 0.25);
+            --particle-1: 6, 182, 212;
+            --particle-2: 59, 130, 246;
+        }
+
+        :root[data-theme="vapor"] {
+            --accent-color: #f472b6;
+            --accent-secondary: #38bdf8;
+            --accent-glow: rgba(244, 114, 182, 0.4);
+            --bg-gradient: radial-gradient(circle at 50% 10%, #31132b 0%, #0d040c 100%);
+            --card-border: rgba(244, 114, 182, 0.25);
+            --particle-1: 244, 114, 182;
+            --particle-2: 56, 189, 248;
+        }
+
+        body {
+            background: #090514;
+            background-image: var(--bg-gradient);
+            color: #f3f4f6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.7s ease;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(18, 14, 33, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-color) 70%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background 0.5s ease;
+        }
+
+        .accent-bg {
+            background-color: var(--accent-color);
+            transition: background-color 0.5s ease;
+        }
+
+        .accent-border {
+            border-color: var(--accent-color);
+            transition: border-color 0.5s ease;
+        }
+
+        .glow-avatar {
+            box-shadow: 0 0 35px var(--accent-glow);
+            transition: box-shadow 0.5s ease, transform 0.3s ease;
+        }
+
+        .glow-avatar:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 50px var(--accent-color);
+        }
+
+        /* Animated Equalizer Bars */
+        .eq-bar {
+            width: 3px;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+            animation: eqBounce 1.2s ease-in-out infinite alternate;
+            transition: background-color 0.5s ease;
+        }
+
+        .eq-bar:nth-child(1) { height: 60%; animation-delay: -0.4s; }
+        .eq-bar:nth-child(2) { height: 100%; animation-delay: -0.2s; }
+        .eq-bar:nth-child(3) { height: 40%; animation-delay: -0.6s; }
+        .eq-bar:nth-child(4) { height: 80%; animation-delay: -0.1s; }
+
+        @keyframes eqBounce {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1); }
+        }
+
+        .eq-paused .eq-bar {
+            animation-play-state: paused;
+            transform: scaleY(0.2);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 15, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Slide Animation for Sections */
+        .tab-content {
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body data-theme="purple" class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 relative selection:bg-purple-500 selection:text-white">
+
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="glass-pill px-4 py-3 rounded-xl flex items-center space-x-3 shadow-2xl border border-emerald-500/30 text-white">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <span id="toastMsg" class="font-medium text-sm">Скопировано в буфер!</span>
+        </div>
+    </div>
+
+    <div class="w-full max-w-xl relative z-10 space-y-6">
+        
+        <!-- MAIN PROFILE CARD -->
+        <main id="mainCard" class="glass-card relative w-full rounded-3xl p-6 sm:p-8 space-y-6 transform-gpu">
+            
+            <!-- HEADER: Moscow Time & Themes Switcher -->
+            <header class="flex items-center justify-between border-b border-white/10 pb-5">
+                <!-- Moscow Time Widget -->
+                <div class="flex items-center space-x-2.5 glass-pill px-3.5 py-1.5 rounded-full text-xs font-mono">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full accent-bg opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 accent-bg"></span>
+                    </span>
+                    <span class="text-gray-400">MSK (UTC+3):</span>
+                    <span id="moscowClock" class="font-semibold text-white tracking-wider">00:00:00</span>
+                </div>
+
+                <!-- SFX Toggle & Theme Selector Dropdown -->
+                <div class="flex items-center space-x-2">
+                    <button id="sfxBtn" title="Переключить звуковые эффекты" class="glass-pill w-9 h-9 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition">
+                        <i class="fa-solid fa-volume-high text-xs" id="sfxIcon"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button id="themeToggleBtn" class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-medium hover:text-white transition">
+                            <i class="fa-solid fa-palette text-xs" style="color: var(--accent-color)"></i>
+                            <span class="hidden sm:inline">Тема</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
+                        </button>
+                        
+                        <div id="themeMenu" class="hidden absolute right-0 mt-2 w-44 glass-card rounded-2xl p-2 z-50 space-y-1 border border-white/10 text-xs shadow-2xl">
+                            <button onclick="setTheme('purple')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
+                                <span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span>
+                                <span>Purple Night</span>
+                            </button>
+                            <button onclick="setTheme('emerald')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                                <span>Hacker Green</span>
+                            </button>
+                            <button onclick="setTheme('crimson')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
+                                <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                                <span>Flame Crimson</span>
+                            </button>
+                            <button onclick="setTheme('cyan')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
+                                <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                                <span>Cyber Cyan</span>
+                            </button>
+                            <button onclick="setTheme('vapor')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
+                                <span class="w-3 h-3 rounded-full bg-pink-400 inline-block"></span>
+                                <span>Vaporwave</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PROFILE INFO -->
+            <section class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
+                <div class="relative group">
+                    <div class="absolute -inset-1 rounded-full accent-bg opacity-40 blur-md group-hover:opacity-80 transition duration-500"></div>
+                    <img src="favicon.png" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/120x120/1e1035/a855f7?text=x3led';" 
+                         alt="x3led Avatar" 
+                         class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 accent-border glow-avatar cursor-pointer">
+                    <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-gray-900 rounded-full" title="Онлайн"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-center sm:justify-start space-x-2">
+                        <h1 class="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-gradient">x3led</h1>
+                        <span class="glass-pill px-2.5 py-0.5 rounded-md text-[10px] font-mono text-gray-300 border border-white/10">dev / gamer</span>
+                    </div>
+                    
+                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-sm">
+                        Привет. Это моя первая страничка обо мне. В дальнейшем она будет обновляться — новые проекты, новые ссылки, что-то интересное.
+                    </p>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 gap-3">
+                <!-- About Card -->
+                <div class="glass-pill p-4 rounded-2xl space-y-2">
+                    <div class="flex items-center space-x-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-user-astronaut text-xs" style="color: var(--accent-color)"></i>
+                        <span>Обо мне</span>
+                    </div>
+                    <p class="text-sm font-medium text-gray-200">
+                        Начинающий вайбкодер , не сплю , играю в игры.
+                    </p>
+                </div>
+
+                <!-- Projects Navigation Banner Button -->
+                <button onclick="scrollToProjects()" class="glass-pill p-3.5 rounded-2xl flex items-center justify-between group hover:border-purple-500/50 transition cursor-pointer text-left w-full">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white group-hover:scale-110 transition">
+                            <i class="fa-solid fa-code-fork text-sm" style="color: var(--accent-color)"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-white group-hover:text-purple-300 transition">Мои проекты</div>
+                            <div class="text-[10px] text-gray-400">Нажмите, чтобы перейти к списку проектов</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-down text-gray-400 group-hover:text-white group-hover:translate-y-1 transition text-sm"></i>
+                </button>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-1">Ссылки & Связь</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    
+                    <!-- Discord Direct Link -->
+                    <a href="https://discord.com/users/928360132482572371" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition">
+                            <i class="fa-brands fa-discord text-lg"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="text-xs font-semibold text-white">Discord</div>
+                            <div class="text-[10px] text-gray-400">Перейти в профиль</div>
+                        </div>
+                    </a>
+
+                    <!-- Steam Profile Link -->
+                    <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
+                        <div class="w-9 h-9 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition">
+                            <i class="fa-brands fa-steam text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-white">Steam</div>
+                            <div class="text-[10px] text-gray-400">Профиль</div>
+                        </div>
+                    </a>
+
+                    <!-- GitHub Link -->
+                    <a href="https://github.com/x3led" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
+                        <div class="w-9 h-9 rounded-xl bg-neutral-700/40 flex items-center justify-center text-gray-200 group-hover:bg-white group-hover:text-black transition">
+                            <i class="fa-brands fa-github text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-white">GitHub</div>
+                            <div class="text-[10px] text-gray-400">@x3led</div>
+                        </div>
+                    </a>
+
+                </div>
+            </section>
+
+            <section class="glass-pill p-4 rounded-2xl space-y-3 border border-white/10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl accent-bg/20 flex items-center justify-center text-white relative overflow-hidden">
+                            <i class="fa-solid fa-music text-sm" style="color: var(--accent-color)"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-white tracking-wide">Duvet</div>
+                            <div class="text-[10px] text-gray-400">Background Track</div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Visualizer Equalizer -->
+                    <div id="eqContainer" class="flex items-end space-x-1 h-5 px-2 eq-paused">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Controls bar -->
+                <div class="flex items-center space-x-3 pt-1">
+                    <button id="playBtn" class="w-9 h-9 rounded-full accent-bg text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition">
+                        <i class="fa-solid fa-play text-xs" id="playIcon"></i>
+                    </button>
+
+                    <div class="flex-1 space-y-1">
+                        <input type="range" id="audioProgress" value="0" max="100" class="w-full h-1.5 bg-gray-700/60 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                        <div class="flex justify-between text-[10px] font-mono text-gray-400">
+                            <span id="currentTime">0:00</span>
+                            <span id="durationTime">0:00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-1.5 group relative">
+                        <button id="muteBtn" class="text-gray-400 hover:text-white text-xs p-1">
+                            <i class="fa-solid fa-volume-high" id="muteIcon"></i>
+                        </button>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7" class="w-16 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                    </div>
+                </div>
+
+                <!-- Audio Element for Duvet.mp3 -->
+                <audio id="bgAudio" loop preload="metadata">
+                    <source src="Duvet.mp3" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудио.
+                </audio>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="text-center pt-2 text-[11px] text-gray-500 font-mono flex items-center justify-between">
+                <span>© <span id="year"></span> x3led</span>
+                <span class="hover:text-gray-400 transition cursor-default">personal page</span>
+            </footer>
+
+        </main>
+
+        <section id="projectsCard" class="glass-card w-full rounded-3xl p-6 sm:p-8 space-y-6 transform-gpu">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-diagram-project text-sm" style="color: var(--accent-color)"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white font-display">Мои проекты</h2>
+                        <p class="text-[11px] text-gray-400">Разработка и личные таски</p>
+                    </div>
+                </div>
+
+                <button onclick="scrollToMain()" class="glass-pill px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                    <span>Наверх</span>
+                </button>
+            </div>
+
+            <!-- Empty Projects Placeholder Card -->
+            <div class="glass-pill p-8 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 border border-dashed border-white/15">
+                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-xl">
+                    <i class="fa-solid fa-folder-open opacity-50"></i>
+                </div>
+                <p class="text-sm font-medium text-gray-300 max-w-xs">
+                    Тут пока пусто , но скоро появяться первые проекты.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Set dynamic current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Smooth navigation handlers
+        function scrollToProjects() {
+            playSynthBeep(523.25, 0.08);
+            document.getElementById('projectsCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToMain() {
+            playSynthBeep(440, 0.08);
+            document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 1. LIVE MOSCOW CLOCK (UTC+3)
+        function updateMoscowClock() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Europe/Moscow',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            const timeString = new Intl.DateTimeFormat('ru-RU', options).format(now);
+            document.getElementById('moscowClock').textContent = timeString;
+        }
+        setInterval(updateMoscowClock, 1000);
+        updateMoscowClock();
+
+        // 2. THEME SWITCHER LOGIC
+        const themeMenu = document.getElementById('themeMenu');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeMenu.classList.toggle('hidden');
+            playSynthBeep(440, 0.05);
+        });
+
+        document.addEventListener('click', () => {
+            if (!themeMenu.classList.contains('hidden')) {
+                themeMenu.classList.add('hidden');
+            }
+        });
+
+        function setTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            themeMenu.classList.add('hidden');
+            playSynthBeep(523.25, 0.08);
+            updateCanvasThemeColors();
+            showToast(`Тема изменена: ${themeName}`);
+        }
+
+        // 3. TOAST NOTIFICATION SYSTEM
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 2500);
+        }
+
+        // 4. WEB AUDIO SYNTH SFX
+        let sfxEnabled = true;
+        const sfxBtn = document.getElementById('sfxBtn');
+        const sfxIcon = document.getElementById('sfxIcon');
+
+        sfxBtn.addEventListener('click', () => {
+            sfxEnabled = !sfxEnabled;
+            if (sfxEnabled) {
+                sfxIcon.className = 'fa-solid fa-volume-high text-xs';
+                showToast('Звуковые эффекты включены');
+                playSynthBeep(587.33, 0.08);
+            } else {
+                sfxIcon.className = 'fa-solid fa-volume-xmark text-xs text-red-400';
+                showToast('Звуковые эффекты выключены');
+            }
+        });
+
+        function playSynthBeep(freq = 440, duration = 0.05) {
+            if (!sfxEnabled) return;
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        const bgAudio = document.getElementById('bgAudio');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const audioProgress = document.getElementById('audioProgress');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const muteBtn = document.getElementById('muteBtn');
+        const muteIcon = document.getElementById('muteIcon');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationTimeEl = document.getElementById('durationTime');
+        const eqContainer = document.getElementById('eqContainer');
+
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
+        });
+
+        function playAudio() {
+            bgAudio.play().then(() => {
+                isPlaying = true;
+                playIcon.className = 'fa-solid fa-pause text-xs';
+                eqContainer.classList.remove('eq-paused');
+            }).catch(err => {
+                showToast(' Ошибка воспроизведения Duvet.mp3');
+            });
+        }
+
+        function pauseAudio() {
+            bgAudio.pause();
+            isPlaying = false;
+            playIcon.className = 'fa-solid fa-play text-xs';
+            eqContainer.classList.add('eq-paused');
+        }
+
+        bgAudio.addEventListener('timeupdate', () => {
+            if (bgAudio.duration) {
+                const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
+                audioProgress.value = pct;
+                currentTimeEl.textContent = formatTime(bgAudio.currentTime);
+                durationTimeEl.textContent = formatTime(bgAudio.duration);
+            }
+        });
+
+        audioProgress.addEventListener('input', () => {
+            if (bgAudio.duration) {
+                bgAudio.currentTime = (audioProgress.value / 100) * bgAudio.duration;
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            bgAudio.volume = e.target.value;
+            if (bgAudio.volume === 0) {
+                muteIcon.className = 'fa-solid fa-volume-xmark text-red-400';
+            } else {
+                muteIcon.className = 'fa-solid fa-volume-high';
+            }
+        });
+
+        muteBtn.addEventListener('click', () => {
+            if (bgAudio.volume > 0) {
+                bgAudio.dataset.prevVol = bgAudio.volume;
+                bgAudio.volume = 0;
+                volumeSlider.value = 0;
+                muteIcon.className = 'fa-solid fa-volume-xmark text-red-400';
+            } else {
+                const prev = bgAudio.dataset.prevVol || 0.7;
+                bgAudio.volume = prev;
+                volumeSlider.value = prev;
+                muteIcon.className = 'fa-solid fa-volume-high';
+            }
+        });
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // 3D TILT EFFECT
+        const card = document.getElementById('mainCard');
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            
+            const xRot = ((clientY / innerHeight) - 0.5) * -10;
+            const yRot = ((clientX / innerWidth) - 0.5) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+        });
+
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function getThemeRGB() {
+            const style = getComputedStyle(document.documentElement);
+            const p1 = style.getPropertyValue('--particle-1').trim() || '168, 85, 247';
+            const p2 = style.getPropertyValue('--particle-2').trim() || '236, 72, 153';
+            return [p1, p2];
+        }
+
+        let [color1, color2] = getThemeRGB();
+
+        function updateCanvasThemeColors() {
+            [color1, color2] = getThemeRGB();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.5 + 1;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.color = Math.random() > 0.5 ? color1 : color2;
+                this.alpha = Math.random() * 0.6 + 0.2;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        let force = (mouse.radius - dist) / mouse.radius;
+                        let angle = Math.atan2(dy, dx);
+                        this.x -= Math.cos(angle) * force * 3;
+                        this.y -= Math.sin(angle) * force * 3;
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(Math.floor((width * height) / 12000), 90);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function connectParticles() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(${particles[a].color}, ${0.15 - dist / 1100})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = function() {
+            animate();
+        };
+    </script>
+</body>
+</html>

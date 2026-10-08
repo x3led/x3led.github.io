@@ -6,15 +6,15 @@
     <title>x3led | Personal Space</title>
     <link rel="icon" type="image/png" href="favicon.png">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts for Dynamic Font Selector -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Comfortaa:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Press+Start+2P&family=Russo+One&family=VT323&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- FontAwesome for sleek icons -->
+    <!-- FontAwesome for sleeks icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -23,9 +23,12 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
+                        russo: ['"Russo One"', 'sans-serif'],
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        comfortaa: ['"Comfortaa"', 'cursive'],
+                        vt323: ['"VT323"', 'monospace'],
+                        caveat: ['"Caveat"', 'cursive'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
                         accent: 'var(--accent-color)',
@@ -43,7 +46,7 @@
             --accent-secondary: #ec4899;
             --accent-glow: rgba(168, 85, 247, 0.4);
             --bg-gradient: radial-gradient(circle at 50% 10%, #1e1035 0%, #090514 100%);
-            --card-border: rgba(168, 85, 247, 0.25);
+            --card-border: rgba(168, 85, 247, 0.3);
             --particle-1: 168, 85, 247;
             --particle-2: 236, 72, 153;
         }
@@ -53,7 +56,7 @@
             --accent-secondary: #06b6d4;
             --accent-glow: rgba(16, 185, 129, 0.4);
             --bg-gradient: radial-gradient(circle at 50% 10%, #062e24 0%, #02120e 100%);
-            --card-border: rgba(16, 185, 129, 0.25);
+            --card-border: rgba(16, 185, 129, 0.3);
             --particle-1: 16, 185, 129;
             --particle-2: 6, 182, 212;
         }
@@ -63,7 +66,7 @@
             --accent-secondary: #f97316;
             --accent-glow: rgba(239, 68, 68, 0.4);
             --bg-gradient: radial-gradient(circle at 50% 10%, #3b0c0c 0%, #120303 100%);
-            --card-border: rgba(239, 68, 68, 0.25);
+            --card-border: rgba(239, 68, 68, 0.3);
             --particle-1: 239, 68, 68;
             --particle-2: 249, 115, 22;
         }
@@ -73,7 +76,7 @@
             --accent-secondary: #3b82f6;
             --accent-glow: rgba(6, 182, 212, 0.4);
             --bg-gradient: radial-gradient(circle at 50% 10%, #0a2540 0%, #030a14 100%);
-            --card-border: rgba(6, 182, 212, 0.25);
+            --card-border: rgba(6, 182, 212, 0.3);
             --particle-1: 6, 182, 212;
             --particle-2: 59, 130, 246;
         }
@@ -83,9 +86,14 @@
             --accent-secondary: #38bdf8;
             --accent-glow: rgba(244, 114, 182, 0.4);
             --bg-gradient: radial-gradient(circle at 50% 10%, #31132b 0%, #0d040c 100%);
-            --card-border: rgba(244, 114, 182, 0.25);
+            --card-border: rgba(244, 114, 182, 0.3);
             --particle-1: 244, 114, 182;
             --particle-2: 56, 189, 248;
+        }
+
+        /* Default Font Assignment */
+        .font-active-custom {
+            font-family: 'Russo One', sans-serif;
         }
 
         body {
@@ -97,14 +105,13 @@
             transition: background 0.7s ease;
         }
 
-        /* Glassmorphism Styles */
         .glass-card {
-            background: rgba(18, 14, 33, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(18, 14, 33, 0.65);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--card-border);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s cubic-bezier(0.1, 1, 0.1, 1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: border-color 0.5s ease, box-shadow 0.5s ease;
         }
 
         .glass-pill {
@@ -121,10 +128,9 @@
         }
 
         .text-gradient {
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-color) 70%, var(--accent-secondary) 100%);
+            background: linear-gradient(135deg, #ffffff 20%, var(--accent-color) 70%, var(--accent-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            transition: background 0.5s ease;
         }
 
         .accent-bg {
@@ -147,7 +153,6 @@
             box-shadow: 0 0 50px var(--accent-color);
         }
 
-        /* Animated Equalizer Bars */
         .eq-bar {
             width: 3px;
             background-color: var(--accent-color);
@@ -181,56 +186,81 @@
             background: var(--accent-color);
             border-radius: 4px;
         }
-
-        /* Slide Animation for Sections */
-        .tab-content {
-            transition: all 0.5s ease-in-out;
-        }
     </style>
 </head>
-<body data-theme="purple" class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 relative selection:bg-purple-500 selection:text-white">
+<body data-theme="purple" class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 relative font-active-custom">
 
     <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-    <!-- Toast Notification Container -->
+    <!-- Toast Notification -->
     <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="glass-pill px-4 py-3 rounded-xl flex items-center space-x-3 shadow-2xl border border-emerald-500/30 text-white">
-            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-            <span id="toastMsg" class="font-medium text-sm">Скопировано в буфер!</span>
+        <div class="glass-pill px-4 py-3 rounded-xl flex items-center space-x-3 shadow-2xl border border-emerald-500/30 text-white text-xs font-mono">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+            <span id="toastMsg">Уведомление</span>
         </div>
     </div>
 
+    <!-- MAIN CONTAINER -->
     <div class="w-full max-w-xl relative z-10 space-y-6">
         
-        <!-- MAIN PROFILE CARD -->
         <main id="mainCard" class="glass-card relative w-full rounded-3xl p-6 sm:p-8 space-y-6 transform-gpu">
             
-            <!-- HEADER: Moscow Time & Themes Switcher -->
-            <header class="flex items-center justify-between border-b border-white/10 pb-5">
-                <!-- Moscow Time Widget -->
-                <div class="flex items-center space-x-2.5 glass-pill px-3.5 py-1.5 rounded-full text-xs font-mono">
+            <!-- HEADER CONTROLS -->
+            <header class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5">
+                <!-- Live Moscow Time -->
+                <div class="flex items-center space-x-2.5 glass-pill px-3 py-1.5 rounded-full text-xs font-mono tracking-wider">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full accent-bg opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 accent-bg"></span>
                     </span>
-                    <span class="text-gray-400">MSK (UTC+3):</span>
-                    <span id="moscowClock" class="font-semibold text-white tracking-wider">00:00:00</span>
+                    <span class="text-gray-400">MSK:</span>
+                    <span id="moscowClock" class="font-bold text-white">00:00:00</span>
                 </div>
 
-                <!-- SFX Toggle & Theme Selector Dropdown -->
+                <!-- Customizers Dropdowns (Font & Color Theme) -->
                 <div class="flex items-center space-x-2">
-                    <button id="sfxBtn" title="Переключить звуковые эффекты" class="glass-pill w-9 h-9 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition">
-                        <i class="fa-solid fa-volume-high text-xs" id="sfxIcon"></i>
-                    </button>
-
+                    
+                    <!-- Font Customizer Dropdown -->
                     <div class="relative">
-                        <button id="themeToggleBtn" class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-medium hover:text-white transition">
+                        <button id="fontToggleBtn" class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-semibold hover:text-white transition">
+                            <i class="fa-solid fa-font text-xs" style="color: var(--accent-color)"></i>
+                            <span>Шрифт</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
+                        </button>
+                        
+                        <div id="fontMenu" class="hidden absolute right-0 mt-2 w-48 glass-card rounded-2xl p-2 z-50 space-y-1 text-xs shadow-2xl">
+                            <button onclick="setFontStyle('russo')" class="w-full px-3 py-2 rounded-xl hover:bg-white/10 transition text-left flex items-center justify-between font-russo">
+                                <span>Russo Bold</span>
+                                <i class="fa-solid fa-check opacity-0" id="check-russo"></i>
+                            </button>
+                            <button onclick="setFontStyle('comfortaa')" class="w-full px-3 py-2 rounded-xl hover:bg-white/10 transition text-left flex items-center justify-between font-comfortaa">
+                                <span>Comfortaa</span>
+                                <i class="fa-solid fa-check opacity-0" id="check-comfortaa"></i>
+                            </button>
+                            <button onclick="setFontStyle('pixel')" class="w-full px-3 py-2 rounded-xl hover:bg-white/10 transition text-left flex items-center justify-between font-pixel text-[10px]">
+                                <span>Pixel 8-Bit</span>
+                                <i class="fa-solid fa-check opacity-0" id="check-pixel"></i>
+                            </button>
+                            <button onclick="setFontStyle('vt323')" class="w-full px-3 py-2 rounded-xl hover:bg-white/10 transition text-left flex items-center justify-between font-vt323 text-base">
+                                <span>Terminal VT323</span>
+                                <i class="fa-solid fa-check opacity-0" id="check-vt323"></i>
+                            </button>
+                            <button onclick="setFontStyle('caveat')" class="w-full px-3 py-2 rounded-xl hover:bg-white/10 transition text-left flex items-center justify-between font-caveat text-base">
+                                <span>Caveat Hand</span>
+                                <i class="fa-solid fa-check opacity-0" id="check-caveat"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Theme Selector Dropdown -->
+                    <div class="relative">
+                        <button id="themeToggleBtn" class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-semibold hover:text-white transition">
                             <i class="fa-solid fa-palette text-xs" style="color: var(--accent-color)"></i>
                             <span class="hidden sm:inline">Тема</span>
                             <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
                         </button>
                         
-                        <div id="themeMenu" class="hidden absolute right-0 mt-2 w-44 glass-card rounded-2xl p-2 z-50 space-y-1 border border-white/10 text-xs shadow-2xl">
+                        <div id="themeMenu" class="hidden absolute right-0 mt-2 w-44 glass-card rounded-2xl p-2 z-50 space-y-1 text-xs shadow-2xl">
                             <button onclick="setTheme('purple')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
                                 <span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span>
                                 <span>Purple Night</span>
@@ -253,10 +283,10 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
             </header>
 
-            <!-- PROFILE INFO -->
             <section class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
                 <div class="relative group">
                     <div class="absolute -inset-1 rounded-full accent-bg opacity-40 blur-md group-hover:opacity-80 transition duration-500"></div>
@@ -269,8 +299,8 @@
 
                 <div class="space-y-2">
                     <div class="flex items-center justify-center sm:justify-start space-x-2">
-                        <h1 class="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-gradient">x3led</h1>
-                        <span class="glass-pill px-2.5 py-0.5 rounded-md text-[10px] font-mono text-gray-300 border border-white/10">dev / gamer</span>
+                        <h1 class="text-2xl sm:text-3xl font-bold tracking-wider text-gradient uppercase">x3led</h1>
+                        <span class="glass-pill px-2.5 py-0.5 rounded-md text-[10px] font-mono text-gray-300 border border-white/10 tracking-widest uppercase">dev</span>
                     </div>
                     
                     <p class="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-sm">
@@ -280,26 +310,25 @@
             </section>
 
             <section class="grid grid-cols-1 gap-3">
-                <!-- About Card -->
-                <div class="glass-pill p-4 rounded-2xl space-y-2">
-                    <div class="flex items-center space-x-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                        <i class="fa-solid fa-user-astronaut text-xs" style="color: var(--accent-color)"></i>
+                <div class="glass-pill p-4 rounded-2xl space-y-1.5">
+                    <div class="flex items-center space-x-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                        <i class="fa-solid fa-gamepad text-xs" style="color: var(--accent-color)"></i>
                         <span>Обо мне</span>
                     </div>
-                    <p class="text-sm font-medium text-gray-200">
-                        Начинающий вайбкодер , не сплю , играю в игры.
+                    <p class="text-xs sm:text-sm font-medium text-gray-200">
+                        Обо мне: Начинающий вайбкодер , не сплю , играю в игры.
                     </p>
                 </div>
 
-                <!-- Projects Navigation Banner Button -->
+                <!-- Projects Link Button -->
                 <button onclick="scrollToProjects()" class="glass-pill p-3.5 rounded-2xl flex items-center justify-between group hover:border-purple-500/50 transition cursor-pointer text-left w-full">
                     <div class="flex items-center space-x-3">
                         <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white group-hover:scale-110 transition">
-                            <i class="fa-solid fa-code-fork text-sm" style="color: var(--accent-color)"></i>
+                            <i class="fa-solid fa-code-branch text-sm" style="color: var(--accent-color)"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-semibold text-white group-hover:text-purple-300 transition">Мои проекты</div>
-                            <div class="text-[10px] text-gray-400">Нажмите, чтобы перейти к списку проектов</div>
+                            <div class="text-xs font-bold text-white group-hover:text-purple-300 transition tracking-wide">Мои проекты</div>
+                            <div class="text-[10px] font-mono text-gray-400">Нажмите, чтобы перейти ниже</div>
                         </div>
                     </div>
                     <i class="fa-solid fa-arrow-down text-gray-400 group-hover:text-white group-hover:translate-y-1 transition text-sm"></i>
@@ -307,7 +336,7 @@
             </section>
 
             <section class="space-y-3">
-                <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-1">Ссылки & Связь</h2>
+                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest pl-1">Ссылки & Профили</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     
                     <!-- Discord Direct Link -->
@@ -316,19 +345,19 @@
                             <i class="fa-brands fa-discord text-lg"></i>
                         </div>
                         <div class="overflow-hidden">
-                            <div class="text-xs font-semibold text-white">Discord</div>
-                            <div class="text-[10px] text-gray-400">Перейти в профиль</div>
+                            <div class="text-xs font-bold text-white">Discord</div>
+                            <div class="text-[10px] font-mono text-gray-400">Профиль</div>
                         </div>
                     </a>
 
-                    <!-- Steam Profile Link -->
+                    <!-- Steam Link -->
                     <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
                         <div class="w-9 h-9 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition">
                             <i class="fa-brands fa-steam text-lg"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-semibold text-white">Steam</div>
-                            <div class="text-[10px] text-gray-400">Профиль</div>
+                            <div class="text-xs font-bold text-white">Steam</div>
+                            <div class="text-[10px] font-mono text-gray-400">Профиль</div>
                         </div>
                     </a>
 
@@ -338,8 +367,8 @@
                             <i class="fa-brands fa-github text-lg"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-semibold text-white">GitHub</div>
-                            <div class="text-[10px] text-gray-400">@x3led</div>
+                            <div class="text-xs font-bold text-white">GitHub</div>
+                            <div class="text-[10px] font-mono text-gray-400">@x3led</div>
                         </div>
                     </a>
 
@@ -353,12 +382,12 @@
                             <i class="fa-solid fa-music text-sm" style="color: var(--accent-color)"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-semibold text-white tracking-wide">Duvet</div>
-                            <div class="text-[10px] text-gray-400">Background Track</div>
+                            <div class="text-xs font-bold text-white tracking-wider">Duvet</div>
+                            <div class="text-[10px] font-mono text-gray-400">Background Track</div>
                         </div>
                     </div>
 
-                    <!-- Audio Visualizer Equalizer -->
+                    <!-- Audio Visualizer Animation -->
                     <div id="eqContainer" class="flex items-end space-x-1 h-5 px-2 eq-paused">
                         <div class="eq-bar"></div>
                         <div class="eq-bar"></div>
@@ -367,7 +396,7 @@
                     </div>
                 </div>
 
-                <!-- Controls bar -->
+                <!-- Controls -->
                 <div class="flex items-center space-x-3 pt-1">
                     <button id="playBtn" class="w-9 h-9 rounded-full accent-bg text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition">
                         <i class="fa-solid fa-play text-xs" id="playIcon"></i>
@@ -381,7 +410,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-1.5 group relative">
+                    <div class="flex items-center space-x-1.5">
                         <button id="muteBtn" class="text-gray-400 hover:text-white text-xs p-1">
                             <i class="fa-solid fa-volume-high" id="muteIcon"></i>
                         </button>
@@ -389,17 +418,15 @@
                     </div>
                 </div>
 
-                <!-- Audio Element for Duvet.mp3 -->
                 <audio id="bgAudio" loop preload="metadata">
                     <source src="Duvet.mp3" type="audio/mpeg">
-                    Ваш браузер не поддерживает аудио.
                 </audio>
             </section>
 
             <!-- FOOTER -->
-            <footer class="text-center pt-2 text-[11px] text-gray-500 font-mono flex items-center justify-between">
+            <footer class="text-center pt-2 text-[11px] text-gray-500 font-mono flex items-center justify-between tracking-wider">
                 <span>© <span id="year"></span> x3led</span>
-                <span class="hover:text-gray-400 transition cursor-default">personal page</span>
+                <span>personal space</span>
             </footer>
 
         </main>
@@ -408,26 +435,25 @@
             <div class="flex items-center justify-between border-b border-white/10 pb-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white">
-                        <i class="fa-solid fa-diagram-project text-sm" style="color: var(--accent-color)"></i>
+                        <i class="fa-solid fa-folder-closed text-sm" style="color: var(--accent-color)"></i>
                     </div>
                     <div>
-                        <h2 class="text-lg font-bold text-white font-display">Мои проекты</h2>
-                        <p class="text-[11px] text-gray-400">Разработка и личные таски</p>
+                        <h2 class="text-lg font-bold text-white tracking-wider uppercase">Мои проекты</h2>
+                        <p class="text-[11px] font-mono text-gray-400">Разработка и таски</p>
                     </div>
                 </div>
 
-                <button onclick="scrollToMain()" class="glass-pill px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition flex items-center space-x-1.5">
+                <button onclick="scrollToMain()" class="glass-pill px-3 py-1 rounded-full text-xs font-semibold text-gray-300 hover:text-white transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-arrow-up text-[10px]"></i>
                     <span>Наверх</span>
                 </button>
             </div>
 
-            <!-- Empty Projects Placeholder Card -->
             <div class="glass-pill p-8 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 border border-dashed border-white/15">
                 <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-xl">
-                    <i class="fa-solid fa-folder-open opacity-50"></i>
+                    <i class="fa-solid fa-box-open opacity-50"></i>
                 </div>
-                <p class="text-sm font-medium text-gray-300 max-w-xs">
+                <p class="text-xs sm:text-sm font-medium text-gray-300 max-w-xs">
                     Тут пока пусто , но скоро появяться первые проекты.
                 </p>
             </div>
@@ -436,35 +462,45 @@
     </div>
 
     <script>
-        // Set dynamic current year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Smooth navigation handlers
-        function scrollToProjects() {
-            playSynthBeep(523.25, 0.08);
-            document.getElementById('projectsCard').scrollIntoView({ behavior: 'smooth' });
-        }
+        // 1. DYNAMIC FONT SWITCHER LOGIC
+        const fontMenu = document.getElementById('fontMenu');
+        const fontToggleBtn = document.getElementById('fontToggleBtn');
 
-        function scrollToMain() {
-            playSynthBeep(440, 0.08);
-            document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth' });
-        }
+        fontToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fontMenu.classList.toggle('hidden');
+            themeMenu.classList.add('hidden');
+        });
 
-        // 1. LIVE MOSCOW CLOCK (UTC+3)
-        function updateMoscowClock() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Europe/Moscow',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            const timeString = new Intl.DateTimeFormat('ru-RU', options).format(now);
-            document.getElementById('moscowClock').textContent = timeString;
+        const fontClasses = {
+            'russo': 'font-russo',
+            'comfortaa': 'font-comfortaa',
+            'pixel': 'font-pixel',
+            'vt323': 'font-vt323',
+            'caveat': 'font-caveat'
+        };
+
+        function setFontStyle(fontKey) {
+            const body = document.body;
+            Object.values(fontClasses).forEach(cls => body.classList.remove(cls));
+            body.classList.add(fontClasses[fontKey]);
+
+            // Update checks in font dropdown
+            Object.keys(fontClasses).forEach(k => {
+                const check = document.getElementById(`check-${k}`);
+                if (check) check.classList.add('opacity-0');
+            });
+            const activeCheck = document.getElementById(`check-${fontKey}`);
+            if (activeCheck) activeCheck.classList.remove('opacity-0');
+
+            fontMenu.classList.add('hidden');
+            showToast(`Шрифт изменён: ${fontKey.toUpperCase()}`);
         }
-        setInterval(updateMoscowClock, 1000);
-        updateMoscowClock();
+        
+        // Default check indicator
+        document.getElementById('check-russo').classList.remove('opacity-0');
 
         // 2. THEME SWITCHER LOGIC
         const themeMenu = document.getElementById('themeMenu');
@@ -473,24 +509,22 @@
         themeToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             themeMenu.classList.toggle('hidden');
-            playSynthBeep(440, 0.05);
+            fontMenu.classList.add('hidden');
         });
 
         document.addEventListener('click', () => {
-            if (!themeMenu.classList.contains('hidden')) {
-                themeMenu.classList.add('hidden');
-            }
+            fontMenu.classList.add('hidden');
+            themeMenu.classList.add('hidden');
         });
 
         function setTheme(themeName) {
             document.documentElement.setAttribute('data-theme', themeName);
             themeMenu.classList.add('hidden');
-            playSynthBeep(523.25, 0.08);
             updateCanvasThemeColors();
             showToast(`Тема изменена: ${themeName}`);
         }
 
-        // 3. TOAST NOTIFICATION SYSTEM
+        // 3. TOAST NOTIFICATIONS
         function showToast(msg) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMsg');
@@ -504,45 +538,31 @@
             }, 2500);
         }
 
-        // 4. WEB AUDIO SYNTH SFX
-        let sfxEnabled = true;
-        const sfxBtn = document.getElementById('sfxBtn');
-        const sfxIcon = document.getElementById('sfxIcon');
-
-        sfxBtn.addEventListener('click', () => {
-            sfxEnabled = !sfxEnabled;
-            if (sfxEnabled) {
-                sfxIcon.className = 'fa-solid fa-volume-high text-xs';
-                showToast('Звуковые эффекты включены');
-                playSynthBeep(587.33, 0.08);
-            } else {
-                sfxIcon.className = 'fa-solid fa-volume-xmark text-xs text-red-400';
-                showToast('Звуковые эффекты выключены');
-            }
-        });
-
-        function playSynthBeep(freq = 440, duration = 0.05) {
-            if (!sfxEnabled) return;
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime);
-                gain.gain.setValueAtTime(0.05, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start();
-                osc.stop(ctx.currentTime + duration);
-            } catch (e) {}
+        // 4. SMOOTH SCROLL HANDLERS
+        function scrollToProjects() {
+            document.getElementById('projectsCard').scrollIntoView({ behavior: 'smooth' });
         }
 
+        function scrollToMain() {
+            document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 5. LIVE MOSCOW CLOCK (UTC+3)
+        function updateMoscowClock() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Europe/Moscow',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('moscowClock').textContent = new Intl.DateTimeFormat('ru-RU', options).format(now);
+        }
+        setInterval(updateMoscowClock, 1000);
+        updateMoscowClock();
+
+        // 6. AUDIO PLAYER LOGIC
         const bgAudio = document.getElementById('bgAudio');
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
@@ -558,33 +578,24 @@
 
         playBtn.addEventListener('click', () => {
             if (isPlaying) {
-                pauseAudio();
+                bgAudio.pause();
+                isPlaying = false;
+                playIcon.className = 'fa-solid fa-play text-xs';
+                eqContainer.classList.add('eq-paused');
             } else {
-                playAudio();
+                bgAudio.play().then(() => {
+                    isPlaying = true;
+                    playIcon.className = 'fa-solid fa-pause text-xs';
+                    eqContainer.classList.remove('eq-paused');
+                }).catch(() => {
+                    showToast('Загрузка Duvet.mp3...');
+                });
             }
         });
 
-        function playAudio() {
-            bgAudio.play().then(() => {
-                isPlaying = true;
-                playIcon.className = 'fa-solid fa-pause text-xs';
-                eqContainer.classList.remove('eq-paused');
-            }).catch(err => {
-                showToast(' Ошибка воспроизведения Duvet.mp3');
-            });
-        }
-
-        function pauseAudio() {
-            bgAudio.pause();
-            isPlaying = false;
-            playIcon.className = 'fa-solid fa-play text-xs';
-            eqContainer.classList.add('eq-paused');
-        }
-
         bgAudio.addEventListener('timeupdate', () => {
             if (bgAudio.duration) {
-                const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
-                audioProgress.value = pct;
+                audioProgress.value = (bgAudio.currentTime / bgAudio.duration) * 100;
                 currentTimeEl.textContent = formatTime(bgAudio.currentTime);
                 durationTimeEl.textContent = formatTime(bgAudio.duration);
             }
@@ -598,11 +609,7 @@
 
         volumeSlider.addEventListener('input', (e) => {
             bgAudio.volume = e.target.value;
-            if (bgAudio.volume === 0) {
-                muteIcon.className = 'fa-solid fa-volume-xmark text-red-400';
-            } else {
-                muteIcon.className = 'fa-solid fa-volume-high';
-            }
+            muteIcon.className = bgAudio.volume === 0 ? 'fa-solid fa-volume-xmark text-red-400' : 'fa-solid fa-volume-high';
         });
 
         muteBtn.addEventListener('click', () => {
@@ -619,30 +626,17 @@
             }
         });
 
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // 3D TILT EFFECT
-        const card = document.getElementById('mainCard');
-        document.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            
-            const xRot = ((clientY / innerHeight) - 0.5) * -10;
-            const yRot = ((clientX / innerWidth) - 0.5) * 10;
-
-            card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-        });
-
+        // 7. CANVAS PARTICLES
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 140 };
+        let width, height, particles = [];
+        let mouse = { x: null, y: null, radius: 130 };
 
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
@@ -664,7 +658,6 @@
         }
 
         let [color1, color2] = getThemeRGB();
-
         function updateCanvasThemeColors() {
             [color1, color2] = getThemeRGB();
         }
@@ -673,26 +666,22 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2.5 + 1;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
+                this.size = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 0.7;
+                this.vy = (Math.random() - 0.5) * 0.7;
                 this.color = Math.random() > 0.5 ? color1 : color2;
-                this.alpha = Math.random() * 0.6 + 0.2;
             }
 
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-                ctx.shadowBlur = 12;
-                ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+                ctx.fillStyle = `rgba(${this.color}, 0.6)`;
                 ctx.fill();
             }
 
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
 
@@ -703,8 +692,8 @@
                     if (dist < mouse.radius) {
                         let force = (mouse.radius - dist) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
-                        this.x -= Math.cos(angle) * force * 3;
-                        this.y -= Math.sin(angle) * force * 3;
+                        this.x -= Math.cos(angle) * force * 2;
+                        this.y -= Math.sin(angle) * force * 2;
                     }
                 }
             }
@@ -712,10 +701,8 @@
 
         function initParticles() {
             particles = [];
-            const count = Math.min(Math.floor((width * height) / 12000), 90);
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
+            const count = Math.min(Math.floor((width * height) / 13000), 80);
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
         initParticles();
 
@@ -725,11 +712,10 @@
                     let dx = particles[a].x - particles[b].x;
                     let dy = particles[a].y - particles[b].y;
                     let dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 110) {
+                    if (dist < 100) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(${particles[a].color}, ${0.15 - dist / 1100})`;
-                        ctx.lineWidth = 0.8;
+                        ctx.strokeStyle = `rgba(${particles[a].color}, ${0.12 - dist / 1000})`;
+                        ctx.lineWidth = 0.7;
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
                         ctx.stroke();
@@ -740,12 +726,10 @@
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
             }
-
             connectParticles();
             requestAnimationFrame(animate);
         }

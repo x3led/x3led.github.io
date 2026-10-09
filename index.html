@@ -1,862 +1,1374 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>x3led | Personal Space</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome for sleek icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x3led</title>
+<meta name="description" content="Личная страничка x3led — ссылки и список обвинений.">
+<link rel="icon" type="image/png" href="favicon.png">
+<script>
+  document.documentElement.classList.add("js");
+  try {
+    var t = localStorage.getItem("x3led-theme");
+    if (t && t !== "dark") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                    colors: {
-                        accent: 'var(--accent-color)',
-                        'accent-secondary': 'var(--accent-secondary)',
-                        'accent-glow': 'var(--accent-glow)',
-                    }
-                }
-            }
-        }
-    </script>
+  :root {
+    --bg: #08080d;
+    --card: rgba(255,255,255,0.035);
+    --border: rgba(255,255,255,0.09);
+    --text: #f0f0f5;
+    --text-dim: #a3a3b5;
+    --text-faint: #72728a;
+    --accent: #8b6cff;
+    --accent-2: #ff5c9e;
+    --on-accent: #ffffff;
+    --display: "Unbounded", system-ui, sans-serif;
+    --body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    color-scheme: dark;
+  }
+  [data-theme="emerald"] {
+    --bg: #05110f;
+    --border: rgba(140,255,210,0.11);
+    --text: #e6f5f0;
+    --text-dim: #93b5ac;
+    --text-faint: #638a80;
+    --accent: #22ddaa;
+    --accent-2: #a6ff5c;
+    --on-accent: #03130f;
+  }
+  [data-theme="fire"] {
+    --bg: #100705;
+    --border: rgba(255,160,100,0.12);
+    --text: #f8ece5;
+    --text-dim: #bd9c8c;
+    --text-faint: #8d6a5a;
+    --accent: #ff6a33;
+    --accent-2: #ffb322;
+    --on-accent: #160802;
+  }
+  [data-theme="light"] {
+    --bg: #f6f5fb;
+    --card: rgba(255,255,255,0.7);
+    --border: rgba(20,20,50,0.12);
+    --text: #12121c;
+    --text-dim: #55556a;
+    --text-faint: #77778c;
+    --accent: #5a3df0;
+    --accent-2: #e0357c;
+    --on-accent: #ffffff;
+    color-scheme: light;
+  }
 
-    <style>
-        :root[data-theme="purple"] {
-            --accent-color: #a855f7;
-            --accent-secondary: #ec4899;
-            --accent-glow: rgba(168, 85, 247, 0.4);
-            --bg-gradient: radial-gradient(circle at 50% 30%, #1a0b2e 0%, #090314 60%, #020106 100%);
-            --card-border: rgba(168, 85, 247, 0.25);
-            --particle-1: 168, 85, 247;
-            --particle-2: 236, 72, 153;
-            --grid-color: rgba(168, 85, 247, 0.12);
-        }
+  html { scroll-behavior: smooth; }
+  html:has(dialog[open]) { overflow: hidden; }
 
-        :root[data-theme="emerald"] {
-            --accent-color: #10b981;
-            --accent-secondary: #06b6d4;
-            --accent-glow: rgba(16, 185, 129, 0.4);
-            --bg-gradient: radial-gradient(circle at 50% 30%, #04291f 0%, #02120e 60%, #000504 100%);
-            --card-border: rgba(16, 185, 129, 0.25);
-            --particle-1: 16, 185, 129;
-            --particle-2: 6, 182, 212;
-            --grid-color: rgba(16, 185, 129, 0.12);
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
 
-        :root[data-theme="crimson"] {
-            --accent-color: #ef4444;
-            --accent-secondary: #f97316;
-            --accent-glow: rgba(239, 68, 68, 0.4);
-            --bg-gradient: radial-gradient(circle at 50% 30%, #360a0a 0%, #140303 60%, #050000 100%);
-            --card-border: rgba(239, 68, 68, 0.25);
-            --particle-1: 239, 68, 68;
-            --particle-2: 249, 115, 22;
-            --grid-color: rgba(239, 68, 68, 0.12);
-        }
+  .aurora {
+    position: fixed;
+    inset: -30%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(38% 38% at 28% 30%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%),
+      radial-gradient(34% 34% at 74% 68%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 70%);
+    animation: drift 40s ease-in-out infinite alternate;
+  }
+  [data-theme="light"] .aurora { opacity: 0.6; }
+  @keyframes drift {
+    to { transform: translate3d(6%, -5%, 0) rotate(14deg) scale(1.1); }
+  }
 
-        :root[data-theme="cyan"] {
-            --accent-color: #06b6d4;
-            --accent-secondary: #3b82f6;
-            --accent-glow: rgba(6, 182, 212, 0.4);
-            --bg-gradient: radial-gradient(circle at 50% 30%, #0a2540 0%, #030d17 60%, #010408 100%);
-            --card-border: rgba(6, 182, 212, 0.25);
-            --particle-1: 6, 182, 212;
-            --particle-2: 59, 130, 246;
-            --grid-color: rgba(6, 182, 212, 0.12);
-        }
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 30;
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress { animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { to { transform: scaleX(1); } }
+  }
 
-        :root[data-theme="vapor"] {
-            --accent-color: #f472b6;
-            --accent-secondary: #38bdf8;
-            --accent-glow: rgba(244, 114, 182, 0.4);
-            --bg-gradient: radial-gradient(circle at 50% 30%, #381230 0%, #120410 60%, #050104 100%);
-            --card-border: rgba(244, 114, 182, 0.25);
-            --particle-1: 244, 114, 182;
-            --particle-2: 56, 189, 248;
-            --grid-color: rgba(244, 114, 182, 0.12);
-        }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px clamp(20px, 6vw, 80px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.5s ease;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 
-        body {
-            background: #020106;
-            background-image: var(--bg-gradient);
-            color: #f3f4f6;
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: background 0.7s ease;
-        }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
+  }
 
-        /* Ambient Glow & Interactive Follower */
-        .ambient-glow {
-            position: fixed;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            filter: blur(90px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.55;
-            animation: pulseGlow 6s ease-in-out infinite alternate;
-            transition: background 0.7s ease;
-        }
+  .brand-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    transition: transform 0.2s var(--ease), box-shadow 0.3s;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .brand-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .brand-avatar:active { transform: scale(0.95); }
+  .brand-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-        @keyframes pulseGlow {
-            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.4; }
-            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
-        }
+  .brand-text {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+  .brand-text span { color: var(--accent); }
 
-        /* Perspective Grid Layer */
-        .cyber-grid {
-            position: fixed;
-            inset: 0;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 100%);
-            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 100%);
-            pointer-events: none;
-            z-index: 0;
-            transition: background-image 0.5s ease;
-            animation: gridMove 20s linear infinite;
-        }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
 
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
+  .music-panel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px 4px 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    transition: border-color 0.3s;
+  }
+  .music-panel:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .music-btn {
+    flex: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s var(--ease);
+    font-family: var(--mono);
+  }
+  .music-btn:hover { transform: scale(1.1); }
+  .music-btn:active { transform: scale(0.95); }
 
-        /* Glassmorphism Styles */
-        .glass-card {
-            background: rgba(18, 14, 33, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.15s ease-out;
-            will-change: transform;
-        }
+  .volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 70px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 11px; height: 11px;
+    background: var(--text);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .volume-slider::-moz-range-thumb {
+    width: 11px; height: 11px;
+    background: var(--text);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
 
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
+  .themes { display: flex; gap: 10px; }
+  .swatch {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    outline: 1px solid var(--border);
+    background: var(--sw);
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), outline-color 0.3s;
+  }
+  .swatch:hover { transform: scale(1.2); }
+  .swatch[aria-pressed="true"] { outline: 2px solid var(--text); }
 
-        .glass-pill:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-        /* Interactive Hoverable Letters for Header */
-        .hover-letter {
-            display: inline-block;
-            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.25s ease;
-            cursor: default;
-        }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: clamp(20px, 6vw, 80px);
+  }
 
-        .hover-letter:hover {
-            transform: translateY(-6px) scale(1.15);
-            text-shadow: 0 0 16px var(--accent-color);
-        }
+  .hero {
+    min-height: calc(100svh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 60px 80px;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(54px, 15vw, 200px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: clamp(24px, 4vw, 48px);
+  }
+  .hero-title .ch {
+    display: inline-block;
+    animation: rise 0.9s var(--ease) backwards;
+    animation-delay: calc(var(--i) * 70ms + 100ms);
+    transition: transform 0.35s var(--ease), color 0.35s;
+  }
+  .hero-title .ch:hover { transform: translateY(-7%) rotate(-3deg); color: var(--accent); }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(55%) rotate(7deg); filter: blur(10px); }
+  }
+  .hero-desc {
+    max-width: 30em;
+    color: var(--text-dim);
+    font-size: clamp(17px, 1.6vw, 20px);
+    animation: fade-up 0.9s var(--ease) 0.65s backwards;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 600; }
+  .hero-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    width: fit-content;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
+    text-decoration: none;
+    animation: fade-up 0.9s var(--ease) 0.85s backwards;
+    transition: color 0.3s;
+  }
+  .hero-more:hover { color: var(--accent); }
+  .hero-more i { font-style: normal; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(5px); } }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+  }
 
-        /* Bright Solid Color for "x3" without dark gradients */
-        .text-accent-bright {
-            color: var(--accent-color);
-            transition: color 0.5s ease;
-        }
+  section { padding-block: clamp(60px, 9vw, 120px); scroll-margin-top: 60px; }
+  .label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: clamp(32px, 5vw, 56px);
+    text-wrap: balance;
+  }
 
-        .accent-bg {
-            background-color: var(--accent-color);
-            transition: background-color 0.5s ease;
-        }
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    transition-delay: calc(var(--d, 0) * 90ms);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
 
-        .accent-border {
-            border-color: var(--accent-color);
-            transition: border-color 0.5s ease;
-        }
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 190px;
+    padding: 26px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .js .card.reveal {
+    transition: opacity 0.8s var(--ease), transform 0.5s var(--ease), border-color 0.3s;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--accent) 24%, transparent), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover { border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+  .js .card.reveal.in:hover, .card:hover { transform: translateY(-5px); }
+  .card:hover::before { opacity: 1; }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  .arrow { font-size: 20px; line-height: 1; transition: transform 0.4s var(--ease), color 0.3s; }
+  .card:hover .arrow { transform: translate(4px, -4px); color: var(--accent); }
+  .card-name {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+  .card-sub { font-family: var(--mono); font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 
-        .glow-avatar {
-            box-shadow: 0 0 35px var(--accent-glow);
-            transition: box-shadow 0.5s ease, transform 0.3s ease;
-        }
+  .charges-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px 48px;
+  }
+  .count {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(88px, 19vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease);
+    user-select: none;
+  }
+  .count.flip {
+    animation: flipNumber 0.8s var(--ease);
+  }
+  @keyframes flipNumber {
+    0% { transform: rotateX(0deg) scale(1); }
+    50% { transform: rotateX(180deg) scale(1.15); }
+    100% { transform: rotateX(360deg) scale(1); }
+  }
 
-        .glow-avatar:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 0 50px var(--accent-color);
-        }
+  .charges-side { max-width: 26em; }
+  .charges-side p { color: var(--text-dim); margin-bottom: 24px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn i { font-style: normal; transition: transform 0.3s var(--ease); }
+  .btn:hover i { transform: translateX(4px); }
 
-        /* Animated Equalizer Bars */
-        .eq-bar {
-            width: 3px;
-            background-color: var(--accent-color);
-            border-radius: 3px;
-            animation: eqBounce 1.2s ease-in-out infinite alternate;
-            transition: background-color 0.5s ease;
-        }
+  .marquee {
+    margin-top: clamp(40px, 6vw, 72px);
+    display: grid;
+    gap: 12px;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .track {
+    display: flex;
+    width: max-content;
+    animation: slide 70s linear infinite;
+  }
+  .track.rev { animation-direction: reverse; animation-duration: 85s; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track span {
+    margin-right: 12px;
+    padding: 9px 18px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 15px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  @keyframes slide { to { transform: translateX(-50%); } }
 
-        .eq-bar:nth-child(1) { height: 60%; animation-delay: -0.4s; }
-        .eq-bar:nth-child(2) { height: 100%; animation-delay: -0.2s; }
-        .eq-bar:nth-child(3) { height: 40%; animation-delay: -0.6s; }
-        .eq-bar:nth-child(4) { height: 80%; animation-delay: -0.1s; }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-block: 32px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  footer b { color: var(--text-dim); font-weight: 500; }
 
-        @keyframes eqBounce {
-            0% { transform: scaleY(0.2); }
-            100% { transform: scaleY(1); }
-        }
+  dialog {
+    margin: auto;
+    width: min(860px, calc(100vw - 24px));
+    height: min(760px, calc(100dvh - 24px));
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    transition: opacity 0.3s ease, transform 0.35s var(--ease),
+                overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+  }
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    dialog[open] { opacity: 0; transform: translateY(24px) scale(0.97); }
+  }
+  dialog::backdrop {
+    background: rgba(0,0,0,0);
+    backdrop-filter: blur(0);
+    transition: background-color 0.35s, backdrop-filter 0.35s,
+                overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+  }
+  dialog[open]::backdrop { background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); }
+  @starting-style {
+    dialog[open]::backdrop { background: rgba(0,0,0,0); backdrop-filter: blur(0); }
+  }
 
-        .eq-paused .eq-bar {
-            animation-play-state: paused;
-            transform: scaleY(0.2);
-        }
+  .dlg-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dlg-head h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    margin-right: auto;
+  }
+  .dlg-head h3 small {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--text-faint);
+    margin-left: 8px;
+    letter-spacing: 0;
+  }
+  .search {
+    width: min(220px, 40vw);
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+  }
+  .search::placeholder { color: var(--text-faint); }
+  .close {
+    flex: none;
+    width: 38px; height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--card);
+    color: var(--text-dim);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), color 0.3s, border-color 0.3s;
+  }
+  .close:hover { transform: rotate(90deg); color: var(--text); border-color: var(--accent); }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(10, 10, 15, 0.8);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 4px;
-        }
-    </style>
+  .dlg-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 22px 22px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .dlg-body ol { list-style: none; columns: 2; column-gap: 36px; }
+  .dlg-body li {
+    display: flex;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    break-inside: avoid;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--text-dim);
+    transition: color 0.2s, padding-left 0.25s var(--ease);
+  }
+  .dlg-body li:hover { color: var(--text); padding-left: 6px; }
+  .dlg-body li b {
+    flex: none;
+    width: 2.2em;
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 21px;
+    color: var(--accent);
+  }
+  .empty { padding: 40px 0; text-align: center; color: var(--text-faint); }
+
+  .love-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--accent-2);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+    opacity: 0.55;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+                border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .love-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    border-color: var(--accent-2);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--accent-2) 40%, transparent);
+  }
+  .love-btn:active { transform: scale(0.95); }
+  .love-btn .heart {
+    display: inline-block;
+    animation: heartBeat 1.6s ease-in-out infinite;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+  }
+
+  .love-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  [data-theme="light"] .love-overlay { background: rgba(255, 255, 255, 0.7); }
+  .love-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .love-card {
+    padding: 50px 70px;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    text-align: center;
+    transform: translateY(30px) scale(0.85);
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+  .love-overlay.show .love-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .love-text {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(32px, 6vw, 64px);
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .love-heart-big {
+    font-size: 48px;
+    margin-top: 16px;
+    color: var(--accent-2);
+    animation: heartBeat 1.2s ease-in-out infinite;
+  }
+
+  .love-hint {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .float-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    z-index: 9997;
+    animation: floatUp 2.8s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.5) rotate(0deg); }
+    15% { opacity: 1; transform: translateY(-30px) scale(1) rotate(8deg); }
+    100% { opacity: 0; transform: translateY(-260px) scale(1.5) rotate(40deg); }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    max-width: 340px;
+    padding: 18px 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    z-index: 100;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transform: translateY(150%);
+    transition: transform 0.6s var(--ease);
+    font-size: 14px;
+  }
+  .toast.show { transform: translateY(0); }
+  .toast-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .toast-content { flex: 1; }
+  .toast-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .toast-text {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .toast-close {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .toast-close:hover { color: var(--text); }
+
+  .jumpscare {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .jumpscare.show {
+    opacity: 1;
+    pointer-events: auto;
+    animation: shakeScreen 0.3s ease-in-out;
+  }
+  @keyframes shakeScreen {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-10px, 5px); }
+    40% { transform: translate(10px, -5px); }
+    60% { transform: translate(-8px, -8px); }
+    80% { transform: translate(8px, 8px); }
+  }
+
+  .jumpscare-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: jumpscareZoom 0.4s ease-out;
+  }
+  @keyframes jumpscareZoom {
+    from { transform: scale(0.3); }
+    to { transform: scale(1.05); }
+  }
+
+  @media (max-width: 640px) {
+    .dlg-body ol { columns: 1; }
+    .dlg-head { flex-wrap: wrap; }
+    .search { order: 3; width: 100%; }
+    .love-btn { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    .love-card { padding: 35px 30px; }
+    .love-heart-big { font-size: 36px; }
+    .volume-slider { width: 55px; }
+    .topbar { padding: 12px 16px; }
+    .topbar-right { gap: 10px; }
+    .brand-avatar { width: 32px; height: 32px; }
+    .toast { bottom: 16px; left: 16px; right: 16px; max-width: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
+  }
+</style>
 </head>
-<body data-theme="purple" class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 relative selection:bg-purple-500 selection:text-white">
+<body>
 
-    <!-- Background Layer Effects -->
-    <div class="ambient-glow"></div>
-    <div class="cyber-grid"></div>
-    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+<div class="aurora" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
 
-    <!-- Toast Notification Container -->
-    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="glass-pill px-4 py-3 rounded-xl flex items-center space-x-3 shadow-2xl border border-emerald-500/30 text-white">
-            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-            <span id="toastMsg" class="font-medium text-sm">Скопировано в буфер!</span>
+<header class="topbar">
+  <a class="brand" href="#top">
+    <div class="brand-avatar" id="brandAvatar">
+      <img src="favicon.png" alt="x3led">
+    </div>
+    <div class="brand-text">x3led<span>.</span></div>
+  </a>
+  <div class="topbar-right">
+    <div class="music-panel">
+      <button class="music-btn" id="musicBtn" aria-label="Музыка">&#9654;</button>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" aria-label="Громкость">
+    </div>
+    <div class="themes" role="group" aria-label="Цветовая тема">
+      <button class="swatch" data-theme-key="dark" style="--sw:#8b6cff" aria-label="Тёмная"></button>
+      <button class="swatch" data-theme-key="emerald" style="--sw:#22ddaa" aria-label="Изумрудная"></button>
+      <button class="swatch" data-theme-key="fire" style="--sw:#ff6a33" aria-label="Огненная"></button>
+      <button class="swatch" data-theme-key="light" style="--sw:#f6f5fb" aria-label="Светлая"></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <h1 class="hero-title" aria-label="x3led.">
+      <span class="ch" style="--i:0" aria-hidden="true">x</span><span class="ch" style="--i:1" aria-hidden="true">3</span><span class="ch" style="--i:2" aria-hidden="true">l</span><span class="ch" style="--i:3" aria-hidden="true">e</span><span class="ch" style="--i:4" aria-hidden="true">d</span><span class="ch dot" style="--i:5" aria-hidden="true">.</span>
+    </h1>
+    <p class="hero-desc">
+      Привет. Это <strong>моя первая страничка</strong> обо мне.
+      В дальнейшем она будет обновляться — новые проекты,
+      новые ссылки, что-то интересное.
+    </p>
+    <a class="hero-more" href="#links">где меня найти <i>&#8595;</i></a>
+  </div>
+
+  <section id="links">
+    <div class="wrap">
+      <p class="label reveal">связь</p>
+      <h2 class="reveal">Где меня можно найти</h2>
+
+      <div class="links">
+        <a class="card reveal" style="--d:0" href="https://discord.com/users/928360132482572371" target="_blank" rel="noopener">
+          <div class="card-top"><span>01</span><span class="arrow">&#8599;</span></div>
+          <div>
+            <div class="card-name">Discord</div>
+            <div class="card-sub">x3led</div>
+          </div>
+        </a>
+        <a class="card reveal" style="--d:1" href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener">
+          <div class="card-top"><span>02</span><span class="arrow">&#8599;</span></div>
+          <div>
+            <div class="card-name">Steam</div>
+            <div class="card-sub">профиль</div>
+          </div>
+        </a>
+        <a class="card reveal" style="--d:2" href="https://github.com/x3led" target="_blank" rel="noopener">
+          <div class="card-top"><span>03</span><span class="arrow">&#8599;</span></div>
+          <div>
+            <div class="card-name">GitHub</div>
+            <div class="card-sub">x3led</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="charges">
+    <div class="wrap">
+      <p class="label reveal">манифест</p>
+      <h2 class="reveal">Список обвинений</h2>
+
+      <div class="charges-head reveal">
+        <div class="count" id="count">0</div>
+        <div class="charges-side">
+          <p>Полный список того, в чём меня можно обвинить. С поиском — вдруг ищешь что-то конкретное.</p>
+          <button class="btn" id="openCharges">Открыть список <i>&#8594;</i></button>
         </div>
+      </div>
     </div>
 
-    <div class="w-full max-w-xl relative z-10 space-y-6">
-        
-        <!-- MAIN PROFILE CARD -->
-        <main id="mainCard" class="glass-card relative w-full rounded-3xl p-6 sm:p-8 space-y-6 transform-gpu">
-            
-            <!-- HEADER: Moscow Time & Themes Switcher -->
-            <header class="flex items-center justify-between border-b border-white/10 pb-5">
-                <!-- Moscow Time Widget -->
-                <div class="flex items-center space-x-2.5 glass-pill px-3.5 py-1.5 rounded-full text-xs font-mono">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full accent-bg opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 accent-bg"></span>
-                    </span>
-                    <span class="text-gray-400">MSK (UTC+3):</span>
-                    <span id="moscowClock" class="font-semibold text-white tracking-wider">00:00:00</span>
-                </div>
-
-                <!-- SFX Toggle & Theme Selector Dropdown -->
-                <div class="flex items-center space-x-2">
-                    <button id="sfxBtn" title="Переключить звуковые эффекты" class="glass-pill w-9 h-9 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition">
-                        <i class="fa-solid fa-volume-high text-xs" id="sfxIcon"></i>
-                    </button>
-
-                    <div class="relative">
-                        <button id="themeToggleBtn" class="glass-pill px-3 py-1.5 rounded-full flex items-center space-x-2 text-xs font-medium hover:text-white transition">
-                            <i class="fa-solid fa-palette text-xs" style="color: var(--accent-color)"></i>
-                            <span class="hidden sm:inline">Тема</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
-                        </button>
-                        
-                        <div id="themeMenu" class="hidden absolute right-0 mt-2 w-48 glass-card rounded-2xl p-2 z-50 space-y-1 border border-white/10 text-xs shadow-2xl">
-                            <button onclick="setTheme('purple')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span>
-                                    <span>Purple Night</span>
-                                </div>
-                            </button>
-                            <button onclick="setTheme('emerald')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
-                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
-                                <span>Hacker Green</span>
-                            </button>
-                            <button onclick="setTheme('crimson')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
-                                <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
-                                <span>Flame Crimson</span>
-                            </button>
-                            <button onclick="setTheme('cyan')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
-                                <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
-                                <span>Cyber Cyan</span>
-                            </button>
-                            <button onclick="setTheme('vapor')" class="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl hover:bg-white/10 transition text-left">
-                                <span class="w-3 h-3 rounded-full bg-pink-400 inline-block"></span>
-                                <span>Vaporwave</span>
-                            </button>
-                            
-                            <!-- Reset Theme Button -->
-                            <div class="border-t border-white/10 pt-1.5 mt-1">
-                                <button onclick="resetToDefaultTheme()" class="w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-purple-300 hover:text-white hover:bg-purple-500/20 transition text-left font-medium text-xs">
-                                    <i class="fa-solid fa-arrow-rotate-left text-xs"></i>
-                                    <span>Исходная тема</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- PROFILE INFO -->
-            <section class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
-                <div class="relative group">
-                    <div class="absolute -inset-1 rounded-full accent-bg opacity-40 blur-md group-hover:opacity-80 transition duration-500"></div>
-                    <img src="favicon.png" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/120x120/1e1035/a855f7?text=x3led';" 
-                         alt="x3led Avatar" 
-                         class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 accent-border glow-avatar cursor-pointer">
-                    <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-gray-900 rounded-full" title="Онлайн"></span>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="flex items-center justify-center sm:justify-start space-x-2">
-                        <!-- ANIMATED & INSTANTLY VISIBLE HEADER -->
-                        <h1 class="text-3xl sm:text-4xl font-extrabold font-display tracking-tight flex items-center select-none">
-                            <span class="text-accent-bright">
-                                <span class="hover-letter">x</span><span class="hover-letter">3</span>
-                            </span>
-                            <span class="text-white">
-                                <span class="hover-letter">l</span><span class="hover-letter">e</span><span class="hover-letter">d</span>
-                            </span>
-                        </h1>
-                        <span class="glass-pill px-2.5 py-0.5 rounded-md text-[10px] font-mono text-gray-300 border border-white/10">dev / gamer</span>
-                    </div>
-                    
-                    <p class="text-xs sm:text-sm text-gray-300/80 leading-relaxed max-w-sm">
-                        Добро пожаловать в моё личное пространство.
-                    </p>
-                </div>
-            </section>
-
-            <section class="grid grid-cols-1 gap-3">
-                <!-- About Card -->
-                <div class="glass-pill p-4.5 rounded-2xl space-y-2.5 border border-white/10">
-                    <div class="flex items-center space-x-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                        <i class="fa-solid fa-terminal text-xs" style="color: var(--accent-color)"></i>
-                        <span>Обо мне</span>
-                    </div>
-                    <div class="font-mono text-xs sm:text-sm text-gray-200 leading-relaxed pl-1 border-l-2 border-purple-500/40">
-                        <span class="text-purple-400">&gt;</span> Начинающий вайбкодер, не сплю, играю в игры. В дальнейшем страница будет пополняться проектами и ссылками.
-                    </div>
-                </div>
-
-                <!-- Projects Navigation Banner Button -->
-                <button onclick="scrollToProjects()" class="glass-pill p-3.5 rounded-2xl flex items-center justify-between group hover:border-purple-500/50 transition cursor-pointer text-left w-full">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white group-hover:scale-110 transition">
-                            <i class="fa-solid fa-code-fork text-sm" style="color: var(--accent-color)"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-white group-hover:text-purple-300 transition">Мои проекты</div>
-                            <div class="text-[10px] text-gray-400">Нажмите, чтобы перейти к списку проектов</div>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-down text-gray-400 group-hover:text-white group-hover:translate-y-1 transition text-sm"></i>
-                </button>
-            </section>
-
-            <section class="space-y-3">
-                <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-1">Ссылки & Связь</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    
-                    <!-- Discord Direct Link -->
-                    <a href="https://discord.com/users/928360132482572371" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
-                        <div class="w-9 h-9 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition">
-                            <i class="fa-brands fa-discord text-lg"></i>
-                        </div>
-                        <div class="overflow-hidden">
-                            <div class="text-xs font-semibold text-white">Discord</div>
-                            <div class="text-[10px] text-gray-400">Перейти в профиль</div>
-                        </div>
-                    </a>
-
-                    <!-- Steam Profile Link -->
-                    <a href="https://steamcommunity.com/profiles/76561199750136517/" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
-                        <div class="w-9 h-9 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition">
-                            <i class="fa-brands fa-steam text-lg"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-white">Steam</div>
-                            <div class="text-[10px] text-gray-400">Профиль</div>
-                        </div>
-                    </a>
-
-                    <!-- GitHub Link -->
-                    <a href="https://github.com/x3led" target="_blank" rel="noopener noreferrer" class="glass-pill p-3 rounded-2xl flex items-center space-x-3 hover:scale-[1.02] transition active:scale-95 group">
-                        <div class="w-9 h-9 rounded-xl bg-neutral-700/40 flex items-center justify-center text-gray-200 group-hover:bg-white group-hover:text-black transition">
-                            <i class="fa-brands fa-github text-lg"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-white">GitHub</div>
-                            <div class="text-[10px] text-gray-400">@x3led</div>
-                        </div>
-                    </a>
-
-                </div>
-            </section>
-
-            <section class="glass-pill p-4 rounded-2xl space-y-3 border border-white/10">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl accent-bg/20 flex items-center justify-center text-white relative overflow-hidden">
-                            <i class="fa-solid fa-music text-sm" style="color: var(--accent-color)"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-semibold text-white tracking-wide">Duvet</div>
-                            <div class="text-[10px] text-gray-400">Background Track</div>
-                        </div>
-                    </div>
-
-                    <!-- Audio Visualizer Equalizer -->
-                    <div id="eqContainer" class="flex items-end space-x-1 h-5 px-2 eq-paused">
-                        <div class="eq-bar"></div>
-                        <div class="eq-bar"></div>
-                        <div class="eq-bar"></div>
-                        <div class="eq-bar"></div>
-                    </div>
-                </div>
-
-                <!-- Controls bar -->
-                <div class="flex items-center space-x-3 pt-1">
-                    <button id="playBtn" class="w-9 h-9 rounded-full accent-bg text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition">
-                        <i class="fa-solid fa-play text-xs" id="playIcon"></i>
-                    </button>
-
-                    <div class="flex-1 space-y-1">
-                        <input type="range" id="audioProgress" value="0" max="100" class="w-full h-1.5 bg-gray-700/60 rounded-lg appearance-none cursor-pointer accent-purple-500">
-                        <div class="flex justify-between text-[10px] font-mono text-gray-400">
-                            <span id="currentTime">0:00</span>
-                            <span id="durationTime">0:00</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-1.5 group relative">
-                        <button id="muteBtn" class="text-gray-400 hover:text-white text-xs p-1">
-                            <i class="fa-solid fa-volume-high" id="muteIcon"></i>
-                        </button>
-                        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7" class="w-16 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
-                    </div>
-                </div>
-
-                <!-- Audio Element for Duvet.mp3 -->
-                <audio id="bgAudio" loop preload="metadata">
-                    <source src="Duvet.mp3" type="audio/mpeg">
-                    Ваш браузер не поддерживает аудио.
-                </audio>
-            </section>
-
-            <!-- FOOTER -->
-            <footer class="text-center pt-2 text-[11px] text-gray-500 font-mono flex items-center justify-between">
-                <span>© <span id="year"></span> x3led</span>
-                <span class="hover:text-gray-400 transition cursor-default">personal page</span>
-            </footer>
-
-        </main>
-
-        <section id="projectsCard" class="glass-card w-full rounded-3xl p-6 sm:p-8 space-y-6 transform-gpu">
-            <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-xl accent-bg/20 flex items-center justify-center text-white">
-                        <i class="fa-solid fa-diagram-project text-sm" style="color: var(--accent-color)"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold text-white font-display">Мои проекты</h2>
-                        <p class="text-[11px] text-gray-400">Разработка и личные таски</p>
-                    </div>
-                </div>
-
-                <button onclick="scrollToMain()" class="glass-pill px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition flex items-center space-x-1.5">
-                    <i class="fa-solid fa-arrow-up text-[10px]"></i>
-                    <span>Наверх</span>
-                </button>
-            </div>
-
-            <!-- Empty Projects Placeholder Card -->
-            <div class="glass-pill p-8 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 border border-dashed border-white/15">
-                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 text-xl">
-                    <i class="fa-solid fa-folder-open opacity-50"></i>
-                </div>
-                <p class="text-sm font-medium text-gray-300 max-w-xs">
-                    Тут пока пусто , но скоро появяться первые проекты.
-                </p>
-            </div>
-        </section>
-
+    <div class="marquee reveal" aria-hidden="true">
+      <div class="track" id="trackA"></div>
+      <div class="track rev" id="trackB"></div>
     </div>
+  </section>
+</main>
 
-    <script>
-        // Dynamic year setup
-        document.getElementById('year').textContent = new Date().getFullYear();
+<footer>
+  <div class="wrap">
+    <span>x3led.github.io</span>
+    <span>у меня сейчас <span id="clock">--:--</span> мск</span>
+  </div>
+</footer>
 
-        // Smooth navigation handlers
-        function scrollToProjects() {
-            playSynthBeep(523.25, 0.08);
-            document.getElementById('projectsCard').scrollIntoView({ behavior: 'smooth' });
-        }
+<audio id="bgMusic" loop preload="auto" src="velariomusic-background-ambient-585950.mp3"></audio>
 
-        function scrollToMain() {
-            playSynthBeep(440, 0.08);
-            document.getElementById('mainCard').scrollIntoView({ behavior: 'smooth' });
-        }
+<button class="love-btn" id="loveBtn" aria-label="Секрет">
+  <span class="heart">&#9829;</span>
+</button>
 
-        // 1. LIVE MOSCOW CLOCK (UTC+3)
-        function updateMoscowClock() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Europe/Moscow',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            const timeString = new Intl.DateTimeFormat('ru-RU', options).format(now);
-            document.getElementById('moscowClock').textContent = timeString;
-        }
-        setInterval(updateMoscowClock, 1000);
-        updateMoscowClock();
+<div class="love-overlay" id="loveOverlay">
+  <div class="love-card" id="loveCard">
+    <div class="love-text">Я ЛЮБЛЮ<br>СОНЕЧКУ</div>
+    <div class="love-heart-big">&#9829;</div>
+    <div class="love-hint">нажми чтобы закрыть</div>
+  </div>
+</div>
 
-        // 2. THEME SWITCHER LOGIC
-        const themeMenu = document.getElementById('themeMenu');
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">&#127769;</div>
+  <div class="toast-content">
+    <div class="toast-title" id="toastTitle">Пора спать</div>
+    <div class="toast-text" id="toastText">x3led, уже 23:00. Ложись спать.</div>
+  </div>
+  <button class="toast-close" id="toastClose">&times;</button>
+</div>
 
-        themeToggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            themeMenu.classList.toggle('hidden');
-            playSynthBeep(440, 0.05);
-        });
+<div class="jumpscare" id="jumpscare">
+  <img class="jumpscare-img" id="jumpscareImg" src="favicon.png" alt="">
+</div>
 
-        document.addEventListener('click', () => {
-            if (!themeMenu.classList.contains('hidden')) {
-                themeMenu.classList.add('hidden');
-            }
-        });
+<dialog id="dialog" aria-labelledby="dlgTitle">
+  <div class="dlg-head">
+    <h3 id="dlgTitle">Обвинения <small id="dlgCount"></small></h3>
+    <input class="search" id="search" type="search" placeholder="Поиск" aria-label="Поиск по списку" autocomplete="off">
+    <button class="close" id="closeCharges" aria-label="Закрыть">&times;</button>
+  </div>
+  <div class="dlg-body">
+    <ol id="chargesList"></ol>
+    <p class="empty" id="empty" hidden>Ничего не найдено</p>
+  </div>
+</dialog>
+<script>
+  const charges = [
+    "Геноцид","Преступления против человечности","Военные преступления","Преступление агрессии",
+    "Этнические чистки","Массовые убийства","Депортация населения","Насильственное перемещение населения",
+    "Преследование гражданского населения","Пытки","Рабство","Сексуальное насилие во время конфликта",
+    "Использование детей в вооружённом конфликте","Умышленное нападение на гражданское население",
+    "Умышленное нападение на гуманитарный персонал","Незаконное уничтожение гражданской инфраструктуры",
+    "Взятие заложников","Незаконное содержание военнопленных","Вербовка иностранных наёмников",
+    "Нарушение международных договоров","Незаконное применение запрещённых методов ведения войны",
+    "Незаконная блокада","Пиратство","Работорговля","Транснациональная организованная преступность",
+    "Торговля людьми","Незаконный оборот оружия","Незаконный оборот наркотиков","Отмывание денег",
+    "Уклонение от уплаты налогов","Мошенничество","Подделка документов","Лжесвидетельство",
+    "Неуважение к суду","Побег из-под стражи","Сопротивление при аресте","Оскорбление власти",
+    "Шпионаж","Диверсия","Терроризм","Киберпреступность","Нарушение прав интеллектуальной собственности",
+    "Контрабанда","Нелегальная миграция","Нарушение санкций","Финансирование терроризма",
+    "Подстрекательство к войне","Пропаганда ненависти","Нарушение прав человека","Эксплуатация детского труда",
+    "Применение химического оружия","Применение биологического оружия","Применение ядерного оружия",
+    "Использование противопехотных мин","Использование кассетных боеприпасов",
+    "Нападение на медицинские учреждения","Нападение на школы и образовательные учреждения",
+    "Нападение на объекты культурного наследия","Разрушение религиозных объектов",
+    "Незаконная аннексия территории","Нарушение территориальной целостности",
+    "Вмешательство во внутренние дела","Государственный переворот","Подрыв суверенитета",
+    "Организация массовых беспорядков","Разжигание межнациональной розни","Разжигание религиозной ненависти",
+    "Дискриминация по расовому признаку","Дискриминация по половому признаку","Нарушение прав меньшинств",
+    "Принудительная ассимиляция","Запрет на использование языка","Цензура","Преследование журналистов",
+    "Преследование политических оппонентов","Преследование правозащитников","Незаконные задержания",
+    "Незаконные обыски","Конфискация имущества","Национализация без компенсации","Экспроприация",
+    "Принудительный труд","Торговля детьми","Похищение людей","Исчезновение людей","Внесудебные казни",
+    "Массовые захоронения","Сокрытие преступлений","Уничтожение улик","Дача ложных показаний",
+    "Подкуп должностных лиц","Злоупотребление властью","Превышение полномочий","Халатность","Коррупция",
+    "Отмывание доходов","Незаконные финансовые операции","Офшорные схемы","Уклонение от санкций",
+    "Нарушение эмбарго","Незаконная торговля людьми","Принудительная стерилизация","Принудительная беременность",
+    "Насильственная пропажа людей","Организация эскадронов смерти","Создание тайных тюрем",
+    "Пытки в местах лишения свободы","Бесчеловечное обращение с заключёнными","Отказ в медицинской помощи",
+    "Отказ в гуманитарном доступе","Блокирование гуманитарных коридоров","Нападение на конвои с помощью",
+    "Разграбление гуманитарных грузов","Использование голода как метода войны",
+    "Уничтожение посевов и запасов продовольствия","Отравление источников воды",
+    "Разрушение систем водоснабжения","Разрушение энергетической инфраструктуры",
+    "Кибератаки на гражданские объекты","Кибератаки на медицинские учреждения",
+    "Дезинформация и пропаганда","Фальсификация выборов","Подкуп избирателей","Запугивание избирателей",
+    "Ограничение свободы собраний","Разгон мирных протестов","Применение силы против демонстрантов",
+    "Незаконное применение слезоточивого газа","Незаконное применение резиновых пуль",
+    "Применение огнестрельного оружия против безоружных","Похищение активистов","Слежка за гражданами",
+    "Незаконный сбор персональных данных","Нарушение права на приватность","Блокирование интернета",
+    "Отключение связи","Глушение сигналов","Ограничение свободы прессы","Закрытие независимых изданий",
+    "Арест журналистов","Убийство журналистов","Преследование блогеров","Блокировка социальных сетей",
+    "Манипуляция общественным мнением","Создание фейковых новостей","Кибершпионаж",
+    "Кража государственных секретов","Саботаж критической инфраструктуры","Диверсии на транспорте",
+    "Поджоги","Организация взрывов","Самоподрыв","Использование смертников","Похищение самолётов",
+    "Угон транспортных средств","Захват заложников на транспорте","Морское пиратство","Воздушное пиратство",
+    "Незаконный захват судов","Контрабанда оружия","Контрабанда наркотиков","Контрабанда людей",
+    "Контрабанда культурных ценностей","Незаконная добыча ресурсов","Незаконная вырубка лесов",
+    "Незаконный вылов рыбы","Браконьерство","Торговля редкими видами","Уничтожение экосистем",
+    "Загрязнение окружающей среды","Выброс токсичных отходов","Незаконное захоронение отходов",
+    "Разрушение озонового слоя","Изменение климата","Экологический терроризм","Экоцид","Биопиратство",
+    "Незаконные генетические эксперименты","Клонирование человека","Торговля органами",
+    "Незаконная трансплантация","Принудительное изъятие органов","Медицинские эксперименты над людьми",
+    "Испытания на заключённых","Испытания на детях","Испытания на беременных","Отказ в вакцинации",
+    "Распространение биологического оружия","Создание лабораторных утечек","Пандемия",
+    "Сокрытие вспышек заболеваний","Дезинформация о здоровье","Продажа фальсифицированных лекарств",
+    "Подделка вакцин","Незаконный оборот медицинских препаратов","Наркоторговля","Организация наркокартелей",
+    "Отмывание наркодоходов","Финансирование наркоторговли","Вовлечение несовершеннолетних в наркоторговлю"
+  ];
 
-        function setTheme(themeName) {
-            document.documentElement.setAttribute('data-theme', themeName);
-            themeMenu.classList.add('hidden');
-            playSynthBeep(523.25, 0.08);
-            updateCanvasThemeColors();
-            showToast(`Тема изменена: ${themeName}`);
-        }
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        function resetToDefaultTheme() {
-            setTheme('purple');
-            showToast('Тема сброшена к исходной');
-        }
+  const swatches = document.querySelectorAll(".swatch");
+  function setTheme(key) {
+    if (key === "dark") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = key;
+    swatches.forEach(s => s.setAttribute("aria-pressed", s.dataset.themeKey === key));
+    try { localStorage.setItem("x3led-theme", key); } catch (e) {}
+  }
+  swatches.forEach(s => s.addEventListener("click", () => setTheme(s.dataset.themeKey)));
+  setTheme(document.documentElement.dataset.theme || "dark");
 
-        // 3. TOAST NOTIFICATION SYSTEM
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-            toastMsg.textContent = msg;
-            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+  const countEl = document.getElementById("count");
+  function runCount() {
+    const total = charges.length;
+    if (reduceMotion) { countEl.textContent = total; return; }
+    const start = performance.now(), dur = 1400;
+    (function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      countEl.textContent = Math.round(total * (1 - Math.pow(1 - p, 4)));
+      if (p < 1) requestAnimationFrame(tick);
+    })(start);
+  }
 
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-[-100px]', 'opacity-0');
-            }, 2500);
-        }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      if (en.target.contains(countEl)) runCount();
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-        // 4. WEB AUDIO SYNTH SFX
-        let sfxEnabled = true;
-        const sfxBtn = document.getElementById('sfxBtn');
-        const sfxIcon = document.getElementById('sfxIcon');
+  document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
 
-        sfxBtn.addEventListener('click', () => {
-            sfxEnabled = !sfxEnabled;
-            if (sfxEnabled) {
-                sfxIcon.className = 'fa-solid fa-volume-high text-xs';
-                showToast('Звуковые эффекты включены');
-                playSynthBeep(587.33, 0.08);
-            } else {
-                sfxIcon.className = 'fa-solid fa-volume-xmark text-xs text-red-400';
-                showToast('Звуковые эффекты выключены');
-            }
-        });
+  function fillTrack(id, items) {
+    const track = document.getElementById(id);
+    items.concat(items).forEach(text => {
+      const s = document.createElement("span");
+      s.textContent = text;
+      track.appendChild(s);
+    });
+  }
+  fillTrack("trackA", charges.slice(0, 18));
+  fillTrack("trackB", charges.slice(18, 36));
 
-        function playSynthBeep(freq = 440, duration = 0.05) {
-            if (!sfxEnabled) return;
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
+  const dialog = document.getElementById("dialog");
+  const list = document.getElementById("chargesList");
+  const search = document.getElementById("search");
+  const empty = document.getElementById("empty");
+  const dlgCount = document.getElementById("dlgCount");
 
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime);
-                gain.gain.setValueAtTime(0.05, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+  const rows = charges.map((text, i) => {
+    const li = document.createElement("li");
+    const n = document.createElement("b");
+    n.textContent = String(i + 1).padStart(3, "0");
+    li.append(n, text);
+    list.appendChild(li);
+    return { li, key: text.toLowerCase() };
+  });
 
-                osc.connect(gain);
-                gain.connect(ctx.destination);
+  function filter() {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(r => {
+      const ok = r.key.includes(q);
+      r.li.hidden = !ok;
+      if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+    dlgCount.textContent = q ? (shown + " из " + rows.length) : rows.length;
+  }
+  search.addEventListener("input", filter);
+  filter();
 
-                osc.start();
-                osc.stop(ctx.currentTime + duration);
-            } catch (e) {}
-        }
+  document.getElementById("openCharges").addEventListener("click", () => {
+    search.value = "";
+    filter();
+    dialog.showModal();
+  });
+  document.getElementById("closeCharges").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", e => { if (e.target === dialog) dialog.close(); });
 
-        const bgAudio = document.getElementById('bgAudio');
-        const playBtn = document.getElementById('playBtn');
-        const playIcon = document.getElementById('playIcon');
-        const audioProgress = document.getElementById('audioProgress');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const muteBtn = document.getElementById('muteBtn');
-        const muteIcon = document.getElementById('muteIcon');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationTimeEl = document.getElementById('durationTime');
-        const eqContainer = document.getElementById('eqContainer');
+  const clock = document.getElementById("clock");
+  const fmt = new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", hour: "2-digit", minute: "2-digit" });
+  function updateClock() { clock.textContent = fmt.format(new Date()); }
+  updateClock();
+  setInterval(updateClock, 10000);
 
-        let isPlaying = false;
+  const bgMusic = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicBtn");
+  const volumeSlider = document.getElementById("volumeSlider");
 
-        playBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                pauseAudio();
-            } else {
-                playAudio();
-            }
-        });
+  try {
+    const savedVol = localStorage.getItem("x3led-vol");
+    if (savedVol !== null) volumeSlider.value = savedVol;
+  } catch (e) {}
+  bgMusic.volume = (volumeSlider.value / 100) * 0.6;
 
-        function playAudio() {
-            bgAudio.play().then(() => {
-                isPlaying = true;
-                playIcon.className = 'fa-solid fa-pause text-xs';
-                eqContainer.classList.remove('eq-paused');
-            }).catch(err => {
-                showToast(' Ошибка воспроизведения Duvet.mp3');
-            });
-        }
+  let wasPlaying = false;
+  try { wasPlaying = localStorage.getItem("x3led-music") === "1"; } catch (e) {}
 
-        function pauseAudio() {
-            bgAudio.pause();
-            isPlaying = false;
-            playIcon.className = 'fa-solid fa-play text-xs';
-            eqContainer.classList.add('eq-paused');
-        }
+  musicBtn.textContent = "\u25B6";
 
-        bgAudio.addEventListener('timeupdate', () => {
-            if (bgAudio.duration) {
-                const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
-                audioProgress.value = pct;
-                currentTimeEl.textContent = formatTime(bgAudio.currentTime);
-                durationTimeEl.textContent = formatTime(bgAudio.duration);
-            }
-        });
+  musicBtn.addEventListener("click", async () => {
+    try {
+      if (bgMusic.paused) {
+        await bgMusic.play();
+        musicBtn.textContent = "\u275A\u275A";
+        try { localStorage.setItem("x3led-music", "1"); } catch (e) {}
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "\u25B6";
+        try { localStorage.setItem("x3led-music", "0"); } catch (e) {}
+      }
+    } catch (err) {}
+  });
 
-        audioProgress.addEventListener('input', () => {
-            if (bgAudio.duration) {
-                bgAudio.currentTime = (audioProgress.value / 100) * bgAudio.duration;
-            }
-        });
+  volumeSlider.addEventListener("input", () => {
+    bgMusic.volume = (volumeSlider.value / 100) * 0.6;
+    try { localStorage.setItem("x3led-vol", volumeSlider.value); } catch (e) {}
+  });
 
-        volumeSlider.addEventListener('input', (e) => {
-            bgAudio.volume = e.target.value;
-            if (bgAudio.volume === 0) {
-                muteIcon.className = 'fa-solid fa-volume-xmark text-red-400';
-            } else {
-                muteIcon.className = 'fa-solid fa-volume-high';
-            }
-        });
+  if (wasPlaying) {
+    const tryAutoplay = async () => {
+      try {
+        await bgMusic.play();
+        musicBtn.textContent = "\u275A\u275A";
+      } catch (e) {}
+      document.removeEventListener("click", tryAutoplay);
+      document.removeEventListener("touchstart", tryAutoplay);
+      document.removeEventListener("keydown", tryAutoplay);
+    };
+    document.addEventListener("click", tryAutoplay, { once: true });
+    document.addEventListener("touchstart", tryAutoplay, { once: true });
+    document.addEventListener("keydown", tryAutoplay, { once: true });
+  }
 
-        muteBtn.addEventListener('click', () => {
-            if (bgAudio.volume > 0) {
-                bgAudio.dataset.prevVol = bgAudio.volume;
-                bgAudio.volume = 0;
-                volumeSlider.value = 0;
-                muteIcon.className = 'fa-solid fa-volume-xmark text-red-400';
-            } else {
-                const prev = bgAudio.dataset.prevVol || 0.7;
-                bgAudio.volume = prev;
-                volumeSlider.value = prev;
-                muteIcon.className = 'fa-solid fa-volume-high';
-            }
-        });
+  const loveBtn = document.getElementById("loveBtn");
+  const loveOverlay = document.getElementById("loveOverlay");
+  const loveCard = document.getElementById("loveCard");
+  let loveTimeout = null;
 
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
+  const heartSymbols = ["\u2665", "\u2764", "\uD83D\uDC95", "\uD83D\uDC97", "\uD83D\uDC96", "\uD83D\uDC9D", "\uD83D\uDC93"];
 
-        // UNIVERSAL 3D TILT EFFECT FOR ALL CARDS
-        const cards = document.querySelectorAll('.glass-card');
-        document.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            
-            const xRot = ((clientY / innerHeight) - 0.5) * -8;
-            const yRot = ((clientX / innerWidth) - 0.5) * 8;
+  function spawnHearts() {
+    for (let i = 0; i < 24; i++) {
+      setTimeout(() => {
+        const h = document.createElement("div");
+        h.className = "float-heart";
+        h.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        h.style.left = (Math.random() * 100) + "vw";
+        h.style.top = (Math.random() * 30 + 55) + "vh";
+        h.style.color = i % 3 === 0 ? "var(--accent)" : (i % 3 === 1 ? "var(--accent-2)" : "#ff88aa");
+        h.style.fontSize = (14 + Math.random() * 26) + "px";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2900);
+      }, i * 60);
+    }
+  }
 
-            cards.forEach(card => {
-                card.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-            });
-        });
+  function openLove() {
+    loveOverlay.classList.add("show");
+    spawnHearts();
+    clearTimeout(loveTimeout);
+    loveTimeout = setTimeout(() => loveOverlay.classList.remove("show"), 7000);
+  }
 
-        document.addEventListener('mouseleave', () => {
-            cards.forEach(card => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            });
-        });
+  function closeLove() {
+    loveOverlay.classList.remove("show");
+  }
 
-        // CANVAS BACKGROUND ANIMATIONS WITH PULSATING PARTICLES & CLICK BURST
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
+  loveBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    openLove();
+  });
 
-        let width, height;
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
+  loveOverlay.addEventListener("click", e => {
+    if (e.target === loveOverlay || e.target === loveCard || loveCard.contains(e.target)) {
+      closeLove();
+    }
+  });
 
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeLove();
+  });
 
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
+  // ---------- ПАСХАЛКА: кувырок цифры 200 при клике ----------
+  countEl.addEventListener("click", () => {
+    countEl.classList.add("flip");
+    setTimeout(() => countEl.classList.remove("flip"), 800);
+  });
 
-        // Click Burst Particle Spawn
-        window.addEventListener('click', (e) => {
-            for (let i = 0; i < 8; i++) {
-                particles.push(new Particle(e.clientX, e.clientY, true));
-                if (particles.length > 110) particles.shift();
-            }
-        });
+  // ---------- ПАСХАЛКА: "любопытный" после 3 прокруток до конца ----------
+  let scrollToBottomCount = 0;
+  let lastScrollTop = 0;
 
-        function getThemeRGB() {
-            const style = getComputedStyle(document.documentElement);
-            const p1 = style.getPropertyValue('--particle-1').trim() || '168, 85, 247';
-            const p2 = style.getPropertyValue('--particle-2').trim() || '236, 72, 153';
-            return [p1, p2];
-        }
+  window.addEventListener("scroll", () => {
+    const st = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    if (st >= docH - 10 && lastScrollTop < st) {
+      scrollToBottomCount++;
+      if (scrollToBottomCount === 3) {
+        showToast("Любопытный", "Ты докрутил до конца уже 3 раза. Что-то ищешь?", "\uD83D\uDD0D");
+        scrollToBottomCount = 0;
+      }
+    }
+    lastScrollTop = st;
+  });
 
-        let [color1, color2] = getThemeRGB();
+  // ---------- ПАСХАЛКА: 23:00 — пора спать ----------
+  function checkBedtime() {
+    const now = new Date();
+    const msk = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+    const h = msk.getHours();
+    const m = msk.getMinutes();
 
-        function updateCanvasThemeColors() {
-            [color1, color2] = getThemeRGB();
-            particles.forEach(p => p.color = Math.random() > 0.5 ? color1 : color2);
-        }
+    if (h === 23 && m === 0) {
+      const key = "x3led-bedtime-" + msk.toISOString().slice(0, 10);
+      try {
+        if (localStorage.getItem(key)) return;
+        localStorage.setItem(key, "1");
+      } catch (e) {}
 
-        class Particle {
-            constructor(x = null, y = null, isBurst = false) {
-                this.x = x !== null ? x : Math.random() * width;
-                this.y = y !== null ? y : Math.random() * height;
-                this.size = Math.random() * 2.5 + 1;
-                this.baseSize = this.size;
-                this.vx = isBurst ? (Math.random() - 0.5) * 4 : (Math.random() - 0.5) * 0.8;
-                this.vy = isBurst ? (Math.random() - 0.5) * 4 : (Math.random() - 0.5) * 0.8;
-                this.color = Math.random() > 0.5 ? color1 : color2;
-                this.alpha = Math.random() * 0.6 + 0.2;
-                this.pulseSpeed = Math.random() * 0.03 + 0.01;
-            }
+      showToast("Пора спать", "x3led, уже 23:00. Ложись спать.", "\uD83C\uDF19");
+    }
+  }
+  checkBedtime();
+  setInterval(checkBedtime, 30000);
 
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-                ctx.shadowBlur = 14;
-                ctx.shadowColor = `rgba(${this.color}, 0.8)`;
-                ctx.fill();
-            }
+  // ---------- TOAST ----------
+  const toast = document.getElementById("toast");
+  const toastIcon = document.getElementById("toastIcon");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
+  const toastClose = document.getElementById("toastClose");
+  let toastTimeout = null;
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+  function showToast(title, text, icon) {
+    if (icon) toastIcon.textContent = icon;
+    toastTitle.textContent = title;
+    toastText.textContent = text;
+    toast.classList.add("show");
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove("show"), 10000);
+  }
 
-                // Pulsating effect
-                this.size = this.baseSize + Math.sin(Date.now() * 0.003) * 0.8;
+  toastClose.addEventListener("click", () => {
+    toast.classList.remove("show");
+    clearTimeout(toastTimeout);
+  });
 
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
+  // ---------- ПАСХАЛКА: 5 кликов по аватарке → скример ----------
+  const brandAvatar = document.getElementById("brandAvatar");
+  const jumpscare = document.getElementById("jumpscare");
 
-                if (mouse.x && mouse.y) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < mouse.radius) {
-                        let force = (mouse.radius - dist) / mouse.radius;
-                        let angle = Math.atan2(dy, dx);
-                        this.x -= Math.cos(angle) * force * 3;
-                        this.y -= Math.sin(angle) * force * 3;
-                    }
-                }
-            }
-        }
+  let avatarClicks = 0;
+  let avatarClickTimer = null;
 
-        function initParticles() {
-            particles = [];
-            const count = Math.min(Math.floor((width * height) / 11000), 85);
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
+  function generateScarySound() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const duration = 1.2;
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
 
-        function connectParticles() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a + 1; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
+      for (let i = 0; i < data.length; i++) {
+        const t = i / ctx.sampleRate;
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 2) * 0.5 +
+                  Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 3) * 0.3;
+      }
 
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(${particles[a].color}, ${0.18 - dist / 1200})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
+      const gain = ctx.createGain();
+      gain.gain.value = 0.4;
 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
+      const distortion = ctx.createWaveShaper();
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i * 2) / 256 - 1;
+        curve[i] = Math.tanh(x * 5);
+      }
+      distortion.curve = curve;
 
-            connectParticles();
-            requestAnimationFrame(animate);
-        }
+      source.connect(distortion).connect(gain).connect(ctx.destination);
+      source.start();
+    } catch (e) {}
+  }
 
-        window.onload = function() {
-            animate();
-        };
-    </script>
+  function triggerJumpscare() {
+    generateScarySound();
+    jumpscare.classList.add("show");
+    setTimeout(() => {
+      jumpscare.classList.remove("show");
+    }, 1500);
+  }
+
+  brandAvatar.addEventListener("click", () => {
+    avatarClicks++;
+    clearTimeout(avatarClickTimer);
+    avatarClickTimer = setTimeout(() => { avatarClicks = 0; }, 2000);
+
+    if (avatarClicks >= 5) {
+      avatarClicks = 0;
+      triggerJumpscare();
+    }
+  });
+
+  // ---------- БОНУС: Konami Code ----------
+  const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let konamiIndex = 0;
+
+  document.addEventListener("keydown", e => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        konamiIndex = 0;
+        spawnConfetti();
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function spawnConfetti() {
+    const colors = ["#8b6cff", "#ff5c9e", "#22ddaa", "#ffaa33", "#ff4444"];
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => {
+        const c = document.createElement("div");
+        c.style.position = "fixed";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.top = "-20px";
+        c.style.width = "10px";
+        c.style.height = "10px";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+        c.style.zIndex = "99998";
+        c.style.pointerEvents = "none";
+        c.style.transition = "transform 3s linear, opacity 3s linear";
+        document.body.appendChild(c);
+        setTimeout(() => {
+          c.style.transform = "translateY(" + (window.innerHeight + 40) + "px) rotate(" + (Math.random() * 720) + "deg)";
+          c.style.opacity = "0";
+        }, 30);
+        setTimeout(() => c.remove(), 3200);
+      }, i * 20);
+    }
+    showToast("Konami Code", "Ты знаешь классику. Уважение.", "\uD83C\uDF89");
+  }
+
+  console.log("%cПривет, разработчик!", "color:#8b6cff;font-size:16px;font-weight:bold;");
+  console.log("%cТы нашёл консоль. Попробуй ↑↑↓↓←→←→BA", "color:#a3a3b5;font-size:12px;");
+</script>
+
 </body>
 </html>
